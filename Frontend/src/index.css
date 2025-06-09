@@ -19,3 +19,45 @@
   cursor: pointer;
 }
 
+.image {
+  width: 25%;
+  height: auto;
+  position: absolute;
+  left: 0%;
+  transform: translateY(5%);
+  object-fit: contain;
+}
+
+
+
+
+.line {
+  position: absolute;
+  top: 50%;
+  border-bottom: 5px dashed #F4F1E1;
+  width: 220px;
+  transform: translateX(270%) rotate(90deg);
+}
+
+/* Circle before the line */
+.line::before,
+.line::after {
+  content: '';
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background-color: #F4F1E1;
+  border-radius: 50%;
+}
+
+/* Position left circle */
+.line::before {
+  left: -80px;
+  top: -30px;
+}
+
+/* Position right circle */
+.line::after {
+  right: -75px;
+  top: -32px;
+}

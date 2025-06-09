@@ -21,3 +21,6 @@
 
 #### Day 4 -- Saturday -- 07-06-2025
     - Create Statistics with Decent UI
+
+#### Day 5 -- Monday -- 09-06-2025
+    - Create Box Ticket Sample with Raw UI

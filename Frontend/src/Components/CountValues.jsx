@@ -5,7 +5,7 @@ const CountValues = () => {
     return (
         <div className='m-12'>
             <div className='flex justify-center mb-8'>
-                <h1 className='text-4xl md:text-4xl text-[#0C3B2E] font-extrabold tracking-wide'>
+                <h1 className='text-4xl md:text-4xl text-[#0C3B2E] font-bold tracking-wide'>
                     Statistics
                 </h1>
             </div>
