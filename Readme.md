@@ -24,3 +24,4 @@
 
 #### Day 5 -- Monday -- 09-06-2025
     - Create Box Ticket Sample with Raw UI
+    - Add More UI details and Info

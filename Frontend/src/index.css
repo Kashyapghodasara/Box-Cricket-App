@@ -24,10 +24,17 @@
   height: auto;
   position: absolute;
   left: 0%;
-  transform: translateY(5%);
+  transform: translateY(2%);
   object-fit: contain;
 }
 
+.glow {
+  text-shadow:
+    0 0 2px #FFD700,
+    0 0 1px #FFD700,
+    0 0 0px #FFD700,
+    0 0 1px #FFD700;
+}
 
 
 

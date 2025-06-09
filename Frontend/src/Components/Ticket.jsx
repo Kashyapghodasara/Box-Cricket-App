@@ -33,22 +33,44 @@ const Ticket = () => {
 
                             </div>
                         </div>
-                        <div className='absolute flex justify-center text-center top-1/5 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                        <div className='absolute flex justify-center text-center top-1/5 left-4/12 transform -translate-x-1/2 -translate-y-1/2'>
                             <div>
                                 <h1 className='text-3xl font-bold text-[#ffffff]'>Time</h1>
                                 <h2 className='text-lg'>2:00 pm - 4:00 pm</h2>
                             </div>
                         </div>
-                        <div className='absolute flex justify-center text-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                        <div className='absolute flex justify-center text-center top-1/5 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
                             <div>
                                 <h1 className='text-3xl font-bold text-[#ffffff]'>Date</h1>
                                 <h2 className='text-lg'>17 - 06 - 2025  &nbsp; &nbsp; -  &nbsp; &nbsp; Monday</h2>
                             </div>
                         </div>
-                        <div className='absolute flex justify-center text-center top-10/12 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                        <div className='absolute flex justify-center text-center top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2'>
                             <div>
                                 <h1 className='text-3xl font-bold text-[#ffffff]'>Box</h1>
                                 <h2 className='text-lg'>#BX002 &nbsp; &nbsp; -  &nbsp; &nbsp; Small</h2>
+                            </div>
+                        </div>
+                        <div className='absolute flex justify-center text-center top-1/2 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
+                            <div className="bg-white/10 backdrop-blur-sm px-12 py-2 rounded-xl shadow-md border border-white/20">
+                                <h1 className='text-2xl font-bold text-[#ffffff]'>Price</h1>
+                                <h2 className='text-xl font-semibold text-[#FFD700] tracking-widest glow'>
+                                    ₹ 500
+                                </h2>
+                            </div>
+                        </div>
+
+
+
+
+                        {/* Address */}
+                        <div className='absolute flex justify-center text-start top-10/12  left-4/11 transform -translate-x-1/2 -translate-y-1/2'>
+                            <div>
+                                <p className='font-mono text-sm text-[#ffffff]'
+                                    style={{ fontFamily: 'Roboto Mono, monospace' }}
+                                >
+                                    14th Street, Criksy Box Cricket, Near Pilson Intersection,
+                                    South Prickle Pine, Las Venturas, San Andreas - 1524207</p>
                             </div>
                         </div>
                     </div>
