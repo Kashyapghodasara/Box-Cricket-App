@@ -19,10 +19,18 @@ const Ticket = () => {
                 >
                     <div>
                         <div class="line"></div>
+
+                        <div className='flex top-1/2 right-0 absolute rotate-270'>
+                            <h1 className='text-2xl font-semibold font-mono tracking-widest text-[#ffffff]'>
+                                536348974239
+                            </h1>
+                        </div>
+
+
                         <div className="relative w-full h-full">
                             <img src="/Images/Logo-R.png" alt="Logo" className="image" />
                             <div>
-                                
+
                             </div>
                         </div>
                         <div className='absolute flex justify-center text-center top-1/5 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
