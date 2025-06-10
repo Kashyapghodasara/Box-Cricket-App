@@ -29,3 +29,4 @@
 #### Day 6 -- Tuesday -- 10-06-2025
     - Ticket UI done with Ticket Preview 
     - Landing page Completed
+    - Setup Each Box Route

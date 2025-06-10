@@ -1,6 +1,7 @@
 import React from 'react';
 import InfoCard from './InfoCard';
 import { Monitor, Rocket, BarChart3, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const cardsData = [
     {
@@ -57,20 +58,24 @@ const InfoCards = () => {
             <div className="text-center mb-2 mt-8">
                 <h1 className="text-4xl font-bold text-[#0C3B2E]">Select a Box</h1>
             </div>
-
             {/* Grid Wrapper - Centered */}
             <div className="flex justify-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl">
                     {cardsData.map((card) => (
-                        <InfoCard
-                            key={card.id}
-                            id={card.id}
-                            title={card.title}
-                            description={card.description}
-                            capacity={card.capacity}
-                            color={card.color}
-                            icon={card.icon}
-                        />
+                        <Link 
+                        key={card.id}
+                        to={`/box${card.id}`}
+                        >
+                            <InfoCard
+                                key={card.id}
+                                id={card.id}
+                                title={card.title}
+                                description={card.description}
+                                capacity={card.capacity}
+                                color={card.color}
+                                icon={card.icon}
+                            />
+                        </Link>
                     ))}
                 </div>
             </div>

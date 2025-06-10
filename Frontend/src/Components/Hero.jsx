@@ -19,10 +19,10 @@ const Hero = () => {
 
                         {/* Nav Links Centered */}
                         <div className='flex flex-row gap-[80px] text-[#0C3B2E] text-lg'>
-                            <h1 class="pointer" >Home</h1>
-                            <h1 class="pointer">About</h1>
-                            <h1 class="pointer">Review</h1>
-                            <h1 class="pointer">Contact</h1>
+                            <h1 className="pointer" >Home</h1>
+                            <h1 className="pointer">About</h1>
+                            <h1 className="pointer">Review</h1>
+                            <h1 className="pointer">Contact</h1>
                         </div>
 
                         {/* Login Button Positioned Right */}
