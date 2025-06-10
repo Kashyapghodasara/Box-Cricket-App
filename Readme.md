@@ -5,7 +5,7 @@
 ● **Frontend**: React.js, Tailwind CSS <br>
 ● **Backend**: Node.js, Express.js <br>
 ● **Database**: MongoDB <br>
-● **UI Features**: React-Bits <br>
+● **UI Features**: React-Bits, React-Icons <br>
 ● **Payment Integration**: Dummy Manual Integration <br>
 
 ### Daily Grind
@@ -25,3 +25,7 @@
 #### Day 5 -- Monday -- 09-06-2025
     - Create Box Ticket Sample with Raw UI
     - Add More UI details and Info
+
+#### Day 6 -- Tuesday -- 10-06-2025
+    - Ticket UI done with Ticket Preview 
+    - Landing page Completed

@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import InfoCards from './InfoCards'
 import CountValues from './CountValues'
 import Ticket from './Ticket'
+import Footer from './Footer'
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
         <InfoCards />
         <CountValues />
         <Ticket />
+        <Footer />
     </>
   )
 }

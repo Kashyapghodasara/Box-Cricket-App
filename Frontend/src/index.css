@@ -54,6 +54,7 @@
   width: 70px;
   height: 70px;
   background-color: #F4F1E1;
+  mix-blend-mode: multiply;
   border-radius: 50%;
 }
 
@@ -61,6 +62,7 @@
 .line::before {
   left: -80px;
   top: -30px;
+  
 }
 
 /* Position right circle */
