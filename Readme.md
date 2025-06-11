@@ -30,3 +30,6 @@
     - Ticket UI done with Ticket Preview 
     - Landing page Completed
     - Setup Each Box Route
+
+#### Day 7 -- Wednesday -- 11-06-2025
+    - Change the plan and choose Efficient way

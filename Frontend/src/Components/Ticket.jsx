@@ -21,7 +21,7 @@ const Ticket = () => {
 
                 >
                     <div>
-                        <div class="line"></div>
+                        <div className="line"></div>
 
                         <div className='flex flex-col gap-2 text-center top-[39%] right-0 absolute rotate-270'>
                             <h2 className='text-md font-semibold'
