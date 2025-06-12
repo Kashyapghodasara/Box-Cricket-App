@@ -12,7 +12,7 @@ const Ticket = () => {
                     className="w-[60%] h-[300px]  m-5 shadow-lg relative"
                     style={{
                         clipPath: 'polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px)',
-                        backgroundImage: 'url("/Images/Blue2.jpeg")',
+                        backgroundImage: 'url("/Images/Orange4.jpeg")',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat',
