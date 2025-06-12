@@ -33,3 +33,6 @@
 
 #### Day 7 -- Wednesday -- 11-06-2025
     - Change the plan and choose Efficient way
+
+#### Day 8 -- Thursday -- 12-06-2025
+    - Create first half of Box Booking form
