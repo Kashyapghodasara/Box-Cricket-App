@@ -11,8 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-eslint.config.js
-tailwind.config.js
+
 
 # Editor directories and files
 .vscode/*

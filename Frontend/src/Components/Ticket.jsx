@@ -7,7 +7,7 @@ const Ticket = () => {
                 <h1 className="text-4xl font-bold text-[#0C3B2E] mb-6">Your Ticket</h1>
 
 
-                {/* Ticket */}
+                {/* Ticket 1*/}
                 <div
                     className="w-[60%] h-[300px]  m-5 shadow-lg relative"
                     style={{
@@ -72,7 +72,7 @@ const Ticket = () => {
                         {/* Address */}
                         <div className='absolute flex justify-center text-start top-[88%]  left-4/11 transform -translate-x-1/2 -translate-y-1/2'>
                             <div>
-                                <p className='font-mono text-sm text-[#ffffff]'
+                                <p className='font-mono text-[13px] text-[#ffffff]'
                                     style={{ fontFamily: 'Roboto Mono, monospace' }}
                                 >
                                     14th Street, Criksy Box Cricket, Near Pilson Intersection,
@@ -151,7 +151,7 @@ const Ticket = () => {
                         {/* Address */}
                         <div className='absolute flex justify-center text-start top-[88%]  left-4/11 transform -translate-x-1/2 -translate-y-1/2'>
                             <div>
-                                <p className='font-mono text-sm text-[#ffffff]'
+                                <p className='font-mono text-[13px] text-[#ffffff]'
                                     style={{ fontFamily: 'Roboto Mono, monospace' }}
                                 >
                                     14th Street, Criksy Box Cricket, Near Pilson Intersection,

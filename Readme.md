@@ -38,5 +38,6 @@
     - Create first half of Box Booking form
 
 #### Day 9 -- Friday -- 13-06-2025
-    - setup Form Progress Files and Basic Code
+    - Setup Form Progress Files and Basic Code
     - Update some logic in Box Details form
+    - Start creating Payment Detail form
