@@ -7,9 +7,8 @@
 ● **Database**: MongoDB <br>
 ● **UI Features**: React-Bits, React-Icons <br>
 ● **Payment Integration**: Dummy Manual Integration <br>
----
 
-### ⚙ Daily Grind
+### Daily Grind
 
 #### Day 1 -- Wednesday -- 28-05-2025
     - Setup Folders
