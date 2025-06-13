@@ -7,8 +7,9 @@
 ● **Database**: MongoDB <br>
 ● **UI Features**: React-Bits, React-Icons <br>
 ● **Payment Integration**: Dummy Manual Integration <br>
+---
 
-### Daily Grind
+### ⚙ Daily Grind
 
 #### Day 1 -- Wednesday -- 28-05-2025
     - Setup Folders
@@ -36,3 +37,7 @@
 
 #### Day 8 -- Thursday -- 12-06-2025
     - Create first half of Box Booking form
+
+#### Day 9 -- Friday -- 13-06-2025
+    - setup Form Progress Files and Basic Code
+    - Update some logic in Box Details form
