@@ -41,3 +41,6 @@
     - Setup Form Progress Files and Basic Code
     - Update some logic in Box Details form
     - Start creating Payment Detail form
+
+#### Day 10 -- Saturday -- 14-06-2025
+    - Payment Detail Form Completed
