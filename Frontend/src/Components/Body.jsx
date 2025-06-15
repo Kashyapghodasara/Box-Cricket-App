@@ -10,15 +10,17 @@ const Body = () => {
         {
             path: "/",
             element: <Home />,
+           
         },
         {
             path: "availabel",
             element: <Availability />
-        }, 
+        },
         {
             path: "booking",
             element: <BoxBooking />
         }
+
     ])
     return (
         <div>

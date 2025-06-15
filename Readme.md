@@ -44,3 +44,9 @@
 
 #### Day 10 -- Saturday -- 14-06-2025
     - Payment Detail Form Completed
+
+#### Day 15 -- Sunday -- 15-06-2025
+    - B'Day ❌ Routine Day ✔
+    - Box - Payment form are done with next and previous feature
+    - Also implement progressBar in form for Better UI
+    - Scroll to Section feature implemented
