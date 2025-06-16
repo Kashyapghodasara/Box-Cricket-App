@@ -1,5 +1,6 @@
 import React from 'react'
-import { useState , useEffect} from 'react';
+import { useState, useEffect } from 'react';
+import useBoxDetailStore from '../Store/useBoxDetailStore.jsx';
 
 const StepBoxDetails = ({ onNext }) => {
 
@@ -11,8 +12,30 @@ const StepBoxDetails = ({ onNext }) => {
     const [paymentStatus] = useState('Pending');
 
     const [selectedBox, setSelectedBox] = useState(null)
-
     const BoxIds = ["BX001", "BX002", "BX003", "BX004", "BX005", "BX006"]
+
+    const { setBoxDetails, boxDetails } = useBoxDetailStore();
+
+    const setValueBoxDetails = (e) => {
+        e.preventDefault();
+        console.log("Form is going to submit");
+
+        setBoxDetails({
+            Boxid: selectedBox,
+            Date: date,
+            Start_time: startTime,
+            End_time: endTime,
+            Price: price,
+            Size: size,
+            Payment_status: paymentStatus,
+        });
+
+        console.log("Form Submitted");
+        console.log(boxDetails);
+
+        onNext(); // ✅ This line is required to proceed to next step
+    };
+
 
     useEffect(() => {
         if (selectedBox === "BX001" || selectedBox === "BX002") {
@@ -38,7 +61,7 @@ const StepBoxDetails = ({ onNext }) => {
 
                         {/* Input Field */}
 
-                        <form>
+                        <form onSubmit={setValueBoxDetails}>
                             {/* Box Selection */}
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mt-6">
                                 {BoxIds.map((boxId, index) => (
@@ -47,6 +70,7 @@ const StepBoxDetails = ({ onNext }) => {
                                             <input
                                                 type="checkbox"
                                                 className="sr-only peer"
+                                                name="boxID"
                                                 checked={boxId === selectedBox}
                                                 onChange={(e) => { e.target.checked ? setSelectedBox(boxId) : setSelectedBox(null) }}
                                             />
@@ -82,6 +106,7 @@ const StepBoxDetails = ({ onNext }) => {
                                 <input
                                     type="date"
                                     id="Date"
+                                    name='date'
                                     value={date}
                                     onChange={(e) => setDate(e.target.value)}
                                     className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
@@ -117,6 +142,7 @@ const StepBoxDetails = ({ onNext }) => {
                                     <input
                                         type="time"
                                         id="start_time"
+                                        name='starttime'
                                         value={startTime}
                                         onChange={(e) => setStartTime(e.target.value)}
                                         className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
@@ -149,6 +175,7 @@ const StepBoxDetails = ({ onNext }) => {
                                     <input
                                         type="time"
                                         id="end_time"
+                                        name='endtime'
                                         value={endTime}
                                         onChange={(e) => setEndTime(e.target.value)}
                                         className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
@@ -184,6 +211,7 @@ const StepBoxDetails = ({ onNext }) => {
                                     <input
                                         type="text"
                                         id="Price"
+                                        name='price'
                                         value={price}
                                         onChange={(e) => setPrice(e.target.value)}
                                         className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
@@ -216,6 +244,7 @@ const StepBoxDetails = ({ onNext }) => {
                                     <input
                                         type="text"
                                         id="Size"
+                                        name='size'
                                         value={size}  //onChange not work because we use useEffect for this
                                         readOnly
                                         className="peer cursor-not-allowed w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
@@ -250,6 +279,7 @@ const StepBoxDetails = ({ onNext }) => {
                                 <input
                                     type="text"
                                     id="Status"
+                                    name='status'
                                     value={paymentStatus}
                                     disabled
                                     className="peer cursor-not-allowed w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
@@ -280,9 +310,9 @@ const StepBoxDetails = ({ onNext }) => {
                             </div>
 
                             <div className="flex justify-end">
-                                <button 
-                                onClick={onNext}
-                                className='bg-[#eba604] cursor-pointer text-white py-2 px-4 rounded-md hover:bg-[#ffb300]'>
+                                <button
+                                    type='submit'
+                                    className='bg-[#eba604] cursor-pointer text-white py-2 px-4 rounded-md hover:bg-[#ffb300]'>
                                     Next Page
                                 </button>
                             </div>

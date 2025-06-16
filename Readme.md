@@ -55,3 +55,5 @@
     - There's something amazing about working hours on rainy days ⛈
     - Preview Details Step Completed
     - Basic Change in Navbar and Links
+    - Setup Zustand with Store Folder
+    - Create a two store for Box Info. and Payment Info.
