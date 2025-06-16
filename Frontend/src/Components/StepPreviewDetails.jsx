@@ -1,8 +1,406 @@
 import React from 'react'
+import { FaArrowLeft } from "react-icons/fa6";
 
-const StepPreviewDetails = () => {
+
+const StepPreviewDetails = ({onNext, onPrev}) => {
   return (
-    <div className='text-2xl bg-amber-700'>StepPreviewDetails</div>
+    <div className='w-[100%]' style={{ overflow: 'hidden' }} >
+
+      {/* Form Section */}
+      <div className='flex justify-center h-auto w-full overflow-x-hidden m-5 pt-5'>
+        <div className='border-2 border-[#003828] h-auto m-6 rounded-xl w-full max-w-3xl p-8 shadow-lg bg-[#F4F1E1]'>
+          <h1 className='text-4xl text-center font-bold text-[#0C3B2E] mb-5'>Details Preview</h1>
+
+
+          <form>
+            <h2 className='text-2xl text-center font-semibold text-[#03573f] mt-2'>━━ Box Details ━━</h2>
+            {/* Date - Box ID */}
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Date"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Date
+                </label>
+                <input
+                  type="date"
+                  id="Date"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Boxid"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Box ID
+                </label>
+                <input
+                  type="text"
+                  id="Boxid"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            {/* Start Time - End Time */}
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="StartTime"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Start Time
+                </label>
+                <input
+                  type="time"
+                  id="StartTime"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="EndTime"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  End Time
+                </label>
+                <input
+                  type="time"
+                  id="EndTime"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            {/* Price - Size */}
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Price"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Price
+                </label>
+                <input
+                  type="number"
+                  id="Price"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Size"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Size
+                </label>
+                <input
+                  type="text"
+                  id="Size"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            {/* Payment Status */}
+            <div className='relative w-[90%] m-5 mb-5 mt-10'>
+              <label
+                htmlFor="PaymentStatus"
+                className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+              >
+                Payment Status
+              </label>
+              <input
+                type="text"
+                id="PaymentStatus"
+                readOnly
+                className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+              />
+            </div>
+
+
+            <h2 className='text-2xl text-center font-semibold text-[#03573f] mt-15 mb-5'>━━ Payment Details ━━</h2>
+
+            {/* Fullname */}
+            <div className='relative w-[90%] m-5 mb-5 mt-10'>
+              <label
+                htmlFor="Fullname"
+                className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+              >
+                Fullname
+              </label>
+              <input
+                type="text"
+                id="Fullname"
+                readOnly
+                className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+              />
+            </div>
+
+            {/* Email - City */}
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Email"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="Email"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="City"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  City
+                </label>
+                <input
+                  type="text"
+                  id="City"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            {/* State - Zipcode */}
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="State"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  State
+                </label>
+                <input
+                  type="text"
+                  id="State"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Zipcode"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Zipcode
+                </label>
+                <input
+                  type="number"
+                  id="Zipcode"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            {/* Payment Methode */}
+            <div className='relative w-[90%] m-5 mb-5 mt-10'>
+              <label
+                htmlFor="PaymentMethode"
+                className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+              >
+                Payment Methode
+              </label>
+              <input
+                type="text"
+                id="PaymentMethode"
+                readOnly
+                className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+              />
+            </div>
+
+            {/* If = UPI */}
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="UPIid"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  UPI ID
+                </label>
+                <input
+                  type="text"
+                  id="UPIid"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="TransactionID"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Transaction ID
+                </label>
+                <input
+                  type="text"
+                  id="TransactionID"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Amount"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Amount
+                </label>
+                <input
+                  type="number"
+                  id="Amount"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Remark"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Remark
+                </label>
+                <input
+                  type="text"
+                  id="Remark"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            {/* If = Bank Transfer */}
+
+            {/* A/c Holder Name */}
+            <div className='relative w-[90%] m-5 mb-5 mt-10'>
+              <label
+                htmlFor="A/cHoldername"
+                className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+              >
+                A/c Holder Name
+              </label>
+              <input
+                type="text"
+                id="A/cHoldername"
+                readOnly
+                className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+              />
+            </div>
+
+            {/* Bank Name - IFSC Code */}
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="BankName"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Bank Name
+                </label>
+                <input
+                  type="text"
+                  id="BankName"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="IFSC"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  IFSC Code
+                </label>
+                <input
+                  type="text"
+                  id="IFSC"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            {/* Amount - A/c Number */}
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="Amount"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  Amount
+                </label>
+                <input
+                  type="number"
+                  id="Amount"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+
+              <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                <label
+                  htmlFor="A/c Number"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                >
+                  A/c Number
+                </label>
+                <input
+                  type="text"
+                  id="A/c Number"
+                  readOnly
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                />
+              </div>
+            </div>
+
+            {/* Button Area */}
+            <div className="flex justify-between mt-15">
+              <div className='flex flex-row cursor-pointer items-center px-3 hover:bg-[#b3ffa0] rounded-md'>
+                <FaArrowLeft className='text-[#0C3B2E]' />
+
+                <button
+                  onClick={onPrev}
+                  className=' text-[#0C3B2E]  font-semibold py-2 px-3 rounded-md '>
+                  Previous
+                </button>
+              </div>
+              <button
+                onClick={onNext}
+                className='bg-[#eba604] cursor-pointer text-white py-2 px-12 rounded-md hover:bg-[#ffb300]'>
+                Proceed to Pay
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
   )
 }
 

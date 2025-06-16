@@ -34,7 +34,7 @@ const Hero = () => {
                                     className="pointer">
                                     Slote
                                 </button>
-                                <button className="pointer">Review</button>
+                                <button className="pointer">Bookings</button>
                                 <button
                                     onClick={() => scrollToSection('Contact')}
                                     className="pointer">

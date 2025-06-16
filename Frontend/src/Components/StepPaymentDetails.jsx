@@ -483,7 +483,7 @@ const StepPaymentDetails = ({onNext, onPrev}) => {
                         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 mb-5 gap-4 mt-6 w-full'>
                           <div className='relative w-[90%] m-5 mb-5 mt-10'>
                             <input
-                              type="text"
+                              type="number"
                               id="Amount"
                               value={Amount}
                               onChange={(e) => setAmount(e.target.value)}
@@ -555,7 +555,7 @@ const StepPaymentDetails = ({onNext, onPrev}) => {
       
                     {/* Button Area */}
                     <div className="flex justify-between mt-15">
-                      <div className='flex flex-row items-center px-3 hover:bg-[#b3ffa0] rounded-md'>
+                      <div className='flex flex-row items-center cursor-pointer px-3 hover:bg-[#b3ffa0] rounded-md'>
                         <FaArrowLeft className='text-[#0C3B2E]' />
 
                         <button 
@@ -566,7 +566,7 @@ const StepPaymentDetails = ({onNext, onPrev}) => {
                       </div>
                       <button 
                       onClick={onNext}
-                      className='bg-[#eba604] text-white py-2 px-4 rounded-md hover:bg-[#ffb300]'>
+                      className='bg-[#eba604] text-white cursor-pointer py-2 px-4 rounded-md hover:bg-[#ffb300]'>
                         Next Page
                       </button>
                     </div>

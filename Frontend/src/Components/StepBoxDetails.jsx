@@ -282,7 +282,7 @@ const StepBoxDetails = ({ onNext }) => {
                             <div className="flex justify-end">
                                 <button 
                                 onClick={onNext}
-                                className='bg-[#eba604] text-white py-2 px-4 rounded-md hover:bg-[#ffb300]'>
+                                className='bg-[#eba604] cursor-pointer text-white py-2 px-4 rounded-md hover:bg-[#ffb300]'>
                                     Next Page
                                 </button>
                             </div>

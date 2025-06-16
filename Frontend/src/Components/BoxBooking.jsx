@@ -30,7 +30,7 @@ const BoxBooking = () => {
                   Slote
                 </button>
               </Link>
-              <Link to="/"><button className="pointer">Review</button></Link>
+              <Link to="/"><button className="pointer">Bookings</button></Link>
               <Link to="/"><button className="pointer">Contact</button></Link>
             </div>
 

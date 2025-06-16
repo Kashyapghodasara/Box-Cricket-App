@@ -50,3 +50,8 @@
     - Box - Payment form are done with next and previous feature
     - Also implement progressBar in form for Better UI
     - Scroll to Section feature implemented
+
+#### Day 16 -- Monday -- 16-06-2025
+    - There's something amazing about working hours on rainy days ⛈
+    - Preview Details Step Completed
+    - Basic Change in Navbar and Links
