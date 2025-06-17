@@ -1,29 +1,29 @@
 ## 🏏 Box Cricket Booking Web Application
 > This is a MERN Stack based web application designed to streamline and simplify the process of booking box cricket grounds. The platform includes features for both Users and Admins, ensuring smooth management of time slots, bookings, and payments.
 
-### 📦 Tech Stack <br>
+/* ### 📦 Tech Stack <br>
 ● **Frontend**: React.js, Tailwind CSS <br>
 ● **Backend**: Node.js, Express.js <br>
 ● **Database**: MongoDB <br>
 ● **UI Features**: React-Bits, React-Icons <br>
-● **Payment Integration**: Dummy Manual Integration <br>
+● **Payment Integration**: Dummy Manual Integration <br> */
 
-## 🔷 Frontend
+### 🪷 Frontend
 ![React](https://img.shields.io/badge/React.js-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-## 🔧 Backend
+### 🔧 Backend
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 
-## 🗃️ Database
+### 🗃️ Database
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 
-## 🎨 UI Features
+### 🎨 UI Features
 ![React Bits](https://img.shields.io/badge/React--Bits-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![React Icons](https://img.shields.io/badge/React--Icons-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 
-## 💳 Payment
+### 💳 Payment
 ![Manual Payment](https://img.shields.io/badge/Payment-Dummy%20Manual%20Integration-orange?style=for-the-badge&logo=money&logoColor=white)
 
 ---
