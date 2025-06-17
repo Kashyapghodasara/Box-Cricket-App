@@ -21,7 +21,7 @@
 ![Dummy Manual Integration](https://img.shields.io/badge/Dummy%20Manual%20Integration-orange?style=for-the-badge&logo=mastercard&logoColor=white)
 
 ---
-### Daily Grind
+### ⚙️ Daily Grind
 
 #### Day 1 -- Wednesday -- 28-05-2025
     - Setup Folders
