@@ -9,7 +9,8 @@ const StepBoxDetails = ({ onNext }) => {
     const [endTime, setEndTime] = useState('');
     const [price, setPrice] = useState('');
     const [size, setSize] = useState('');
-    const [paymentStatus] = useState('Pending');
+    const [paymentStatus, setPaymentStatus] = useState('Pending');
+    const [duration, setDuration] = useState('')
 
     const [selectedBox, setSelectedBox] = useState(null)
     const BoxIds = ["BX001", "BX002", "BX003", "BX004", "BX005", "BX006"]
@@ -35,6 +36,93 @@ const StepBoxDetails = ({ onNext }) => {
 
         onNext(); // ✅ This line is required to proceed to next step
     };
+
+    const handleStartTimeChange = (e) => {
+        const value = e.target.value;
+        const [hour, minute] = value.split(':').map(Number);
+        if (minute !== 0) {
+            // Round down to nearest full hour
+            const newTime = `${String(hour).padStart(2, '0')}:00`;
+            setStartTime(newTime);
+        } else {
+            setStartTime(value);
+        }
+        handleDuration();
+    };
+
+    const handleEndTimeChange = (e) => {
+        const value = e.target.value;
+        const [hour, minute] = value.split(':').map(Number);
+        if (minute !== 0) {
+            // Round down to nearest full hour
+            const newTime = `${String(hour).padStart(2, '0')}:00`;
+            setEndTime(newTime);
+        } else {
+            setEndTime(value);
+        }
+        handleDuration();
+    }
+
+    const handleDuration = () => {
+        const start = document.getElementById('start_time').value;
+        const end = document.getElementById('end_time').value;
+
+        if (!start || !end) {
+            setDuration("")
+            return
+        }
+
+        const [startHour] = start.split(':').map(Number);
+        const [endHour] = end.split(':').map(Number);
+
+        let diff;
+        if (startHour > endHour) {
+            // Crosses midnight
+            diff = (24 - startHour) + endHour;
+        } else {
+            diff = endHour - startHour;
+        }
+        if (diff > 0) {
+            setDuration(`${diff} hour${diff > 1 ? 's' : ''}`);
+        } else {
+            setDuration("Invalid range");
+        }
+
+    }
+
+    useEffect(() => {
+        const durationValue = document.getElementById('Duration').value;
+
+        if (!durationValue) {
+            setPrice("");
+            return;
+        }
+
+        const [hour] = durationValue.split(' ');
+        const hours = parseInt(hour);
+
+        if (isNaN(hours) || hours <= 0) {
+            setPrice("");
+            return;
+        }
+
+        let pricePerHour;
+
+        if (selectedBox === "BX001" || selectedBox === "BX002") {
+            pricePerHour = 600;
+        } else if (selectedBox === "BX003" || selectedBox === "BX004") {
+            pricePerHour = 1100;
+        } else if (selectedBox === "BX005" || selectedBox === "BX006") {
+            pricePerHour = 1900;
+        } else {
+            setPrice(""); // unknown box
+            return;
+        }
+
+        const finalPrice = pricePerHour * hours;
+        setPrice(finalPrice);
+    }, [duration, selectedBox])
+
 
 
     useEffect(() => {
@@ -144,7 +232,8 @@ const StepBoxDetails = ({ onNext }) => {
                                         id="start_time"
                                         name='starttime'
                                         value={startTime}
-                                        onChange={(e) => setStartTime(e.target.value)}
+                                        step="3600"
+                                        onChange={handleStartTimeChange}
                                         className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                                     />
                                     <label
@@ -177,7 +266,8 @@ const StepBoxDetails = ({ onNext }) => {
                                         id="end_time"
                                         name='endtime'
                                         value={endTime}
-                                        onChange={(e) => setEndTime(e.target.value)}
+                                        step="3600"
+                                        onChange={handleEndTimeChange}
                                         className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                                     />
                                     <label
@@ -207,39 +297,21 @@ const StepBoxDetails = ({ onNext }) => {
 
                             {/* Price - Size */}
                             <div className='grid grid-cols-1 md:grid-cols-2'>
-                                <div className='relative w-[80%] m-5 mb-5 mt-10'>
-                                    <input
-                                        type="text"
-                                        id="Price"
-                                        name='price'
-                                        value={price}
-                                        onChange={(e) => setPrice(e.target.value)}
-                                        className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                                    />
+                                <div className='relative w-[90%] m-5 mb-5 mt-10'>
                                     <label
                                         htmlFor="Price"
-                                        className="absolute left-1 text-gray-500 text-md px-1 transition-all duration-200
-            top-2 peer-focus:top-[-12px] peer-focus:text-sm peer-focus:text-[#0C3B2E]
-            peer-valid:top-[-12px] peer-valid:text-sm peer-valid:text-[#0C3B2E]"
+                                        className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
                                     >
                                         Price
                                     </label>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="absolute right-2 top-3 w-5 h-5 text-black pointer-events-none"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M10 6h6M10 12h4M6 18h9M6 6l3 6-3 6"
-                                        />
-                                    </svg>
+                                    <input
+                                        type="number"
+                                        id="Price"
+                                        readOnly
+                                        value={price}
+                                        className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                                    />
                                 </div>
-
                                 <div className='relative w-[80%] m-5 mb-5 mt-10'>
                                     <input
                                         type="text"
@@ -274,39 +346,73 @@ const StepBoxDetails = ({ onNext }) => {
                                 </div>
                             </div>
 
-                            {/* Payment Status */}
-                            <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                                <input
-                                    type="text"
-                                    id="Status"
-                                    name='status'
-                                    value={paymentStatus}
-                                    disabled
-                                    className="peer cursor-not-allowed w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                                />
-                                <label
-                                    htmlFor="Status"
-                                    className="absolute left-1 text-[#0C3B2E] text-sm px-1 transition-all duration-200
+                            {/* Payment Status - Duration*/}
+                            <div className='grid grid-cols-1 md:grid-cols-2'>
+                                <div className='relative w-[80%] m-5 mb-5 mt-10'>
+                                    <input
+                                        type="text"
+                                        id="Duration"
+                                        name='Duration'
+                                        value={duration}
+                                        disabled
+                                        className="peer cursor-not-allowed w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                                    />
+                                    <label
+                                        htmlFor="Duration"
+                                        className="absolute left-1 text-[#0C3B2E] text-sm px-1 transition-all duration-200
           top-[-20px] peer-focus:top-[-12px] peer-focus:text-sm peer-focus:text-[#0C3B2E]
           peer-valid:top-[-12px] peer-valid:text-sm peer-valid:text-[#0C3B2E]"
-                                >
-                                    Payment Status
-                                </label>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="absolute right-2 top-3 w-5 h-5 text-black pointer-events-none"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M4 7h16M4 11h16M4 15h6m6 0h2m2-8a2 2 0 00-2-2H6a2 2 0 
-            00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V7z"
+                                    >
+                                        Duration
+                                    </label>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="absolute right-2 top-3 w-5 h-5 text-black pointer-events-none"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                </div>
+                                <div className='relative w-[80%] m-5 mb-5 mt-10'>
+                                    <input
+                                        type="text"
+                                        id="Status"
+                                        name='status'
+                                        value={paymentStatus}
+                                        disabled
+                                        className="peer cursor-not-allowed w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                                     />
-                                </svg>
+                                    <label
+                                        htmlFor="Status"
+                                        className="absolute left-1 text-[#0C3B2E] text-sm px-1 transition-all duration-200
+          top-[-20px] peer-focus:top-[-12px] peer-focus:text-sm peer-focus:text-[#0C3B2E]
+          peer-valid:top-[-12px] peer-valid:text-sm peer-valid:text-[#0C3B2E]"
+                                    >
+                                        Payment Status
+                                    </label>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="absolute right-2 top-3 w-5 h-5 text-black pointer-events-none"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M4 7h16M4 11h16M4 15h6m6 0h2m2-8a2 2 0 00-2-2H6a2 2 0 
+            00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V7z"
+                                        />
+                                    </svg>
+                                </div>
                             </div>
 
                             <div className="flex justify-end">

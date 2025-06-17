@@ -57,3 +57,8 @@
     - Basic Change in Navbar and Links
     - Setup Zustand with Store Folder
     - Create a two store for Box Info. and Payment Info.
+
+#### Day 17 -- Tuesday -- 17-06-2025
+    - Same Mood as Yesterday
+    - Implement logic of Time, Price and Size which is dynamically Change
+    - Referenced by ChatGPT
