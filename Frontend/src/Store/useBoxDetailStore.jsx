@@ -11,6 +11,7 @@ const useBoxDetailStore = create(
                 End_time: "",
                 Price: "",
                 Size: "",
+                Duration: "",
                 Payment_status: "",
                 User: [],
             },

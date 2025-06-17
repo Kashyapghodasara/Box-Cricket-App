@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { FaArrowLeft } from "react-icons/fa6";
 import usePaymentDetailStore from '../Store/usePaymentDetailStore';
+import useBoxDetailStore from '../Store/useBoxDetailStore';
 
 const StepPaymentDetails = ({ onNext, onPrev }) => {
 
@@ -26,6 +27,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
   const [payment, setPayment] = useState('');
 
   const { setPaymentDetails, paymentDetails } = usePaymentDetailStore();
+  const { boxDetails } = useBoxDetailStore();
 
   const setValuePaymentDetails = (e) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
       City: City,
       State: State,
       Zipcode: Zipcode,
-      paymentMethode: payment,
+      paymentMethode: selectedPaymentMethode,
       UPIid: UPI_id,
       Transactionid: TransactionId,
       Amount: Amount,
@@ -100,7 +102,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                 <div className="relative w-full mb-5 mt-10">
                   <label
                     htmlFor="Email"
-                    className="absolute left-1 -top-3 text-sm text-[#0C3B2E] bg-white px-1 z-10"
+                    className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
                   >
                     Email
                   </label>
@@ -201,7 +203,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                 <div className="relative w-full mb-5">
                   <label
                     htmlFor="Zipcode"
-                    className="absolute left-1 -top-3 text-sm text-[#0C3B2E] bg-white px-1 z-10"
+                    className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
                   >
                     Zipcode
                   </label>
@@ -336,37 +338,19 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                   {/* Remark - Amount */}
                   <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 mb-5 gap-4 mt-6 w-full'>
                     <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                      <input
-                        type="number"
-                        id="Amount"
-                        name='amount'
-                        value={Amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                      />
                       <label
                         htmlFor="Amount"
-                        className="absolute left-1 text-gray-500 text-md px-1 transition-all duration-200
-                        top-2 peer-focus:top-[-12px] peer-focus:text-sm peer-focus:text-[#0C3B2E]
-                        peer-valid:top-[-12px] peer-valid:text-sm peer-valid:text-[#0C3B2E]"
+                        className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
                       >
                         Amount
                       </label>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="absolute right-2 top-3 w-5 h-5 text-black pointer-events-none"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-2.21 0-4 1.343-4 3s1.79 3 4 3 4-1.343 4-3m-4 5v2m0-16v2"
-                        />
-                      </svg>
-
+                      <input
+                        type="number"
+                        id="Amount"
+                        readOnly
+                        value={boxDetails.Price}
+                        className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                      />
                     </div>
 
                     <div className='relative w-[90%] m-5 mb-5 mt-10'>
@@ -521,37 +505,19 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                   {/* Amount - Account No*/}
                   <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 mb-5 gap-4 mt-6 w-full'>
                     <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                      <input
-                        type="number"
-                        id="Amount"
-                        value={Amount}
-                        name='amount'
-                        onChange={(e) => setAmount(e.target.value)}
-                        className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                      />
                       <label
                         htmlFor="Amount"
-                        className="absolute left-1 text-gray-500 text-md px-1 transition-all duration-200
-                        top-2 peer-focus:top-[-12px] peer-focus:text-sm peer-focus:text-[#0C3B2E]
-                        peer-valid:top-[-12px] peer-valid:text-sm peer-valid:text-[#0C3B2E]"
+                        className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
                       >
                         Amount
                       </label>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="absolute right-2 top-3 w-5 h-5 text-black pointer-events-none"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 4h9a3 3 0 010 6H6m0 0h9a3 3 0 010 6H6m0 0l6 4"
-                        />
-                      </svg>
-
+                      <input
+                        type="number"
+                        id="Amount"
+                        readOnly
+                        value={boxDetails.Price}
+                        className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                      />
                     </div>
 
                     <div className='relative w-[90%] m-5 mb-5 mt-10'>

@@ -2,7 +2,7 @@
 > This is a MERN Stack based web application designed to streamline and simplify the process of booking box cricket grounds. The platform includes features for both Users and Admins, ensuring smooth management of time slots, bookings, and payments.
 ---
 
-### 🪷 Frontend
+### 🏡 Frontend
 ![React](https://img.shields.io/badge/React.js-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
@@ -74,4 +74,5 @@
 #### Day 17 -- Tuesday -- 17-06-2025
     - Same Mood as Yesterday
     - Implement logic of Time, Price and Size which is dynamically Change
-    - Referenced by ChatGPT
+    - ChatGPT helped me figure out the logic
+    - Completed logic for fetching data from the store to the Preview Step form

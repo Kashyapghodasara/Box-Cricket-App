@@ -28,6 +28,7 @@ const StepBoxDetails = ({ onNext }) => {
             End_time: endTime,
             Price: price,
             Size: size,
+            Duration: duration,
             Payment_status: paymentStatus,
         });
 
@@ -113,7 +114,7 @@ const StepBoxDetails = ({ onNext }) => {
         } else if (selectedBox === "BX003" || selectedBox === "BX004") {
             pricePerHour = 1100;
         } else if (selectedBox === "BX005" || selectedBox === "BX006") {
-            pricePerHour = 1900;
+            pricePerHour = 1700;
         } else {
             setPrice(""); // unknown box
             return;
@@ -122,7 +123,6 @@ const StepBoxDetails = ({ onNext }) => {
         const finalPrice = pricePerHour * hours;
         setPrice(finalPrice);
     }, [duration, selectedBox])
-
 
 
     useEffect(() => {
@@ -232,7 +232,6 @@ const StepBoxDetails = ({ onNext }) => {
                                         id="start_time"
                                         name='starttime'
                                         value={startTime}
-                                        step="3600"
                                         onChange={handleStartTimeChange}
                                         className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                                     />
@@ -266,7 +265,6 @@ const StepBoxDetails = ({ onNext }) => {
                                         id="end_time"
                                         name='endtime'
                                         value={endTime}
-                                        step="3600"
                                         onChange={handleEndTimeChange}
                                         className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                                     />

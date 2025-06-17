@@ -1,8 +1,13 @@
 import React from 'react'
 import { FaArrowLeft } from "react-icons/fa6";
+import useBoxDetailStore from '../Store/useBoxDetailStore'
+import usePaymentDetailStore from '../Store/usePaymentDetailStore'
 
+const StepPreviewDetails = ({ onNext, onPrev }) => {
 
-const StepPreviewDetails = ({onNext, onPrev}) => {
+  const { boxDetails } = useBoxDetailStore();
+  const { paymentDetails } = usePaymentDetailStore();
+
   return (
     <div className='w-[100%]' style={{ overflow: 'hidden' }} >
 
@@ -26,6 +31,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="date"
                   id="Date"
+                  value={boxDetails.Date}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -41,6 +47,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="text"
                   id="Boxid"
+                  value={boxDetails.Boxid}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -59,6 +66,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="time"
                   id="StartTime"
+                  value={boxDetails.Start_time}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -74,6 +82,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="time"
                   id="EndTime"
+                  value={boxDetails.End_time}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -92,6 +101,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="number"
                   id="Price"
+                  value={boxDetails.Price}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -107,6 +117,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="text"
                   id="Size"
+                  value={boxDetails.Size}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -124,6 +135,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
               <input
                 type="text"
                 id="PaymentStatus"
+                value={boxDetails.Payment_status}
                 readOnly
                 className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
               />
@@ -143,6 +155,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
               <input
                 type="text"
                 id="Fullname"
+                value={paymentDetails.Fullname}
                 readOnly
                 className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
               />
@@ -160,6 +173,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="email"
                   id="Email"
+                  value={paymentDetails.Email}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -175,6 +189,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="text"
                   id="City"
+                  value={paymentDetails.City}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -193,6 +208,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="text"
                   id="State"
+                  value={paymentDetails.State}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -208,6 +224,7 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
                 <input
                   type="number"
                   id="Zipcode"
+                  value={paymentDetails.Zipcode}
                   readOnly
                   className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
@@ -225,159 +242,177 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
               <input
                 type="text"
                 id="PaymentMethode"
+                value={paymentDetails.paymentMethode}
                 readOnly
                 className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
               />
             </div>
 
-            {/* If = UPI */}
-            <div className='grid grid-cols-1 md:grid-cols-2'>
-              <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                <label
-                  htmlFor="UPIid"
-                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-                >
-                  UPI ID
-                </label>
-                <input
-                  type="text"
-                  id="UPIid"
-                  readOnly
-                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                />
-              </div>
 
-              <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                <label
-                  htmlFor="TransactionID"
-                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-                >
-                  Transaction ID
-                </label>
-                <input
-                  type="text"
-                  id="TransactionID"
-                  readOnly
-                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                />
-              </div>
-            </div>
+            {paymentDetails.paymentMethode === "UPI" && (
+              <>             
+                <div className='grid grid-cols-1 md:grid-cols-2'>
+                  <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                    <label
+                      htmlFor="UPIid"
+                      className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                    >
+                      UPI ID
+                    </label>
+                    <input
+                      type="text"
+                      id="UPIid"
+                      value={paymentDetails.UPIid}
+                      readOnly
+                      className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                    />
+                  </div>
 
-            <div className='grid grid-cols-1 md:grid-cols-2'>
-              <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                <label
-                  htmlFor="Amount"
-                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-                >
-                  Amount
-                </label>
-                <input
-                  type="number"
-                  id="Amount"
-                  readOnly
-                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                />
-              </div>
+                  <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                    <label
+                      htmlFor="TransactionID"
+                      className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                    >
+                      Transaction ID
+                    </label>
+                    <input
+                      type="text"
+                      id="TransactionID"
+                      value={paymentDetails.Transactionid}
+                      readOnly
+                      className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                    />
+                  </div>
+                </div>
 
-              <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                <label
-                  htmlFor="Remark"
-                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-                >
-                  Remark
-                </label>
-                <input
-                  type="text"
-                  id="Remark"
-                  readOnly
-                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                />
-              </div>
-            </div>
+                <div className='grid grid-cols-1 md:grid-cols-2'>
+                  <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                    <label
+                      htmlFor="Amount"
+                      className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                    >
+                      Amount
+                    </label>
+                    <input
+                      type="number"
+                      id="Amount"
+                      value={boxDetails.Price}
+                      readOnly
+                      className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                    />
+                  </div>
 
-            {/* If = Bank Transfer */}
+                  <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                    <label
+                      htmlFor="Remark"
+                      className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                    >
+                      Remark
+                    </label>
+                    <input
+                      type="text"
+                      id="Remark"
+                      readOnly
+                      value={paymentDetails.Remark}
+                      className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                    />
+                  </div>
+                </div>
+              </>
 
-            {/* A/c Holder Name */}
-            <div className='relative w-[90%] m-5 mb-5 mt-10'>
-              <label
-                htmlFor="A/cHoldername"
-                className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-              >
-                A/c Holder Name
-              </label>
-              <input
-                type="text"
-                id="A/cHoldername"
-                readOnly
-                className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-              />
-            </div>
+            )}
 
-            {/* Bank Name - IFSC Code */}
-            <div className='grid grid-cols-1 md:grid-cols-2'>
-              <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                <label
-                  htmlFor="BankName"
-                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-                >
-                  Bank Name
-                </label>
-                <input
-                  type="text"
-                  id="BankName"
-                  readOnly
-                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                />
-              </div>
+            {paymentDetails.paymentMethode === "Bank Transfer" && (
+              <>
+                {/* A/c Holder Name */}
+                <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                  <label
+                    htmlFor="A/cHoldername"
+                    className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                  >
+                    A/c Holder Name
+                  </label>
+                  <input
+                    type="text"
+                    id="A/cHoldername"
+                    value={paymentDetails.acHolderName}
+                    readOnly
+                    className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                  />
+                </div>
 
-              <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                <label
-                  htmlFor="IFSC"
-                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-                >
-                  IFSC Code
-                </label>
-                <input
-                  type="text"
-                  id="IFSC"
-                  readOnly
-                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                />
-              </div>
-            </div>
+                {/* Bank Name - IFSC Code */}
+                <div className='grid grid-cols-1 md:grid-cols-2'>
+                  <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                    <label
+                      htmlFor="BankName"
+                      className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                    >
+                      Bank Name
+                    </label>
+                    <input
+                      type="text"
+                      id="BankName"
+                      value={paymentDetails.bankName}
+                      readOnly
+                      className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                    />
+                  </div>
 
-            {/* Amount - A/c Number */}
-            <div className='grid grid-cols-1 md:grid-cols-2'>
-              <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                <label
-                  htmlFor="Amount"
-                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-                >
-                  Amount
-                </label>
-                <input
-                  type="number"
-                  id="Amount"
-                  readOnly
-                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                />
-              </div>
+                  <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                    <label
+                      htmlFor="IFSC"
+                      className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                    >
+                      IFSC Code
+                    </label>
+                    <input
+                      type="text"
+                      id="IFSC"
+                      value={paymentDetails.IFSC}
+                      readOnly
+                      className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                    />
+                  </div>
+                </div>
 
-              <div className='relative w-[90%] m-5 mb-5 mt-10'>
-                <label
-                  htmlFor="A/c Number"
-                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
-                >
-                  A/c Number
-                </label>
-                <input
-                  type="text"
-                  id="A/c Number"
-                  readOnly
-                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
-                />
-              </div>
-            </div>
+                {/* Amount - A/c Number */}
+                <div className='grid grid-cols-1 md:grid-cols-2'>
+                  <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                    <label
+                      htmlFor="Amount"
+                      className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                    >
+                      Amount
+                    </label>
+                    <input
+                      type="number"
+                      id="Amount"
+                      value={boxDetails.Price}
+                      readOnly
+                      className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                    />
+                  </div>
+
+                  <div className='relative w-[90%] m-5 mb-5 mt-10'>
+                    <label
+                      htmlFor="A/c Number"
+                      className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
+                    >
+                      A/c Number
+                    </label>
+                    <input
+                      type="text"
+                      id="A/c Number"
+                      value={paymentDetails.acNumber}
+                      readOnly
+                      className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
 
             {/* Button Area */}
             <div className="flex justify-between mt-15">
@@ -399,8 +434,8 @@ const StepPreviewDetails = ({onNext, onPrev}) => {
 
           </form>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 }
 
