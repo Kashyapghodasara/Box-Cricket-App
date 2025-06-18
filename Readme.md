@@ -9,6 +9,7 @@
 ### 🔧 Backend
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![REST API](https://img.shields.io/badge/REST%20API-4CAF50?style=for-the-badge&logo=swagger&logoColor=white)
 
 ### 🗃️ Database
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
