@@ -76,3 +76,7 @@
     - Implement logic of Time, Price and Size which is dynamically Change
     - ChatGPT helped me figure out the logic
     - Completed logic for fetching data from the store to the Preview Step form
+
+#### Day 18 -- Wednesday -- 18-06-2025
+    - Improve small logic details when not actively working on main features
+    - Start creating Ticket Generation Step

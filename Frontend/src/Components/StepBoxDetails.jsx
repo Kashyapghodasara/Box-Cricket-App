@@ -91,6 +91,20 @@ const StepBoxDetails = ({ onNext }) => {
 
     }
 
+    const handleDateChange = (e) => {
+        const selectedDate = e.target.value
+        const todayDate = new Date().getDate();
+        const selected = new Date(selectedDate).getDate(); 
+
+        if(selected < todayDate) {
+            alert("Cannot select past date");
+            setDate('');
+            return
+        } else {
+            setDate(selectedDate)
+        }
+    }
+
     useEffect(() => {
         const durationValue = document.getElementById('Duration').value;
 
@@ -190,13 +204,14 @@ const StepBoxDetails = ({ onNext }) => {
                                 ))}
                             </div>
 
+                            {/* Date */}
                             <div className='relative w-[90%] m-5 mb-5 mt-10'>
                                 <input
                                     type="date"
                                     id="Date"
                                     name='date'
                                     value={date}
-                                    onChange={(e) => setDate(e.target.value)}
+                                    onChange={handleDateChange}
                                     className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                                 />
                                 <label
