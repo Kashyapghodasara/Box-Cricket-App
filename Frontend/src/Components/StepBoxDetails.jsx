@@ -92,18 +92,50 @@ const StepBoxDetails = ({ onNext }) => {
     }
 
     const handleDateChange = (e) => {
-        const selectedDate = e.target.value
+        const selectedDate = e.target.value;
         const todayDate = new Date().getDate();
-        const selected = new Date(selectedDate).getDate(); 
+        const today = new Date();
+        const currentMonth = new Date().getMonth();
 
-        if(selected < todayDate) {
+        const selected = new Date(selectedDate).getDate();
+        const selectedMonth = new Date(selectedDate).getMonth();
+
+        const maxDate = new Date(today);
+        maxDate.setDate(today.getDate() + 3);
+
+      // When comparing two Date objects in JavaScript, 
+      // you're not just comparing the date (like 2025-06-19), you're also comparing the
+      //  time (like 14:25:30.123).
+      // When we set time to 0000 then now you will comparing the Date only
+        const selectedFullDate = new Date(selectedDate);
+        selectedFullDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        maxDate.setHours(0, 0, 0, 0);
+
+        // ✅ Add check: If selected date > max allowed (today + 5)
+        if (selectedFullDate > maxDate) {
+            alert("You can only select a date within the next 3 days.");
+            setDate('');
+            return;
+        }
+
+        if ((selected > todayDate || selected === todayDate)) {
+            setDate(selectedDate);
+        }
+        else if (selected < todayDate) {
+            if (currentMonth < selectedMonth) {
+                setDate(selectedDate);
+            } else {
+                alert("Cannot select past date");
+            }
+        }
+        else {
             alert("Cannot select past date");
             setDate('');
-            return
-        } else {
-            setDate(selectedDate)
+            return;
         }
-    }
+    };
+
 
     useEffect(() => {
         const durationValue = document.getElementById('Duration').value;

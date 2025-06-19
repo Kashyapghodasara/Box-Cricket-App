@@ -16,7 +16,7 @@
 
 ### 🎨 UI Features
 ![React Bits](https://img.shields.io/badge/React--Bits-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-![React Icons](https://img.shields.io/badge/React--Icons-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+
 
 ### 💳 Payment Integration
 ![Dummy Manual Integration](https://img.shields.io/badge/Dummy%20Manual%20Integration-orange?style=for-the-badge&logo=mastercard&logoColor=white)
@@ -81,3 +81,7 @@
 #### Day 18 -- Wednesday -- 18-06-2025
     - Improve small logic details when not actively working on main features
     - Start creating Ticket Generation Step
+
+#### Day 19 -- Thursday -- 19-06-2025
+    - Add more Logic in Date Field
+    - Understand the comparing concept in Date Object

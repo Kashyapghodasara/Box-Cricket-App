@@ -71,13 +71,11 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                   name="Fullname"
                   value={Fullname}
                   onChange={(e) => setFullname(e.target.value)}
-                  className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                 className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
                 <label
                   htmlFor="Fullname"
-                  className="absolute left-1 text-gray-500 text-md px-1 transition-all duration-200
-                top-2 peer-focus:top-[-12px] peer-focus:text-sm peer-focus:text-[#0C3B2E]
-                peer-valid:top-[-12px] peer-valid:text-sm peer-valid:text-[#0C3B2E]"
+                  className="absolute left-1 -top-3 text-sm text-[#0C3B2E] px-1 z-10"
                 >
                   Fullname
                 </label>
