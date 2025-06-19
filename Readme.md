@@ -85,3 +85,4 @@
 #### Day 19 -- Thursday -- 19-06-2025
     - Add more Logic in Date Field
     - Understand the comparing concept in Date Object
+    - Use React Hot Toast for error catching

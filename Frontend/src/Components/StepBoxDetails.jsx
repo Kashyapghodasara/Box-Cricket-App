@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import useBoxDetailStore from '../Store/useBoxDetailStore.jsx';
+import toast from 'react-hot-toast';
 
 const StepBoxDetails = ({ onNext }) => {
 
@@ -103,10 +104,10 @@ const StepBoxDetails = ({ onNext }) => {
         const maxDate = new Date(today);
         maxDate.setDate(today.getDate() + 3);
 
-      // When comparing two Date objects in JavaScript, 
-      // you're not just comparing the date (like 2025-06-19), you're also comparing the
-      //  time (like 14:25:30.123).
-      // When we set time to 0000 then now you will comparing the Date only
+        // When comparing two Date objects in JavaScript, 
+        // you're not just comparing the date (like 2025-06-19), you're also comparing the
+        //  time (like 14:25:30.123).
+        // When we set time to 0000 then now you will comparing the Date only
         const selectedFullDate = new Date(selectedDate);
         selectedFullDate.setHours(0, 0, 0, 0);
         today.setHours(0, 0, 0, 0);
@@ -114,7 +115,23 @@ const StepBoxDetails = ({ onNext }) => {
 
         // ✅ Add check: If selected date > max allowed (today + 5)
         if (selectedFullDate > maxDate) {
-            alert("You can only select a date within the next 3 days.");
+            toast.error("You can only select a date within the next 3 days", {
+                style: {
+                    background: "#212121", // dark mode black background
+                    color: "#fff",
+                    fontSize: "17px",     // white text
+                    padding: "12px 20px",
+                    borderRadius: "10px",
+                    width: "100%",
+                    fontWeight: "300",
+                    textAlign: "center",
+                },
+                iconTheme: {
+                    primary: "#f87171", // red-400 (error icon color)
+                    secondary: "#1f2937", // gray-800
+                },
+                duration: 4000, // Optional: auto-close duration
+            });
             setDate('');
             return;
         }
@@ -126,7 +143,23 @@ const StepBoxDetails = ({ onNext }) => {
             if (currentMonth < selectedMonth) {
                 setDate(selectedDate);
             } else {
-                alert("Cannot select past date");
+                toast.error("Can't Select Past Date..!", {
+                    style: {
+                        background: "#212121", // dark mode black background
+                        color: "#fff",
+                        fontSize: "17px",     // white text
+                        padding: "12px 20px",
+                        borderRadius: "10px",
+                        width: "100%",
+                        fontWeight: "300",
+                        textAlign: "center",
+                    },
+                    iconTheme: {
+                        primary: "#f87171", // red-400 (error icon color)
+                        secondary: "#1f2937", // gray-800
+                    },
+                    duration: 4000, // Optional: auto-close duration
+                });
             }
         }
         else {

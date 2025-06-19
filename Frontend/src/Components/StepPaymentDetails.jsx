@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { FaArrowLeft } from "react-icons/fa6";
 import usePaymentDetailStore from '../Store/usePaymentDetailStore';
 import useBoxDetailStore from '../Store/useBoxDetailStore';
+import toast from 'react-hot-toast';
 
 const StepPaymentDetails = ({ onNext, onPrev }) => {
 
@@ -22,35 +23,88 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
   const [Bankname, setBankname] = useState('');
   const [IFSC, setIFSC] = useState('');
 
-
   const [selectedPaymentMethode, setSelectedPaymentMethode] = useState(null)
   const [payment, setPayment] = useState('');
 
   const { setPaymentDetails, paymentDetails } = usePaymentDetailStore();
   const { boxDetails } = useBoxDetailStore();
 
+  const toastStyle = {
+    background: "#212121",
+    color: "#fff",
+    fontSize: "17px",
+    padding: "12px 20px",
+    borderRadius: "10px",
+    width: "100%",
+    fontWeight: "300",
+    textAlign: "center",
+  };
+  const toastIconTheme = {
+    primary: "#f87171",
+    secondary: "#1f2937",
+  };
+
   const setValuePaymentDetails = (e) => {
     e.preventDefault();
+
+    if (IFSC.length !== 11) {
+      toast.error("IFSC must be 11 characters", {
+        style: toastStyle,
+        iconTheme: toastIconTheme,
+        duration: 4000,
+      });
+      return;
+    }
+
+    if (!selectedPaymentMethode) {
+      toast.error("Please select a payment method", {
+        style: toastStyle,
+        iconTheme: toastIconTheme,
+        duration: 4000,
+      });
+      return;
+    }
+
+    if (
+      Fullname === "" ||
+      Email === "" ||
+      City === "" ||
+      State === "" ||
+      Zipcode === ""
+    ) {
+      toast.error("All fields are required", {
+        style: toastStyle,
+        iconTheme: toastIconTheme,
+        duration: 4000,
+      });
+      return;
+    }
+
+    // ✅ All validations passed
+    handlePaymentDetails();
+  };
+
+  const handlePaymentDetails = () => {
     setPaymentDetails({
-      Fullname: Fullname,
-      Email: Email,
-      City: City,
-      State: State,
-      Zipcode: Zipcode,
+      Fullname,
+      Email,
+      City,
+      State,
+      Zipcode,
       paymentMethode: selectedPaymentMethode,
       UPIid: UPI_id,
       Transactionid: TransactionId,
-      Amount: Amount,
-      Remark: Remark,
+      Amount,
+      Remark,
       acHolderName: Ac_name,
       bankName: Bankname,
-      IFSC: IFSC,
+      IFSC,
       acNumber: Ac_no,
       User: [],
-    })
-    console.log("Form submitted")
-    onNext();
-  }
+    });
+
+    onNext(); // continue to next step
+  };
 
   return (
     <>
@@ -71,7 +125,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                   name="Fullname"
                   value={Fullname}
                   onChange={(e) => setFullname(e.target.value)}
-                 className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
+                  className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                 />
                 <label
                   htmlFor="Fullname"
@@ -210,7 +264,8 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                     id="Zipcode"
                     value={Zipcode}
                     name='zipcode'
-                    min={4}
+                    min={6}
+                    max={6}
                     onChange={(e) => setZipcode(e.target.value)}
                     className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                   />
@@ -469,9 +524,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                         id="IFSC"
                         value={IFSC}
                         name='ifsc'
-                        onChange={(e) => setIFSC(e.target.value)}
-                        max={11}
-                        min={11}
+                        onChange={(e) => { setIFSC(e.target.value) }}
                         className="peer w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                       />
                       <label

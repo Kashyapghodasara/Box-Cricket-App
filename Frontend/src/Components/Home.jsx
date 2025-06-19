@@ -6,15 +6,16 @@ import CountValues from './CountValues'
 import Ticket from './Ticket'
 import Footer from './Footer'
 
+
 const Home = () => {
   return (
     <>
-        <Hero />
-        <Outlet />
-        <InfoCards />
-        <CountValues />
-        <Ticket />
-        <Footer />
+      <Hero />
+      <Outlet />
+      <InfoCards />
+      <CountValues />
+      <Ticket />
+      <Footer />
     </>
   )
 }
