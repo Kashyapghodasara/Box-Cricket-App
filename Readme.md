@@ -91,3 +91,5 @@
     - Setup and note some point for future logic
     - Completed Payment Successfull Page
     - Start working on display booked slote Details
+    - Display Booked Slote Details page completed
+    - Add dynamic showing feature in CTA buttons

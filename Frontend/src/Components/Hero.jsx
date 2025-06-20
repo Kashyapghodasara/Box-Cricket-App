@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import RotatingText from './Animation/RotatingText'
 
 const Hero = () => {
+
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
     const scrollToSection = (id) => {
         const section = document.getElementById(id);
         if (section) {
@@ -46,10 +49,30 @@ const Hero = () => {
                                 </button>
                             </div>
 
-                            {/* Login Button Positioned Right */}
-                            <div className='absolute right-2'>
-                                <button className='bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer'>Login</button>
-                            </div>
+                            {isLoggedIn ? (
+                                <>
+                                    <div className='absolute right-2'>
+                                        <button
+                                            className='bg-[#ce290c] hover:bg-[#f88585] px-5 py-2 rounded-full cursor-pointer'
+                                        >Logout
+                                        </button>
+                                    </div>
+                                </>)
+                                : (
+                                    <>
+                                        <div className="absolute right-2 flex items-center gap-4">
+                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                                Signup
+                                            </button>
+                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                                Login
+                                            </button>
+                                        </div>
+
+
+                                    </>
+                                )}
+
                         </nav>
                     </div>
                 </div>
