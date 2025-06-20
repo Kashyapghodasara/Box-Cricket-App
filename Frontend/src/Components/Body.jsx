@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './Home'
 import Availability from './Availability.jsx'
 import BoxBooking from './BoxBooking.jsx'
+import ShowBookings from './ShowBookings.jsx'
 
 const Body = () => {
 
@@ -19,6 +20,10 @@ const Body = () => {
         {
             path: "booking",
             element: <BoxBooking />
+        }, 
+        {
+            path: "showBookings",
+            element: <ShowBookings />
         }
 
     ])

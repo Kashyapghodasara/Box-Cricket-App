@@ -47,7 +47,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
   const setValuePaymentDetails = (e) => {
     e.preventDefault();
 
-    if (IFSC.length !== 11) {
+    /* if (IFSC.length !== 11) {
       toast.error("IFSC must be 11 characters", {
         style: toastStyle,
         iconTheme: toastIconTheme,
@@ -70,7 +70,14 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
       Email === "" ||
       City === "" ||
       State === "" ||
-      Zipcode === ""
+      Zipcode === "" ||
+      UPI_id === "" ||
+      TransactionId === "" ||
+      Amount === "" ||
+      Remark === "" ||
+      Ac_name === "" || 
+      Ac_no === "" ||
+      Bankname === ""
     ) {
       toast.error("All fields are required", {
         style: toastStyle,
@@ -78,7 +85,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
         duration: 4000,
       });
       return;
-    }
+    } */
 
     // ✅ All validations passed
     handlePaymentDetails();

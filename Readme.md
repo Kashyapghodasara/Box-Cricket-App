@@ -86,3 +86,8 @@
     - Add more Logic in Date Field
     - Understand the comparing concept in Date Object
     - Use React Hot Toast for error catching
+
+#### Day 20 -- Friday -- 20-06-2025
+    - Setup and note some point for future logic
+    - Completed Payment Successfull Page
+    - Start working on display booked slote Details

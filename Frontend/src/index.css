@@ -62,7 +62,7 @@
 .line::before {
   left: -80px;
   top: -30px;
-  
+  border-width: 0;
 }
 
 /* Position right circle */

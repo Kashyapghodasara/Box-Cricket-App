@@ -28,13 +28,17 @@ const Hero = () => {
 
                             {/* Nav Links Centered */}
                             <div className='flex flex-row gap-[80px] text-[#0C3B2E] text-lg'>
-                                <Link to="/"> <button className="pointer">Home</button></Link>
+                                <Link to="/">
+                                    <button className="pointer">Home</button>
+                                </Link>
                                 <button
                                     onClick={() => scrollToSection('Slote')}
                                     className="pointer">
                                     Slote
                                 </button>
-                                <button className="pointer">Bookings</button>
+                                <Link to="/showBookings">
+                                    <button className="pointer">Bookings</button>
+                                </Link>
                                 <button
                                     onClick={() => scrollToSection('Contact')}
                                     className="pointer">

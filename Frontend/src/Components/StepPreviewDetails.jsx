@@ -3,10 +3,27 @@ import { FaArrowLeft } from "react-icons/fa6";
 import useBoxDetailStore from '../Store/useBoxDetailStore'
 import usePaymentDetailStore from '../Store/usePaymentDetailStore'
 
+// TODO
+// -> Dynamic Change BG according to size of the box
+// -> Dynamic Change Data
+// -> Random Generated Ticket NO
+// -> Send Ticket info to Mail
+
 const StepPreviewDetails = ({ onNext, onPrev }) => {
 
   const { boxDetails } = useBoxDetailStore();
   const { paymentDetails } = usePaymentDetailStore();
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const handlePaymentGatway = () => {
+     /*  if(isLoading) return
+      setIsLoading(true) */
+
+      //Try-Catch to send the data to backend
+      // And call onNext
+
+      onNext();
+  }
 
   return (
     <div className='w-[100%]' style={{ overflow: 'hidden' }} >
@@ -426,7 +443,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
                 </button>
               </div>
               <button
-                onClick={onNext}
+                onClick={handlePaymentGatway}
                 className='bg-[#eba604] cursor-pointer text-white py-2 px-12 rounded-md hover:bg-[#ffb300]'>
                 Proceed to Pay
               </button>
