@@ -16,7 +16,7 @@
 
 ### 🎨 UI Features
 ![React Bits](https://img.shields.io/badge/React--Bits-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-
+![React Hot Toast](https://img.shields.io/badge/React%20Hot%20Toast-%23FF6B00?style=for-the-badge&logo=react&logoColor=white)
 
 ### 💳 Payment Integration
 ![Dummy Manual Integration](https://img.shields.io/badge/Dummy%20Manual%20Integration-orange?style=for-the-badge&logo=mastercard&logoColor=white)
