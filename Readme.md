@@ -88,7 +88,7 @@
     - Use React Hot Toast for error catching
 
 #### Day 20 -- Friday -- 20-06-2025
-    - Setup and note some point for future logic
+    - Set up and document key points for future logic implementation
     - Completed Payment Successfull Page
     - Start working on display booked slote Details
     - Display Booked Slote Details page completed
