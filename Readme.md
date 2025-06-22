@@ -16,7 +16,7 @@
 
 ### 🎨 UI Features
 ![React Bits](https://img.shields.io/badge/React--Bits-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-
+![React Hot Toast](https://img.shields.io/badge/React%20Hot%20Toast-%23FF6B00?style=for-the-badge&logo=react&logoColor=white)
 
 ### 💳 Payment Integration
 ![Dummy Manual Integration](https://img.shields.io/badge/Dummy%20Manual%20Integration-orange?style=for-the-badge&logo=mastercard&logoColor=white)
@@ -88,12 +88,15 @@
     - Use React Hot Toast for error catching
 
 #### Day 20 -- Friday -- 20-06-2025
-    - Setup and note some point for future logic
+    - Set up and document key points for future logic implementation
     - Completed Payment Successfull Page
     - Start working on display booked slote Details
     - Display Booked Slote Details page completed
     - Add dynamic showing feature in CTA buttons
+<<<<<<< HEAD
 
 #### Day 21 -- Sunday -- 22-06-2025
     - Started Registration Form
     - Basic change in Navbar
+=======
+>>>>>>> b73543c1cff0402877eb89992b9d3fe207aa0076
