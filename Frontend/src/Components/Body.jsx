@@ -4,6 +4,7 @@ import Home from './Home'
 import Availability from './Availability.jsx'
 import BoxBooking from './BoxBooking.jsx'
 import ShowBookings from './ShowBookings.jsx'
+import Registration from './Registration.jsx'
 
 const Body = () => {
 
@@ -24,6 +25,10 @@ const Body = () => {
         {
             path: "showBookings",
             element: <ShowBookings />
+        }, 
+        {
+            path: "registration",
+            element: <Registration />
         }
 
     ])

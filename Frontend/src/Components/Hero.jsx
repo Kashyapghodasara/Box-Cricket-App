@@ -61,12 +61,14 @@ const Hero = () => {
                                 : (
                                     <>
                                         <div className="absolute right-2 flex items-center gap-4">
-                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
-                                                Signup
-                                            </button>
-                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
-                                                Login
-                                            </button>
+                                            <Link to="/registration">
+                                                <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                                    Signup
+                                                </button>
+                                                <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                                    Login
+                                                </button>
+                                            </Link>
                                         </div>
 
 
