@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { FaRegUser } from "react-icons/fa";
 import { LuUserCheck } from "react-icons/lu";
@@ -9,10 +9,27 @@ import { MdOutlinePassword } from "react-icons/md";
 
 const Registration = () => {
 
+    // Set Field Security when Each Option Function Called
+    // Like Min-Max PW is neccessary if don't then show Error toast
+
     const [selectedBox, setSelectedBox] = React.useState(null);
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
     const User = ["Signup", "Login", "Admin"]
+
+    const [formData, setFormData] = useState({
+        name: "",
+        username: "",
+        email: "",
+        password: ""
+    })
+
+    const [adminData, setAdminData] = useState({
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+        secret_string: ""
+    })
 
     return (
         <>
@@ -105,11 +122,11 @@ const Registration = () => {
                                     {/* Box Design */}
                                     <span
                                         className="flex flex-col items-center justify-center w-48 min-h-22 rounded-2xl border-2 border-gray-300 
-      bg-gradient-to-br from-white via-white to-gray-50 text-gray-800 font-semibold shadow-lg 
-      transition-all duration-300 ease-in-out text-2xl 
-      peer-checked:border-[#0C3B2E] peer-checked:text-[#0C3B2E]
-      peer-checked:shadow-[0_0_15px_4px_rgba(12,59,46,0.4)] 
-      hover:border-[#0C3B2E] hover:shadow-[0_0_12px_3px_rgba(12,59,46,0.3)]"
+                                         bg-gradient-to-br from-white via-white to-gray-50 text-gray-800 font-semibold shadow-lg 
+                                         transition-all duration-300 ease-in-out text-2xl 
+                                        peer-checked:border-[#0C3B2E] peer-checked:text-[#0C3B2E]
+                                         peer-checked:shadow-[0_0_15px_4px_rgba(12,59,46,0.4)] 
+                                       hover:border-[#0C3B2E] hover:shadow-[0_0_12px_3px_rgba(12,59,46,0.3)]"
                                     >
                                         {Login}
                                     </span>
@@ -135,6 +152,10 @@ const Registration = () => {
                                     <input
                                         type="text"
                                         placeholder="Enter your Name"
+                                        name='name'
+                                        id='name'
+                                        value={formData.name}
+                                        onChange={(e) => { setFormData(e.target.value) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -147,7 +168,11 @@ const Registration = () => {
                                     <input
                                         type="text"
                                         placeholder="Enter your Username"
-                                     className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
+                                        name='username'
+                                        id='username'
+                                        value={formData.username}
+                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
                                     <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#000000] peer-focus:text-[#0C3B2E] transition-all duration-300">
@@ -158,8 +183,12 @@ const Registration = () => {
                                 <div className="relative w-full max-w-md m-2">
                                     <input
                                         type="email"
-                                        placeholder="Enter your @Email"
-                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
+                                        placeholder="Enter your Email"
+                                        name='email'
+                                        id='email'
+                                        value={formData.email}
+                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
                                     <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#000000] peer-focus:text-[#0C3B2E] transition-all duration-300">
@@ -171,6 +200,12 @@ const Registration = () => {
                                     <input
                                         type="password"
                                         placeholder="Enter your Password"
+                                        name='password'
+                                        id='password'
+                                        value={formData.password}
+                                        min={4}
+                                        max={12}
+                                        onChange={(e) => { setFormData(e.target.value) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -200,6 +235,10 @@ const Registration = () => {
                                     <input
                                         type="text"
                                         placeholder="Enter your Username"
+                                        name='username'
+                                        id='username'
+                                        value={formData.username}
+                                        onChange={(e) => { setFormData(e.target.value) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -212,6 +251,10 @@ const Registration = () => {
                                     <input
                                         type="email"
                                         placeholder="Enter your Email"
+                                        name='email'
+                                        id='email'
+                                        value={formData.email}
+                                        onChange={(e) => { setFormData(e.target.value) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -224,6 +267,12 @@ const Registration = () => {
                                     <input
                                         type="password"
                                         placeholder="Enter your Password"
+                                        name='password'
+                                        id='password'
+                                        value={formData.password}
+                                        min={4}
+                                        max={12}
+                                        onChange={(e) => { setFormData(e.target.value) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -253,6 +302,10 @@ const Registration = () => {
                                     <input
                                         type="text"
                                         placeholder="Enter your Name"
+                                        name='name'
+                                        id='name'
+                                        value={adminData.name}
+                                        onChange={(e) => { setAdminData(e.target.value) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -265,6 +318,10 @@ const Registration = () => {
                                     <input
                                         type="text"
                                         placeholder="Enter your Username"
+                                        name='username'
+                                        id='username'
+                                        value={adminData.username}
+                                        onChange={(e) => { setAdminData(e.target.value) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -277,7 +334,11 @@ const Registration = () => {
                                     <input
                                         type="email"
                                         placeholder="Enter your Email"
-                                       className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
+                                        name='email'
+                                        id='email'
+                                        value={adminData.email}
+                                        onChange={(e) => { setAdminData(e.target.value) }}
+                                        className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
                                     <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#000000] peer-focus:text-[#0C3B2E] transition-all duration-300">
@@ -289,7 +350,13 @@ const Registration = () => {
                                     <input
                                         type="password"
                                         placeholder="Enter your Password"
-                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
+                                        name='password'
+                                        id='password'
+                                        value={adminData.password}
+                                        min={5}
+                                        max={12}
+                                        onChange={(e) => { setAdminData(e.target.value) }}
+                                        className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
                                     <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#000000] peer-focus:text-[#0C3B2E] transition-all duration-300">
@@ -297,11 +364,15 @@ const Registration = () => {
                                     </span>
                                 </div>
 
-                                 <div className="relative w-full max-w-md m-2">
+                                <div className="relative w-full max-w-md m-2">
                                     <input
                                         type="text"
                                         placeholder="Enter Secret String"
-                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
+                                        name='secret_string'
+                                        id='secret_string'
+                                        value={adminData.secret_string}
+                                        onChange={(e) => { setAdminData(e.target.value) }}
+                                        className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
                                     <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#000000] peer-focus:text-[#0C3B2E] transition-all duration-300">
@@ -322,6 +393,7 @@ const Registration = () => {
                             </form>
                         </>
                     )}
+
                 </div>
             </div>
         </>

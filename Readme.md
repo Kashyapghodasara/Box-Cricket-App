@@ -100,5 +100,6 @@
 
 #### Day 22 -- Monday -- 23-06-2025
     - Registration Form Completed
+    - Add few logic in Registration form
 
 
