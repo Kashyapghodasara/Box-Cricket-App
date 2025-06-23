@@ -93,10 +93,12 @@
     - Start working on display booked slote Details
     - Display Booked Slote Details page completed
     - Add dynamic showing feature in CTA buttons
-<<<<<<< HEAD
 
 #### Day 21 -- Sunday -- 22-06-2025
     - Started Registration Form
     - Basic change in Navbar
-=======
->>>>>>> b73543c1cff0402877eb89992b9d3fe207aa0076
+
+#### Day 22 -- Monday -- 23-06-2025
+    - Registration Form Completed
+
+
