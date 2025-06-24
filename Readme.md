@@ -102,4 +102,8 @@
     - Registration Form Completed
     - Add few logic in Registration form
 
+#### Day 23 -- Tuesday -- 24-06-2025
+    - Availability Slot page started
+    - Date implementation logic is completed
+
 
