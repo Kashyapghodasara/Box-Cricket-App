@@ -1,6 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
+// Now Slote display design is ready - 25-6-25
+// When use clicks on the date button then this button send the date to backend through API
+// And get the data from backend
+// When time comes to complete backend then we have to fethced data when page loads
+// So we can use customHooks + useEffect
+// And Dynamic logic to display each data to particular slote
+// like map + filter to itrate each data and filter particular slote data
+
+//OR 
+
+// We might fethced data from the start when page load 
+// Like we already fetched data of today, tomorrow and overmoro date
+// when use clicks on the date button then specific customHooks feature call and we get data
+// And then we can use map + filter to display each data to particular slote
+// I think this could be the task
+
 
 const Availability = () => {
 
@@ -106,33 +122,113 @@ const Availability = () => {
         </div>
       </section>
 
-     <div className='grid grid-rows-3 items-baseline justify-items-start h-screen mt-12 ml-10'>
 
-        <button className='border-2 border-[#1e1f1f] cursor-pointer hover:bg-[#eaeaea] rounded-md flex flex-col items-center justify-center'>
-          <h2 className='text-sm font-semibold text-[#173b1c] mx-5 mt-1 rounded-md'>{todayDay}</h2>
-          <h1 className='text-4xl font-semibold text-[#0d2a11] mx-5 rounded-md drop-shadow-[0_0_1.5px_#0d2a11]'>
-            {todayDate}
-          </h1>
-          <h2 className='text-md font-semibold text-[#173b1c] mx-5 mb-1 rounded-md'>{todayMonth}</h2>
-        </button>
+      <div className='flex justify-center mt-8 mb-0'>
+        <h1 className='text-4xl font-bold text-[#0C3B2E]'>Available Slots</h1>
+      </div>
 
-        <button className='border-2 border-[#1e1f1f] hover:bg-[#eaeaea] cursor-pointer rounded-md flex flex-col items-center justify-center'>
-          <h2 className='text-sm font-semibold text-[#173b1c] mx-5 mt-1 rounded-md'>{tomorrowDay}</h2>
-          <h1 className='text-4xl font-semibold text-[#0d2a11] mx-5 rounded-md drop-shadow-[0_0_1.5px_#0d2a11]'>
-            {tomorrowDate}
-          </h1>
-          <h2 className='text-md font-semibold text-[#173b1c] mx-5 mb-1 rounded-md'>{todayMonth}</h2>
-        </button>
+      <div className="flex flex-row items-start justify-start gap-10 p-8 w-full h-screen">
 
-        <button className='border-2 border-[#1e1f1f] hover:bg-[#eaeaea] cursor-pointer rounded-md flex flex-col items-center justify-center'>
-          <h2 className='text-sm font-semibold text-[#173b1c] mx-5 mt-1 rounded-md'>{overmoroDay}</h2>
-          <h1 className='text-4xl font-semibold text-[#0d2a11] mx-5 rounded-md drop-shadow-[0_0_1.5px_#0d2a11]'>
-            {overmoroDate}
-          </h1>
-          <h2 className='text-md font-semibold text-[#173b1c] mx-5 mb-1 rounded-md'>{todayMonth}</h2>
-        </button>
+        {/* Left Side - Date Buttons */}
+        <div className="flex flex-col gap-6 mt-6 ml-4">
+          {/* Today */}
+          <button className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
+            <h2 className="text-sm font-semibold text-[#173b1c] text-center">{todayDay}</h2>
+            <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{todayDate}</h1>
+            <h2 className="text-md font-semibold text-[#173b1c] text-center">{todayMonth}</h2>
+          </button>
+
+          {/* Tomorrow */}
+          <button className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
+            <h2 className="text-sm font-semibold text-[#173b1c] text-center">{tomorrowDay}</h2>
+            <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{tomorrowDate}</h1>
+            <h2 className="text-md font-semibold text-[#173b1c] text-center">{todayMonth}</h2>
+          </button>
+
+          {/* Overmorrow */}
+          <button className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
+            <h2 className="text-sm font-semibold text-[#173b1c] text-center">{overmoroDay}</h2>
+            <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{overmoroDate}</h1>
+            <h2 className="text-md font-semibold text-[#173b1c] text-center">{todayMonth}</h2>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-3 gap-6 mt-6 w-full">
+
+          {/* Small Box */}
+          <div className="border-2 border-[#1e1f1f] hover:bg-[#f1f1f1] cursor-pointer rounded-xl shadow-md transition-all duration-300 hover:shadow-lg p-4">
+            <h1 className="text-[#0C3B2E] font-bold text-2xl mb-3">Small Box</h1>
+
+            {/* Booked Slots for Small */}
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-row items-center justify-between bg-[#f0fdf4] px-4 py-2 rounded-lg shadow-sm hover:bg-[#dcfce7] transition">
+                <span className="text-[#14532d] font-medium">9:00 AM - 11:00 AM</span>
+                <span className="text-gray-500 text-sm">#BX001</span>
+              </div>
+
+              <div className="flex flex-row items-center justify-between bg-[#f0fdf4] px-4 py-2 rounded-lg shadow-sm hover:bg-[#dcfce7] transition">
+                <span className="text-[#14532d] font-medium">1:00 PM - 3:00 PM</span>
+                <span className="text-gray-500 text-sm">#BX002</span>
+              </div>
+
+
+              <div className="flex flex-row items-center justify-between bg-[#f0fdf4] px-4 py-2 rounded-lg shadow-sm hover:bg-[#dcfce7] transition">
+                <span className="text-[#14532d] font-medium">1:00 PM - 3:00 PM</span>
+                <span className="text-gray-500 text-sm">#BX002</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Medium Box */}
+          <div className="border-2 border-[#1e1f1f] hover:bg-[#f1f1f1] cursor-pointer rounded-xl shadow-md transition-all duration-300 hover:shadow-lg p-4">
+            <h1 className="text-[#0C3B2E] font-bold text-2xl mb-3">Medium Box</h1>
+
+            {/* Booked Slots for Medium */}
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-row items-center justify-between bg-[#fefce8] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fef9c3] transition">
+                <span className="text-[#713f12] font-medium">11:00 AM - 1:00 PM</span>
+                <span className="text-gray-500 text-sm">#BX003</span>
+              </div>
+
+              <div className="flex flex-row items-center justify-between bg-[#fefce8] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fef9c3] transition">
+                <span className="text-[#713f12] font-medium">3:00 PM - 5:00 PM</span>
+                <span className="text-gray-500 text-sm">#BX004</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Large Box */}
+          <div className="border-2 border-[#1e1f1f] hover:bg-[#f1f1f1] cursor-pointer rounded-xl shadow-md transition-all duration-300 hover:shadow-lg p-4">
+            <h1 className="text-[#0C3B2E] font-bold text-2xl mb-3">Large Box</h1>
+
+            {/* Booked Slots for Large */}
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
+                <span className="text-[#991b1b] font-medium">5:00 PM - 7:00 PM</span>
+                <span className="text-gray-500 text-sm">#BX005</span>
+              </div>
+              <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
+                <span className="text-[#991b1b] font-medium">7:00 PM - 9:00 PM</span>
+                <span className="text-gray-500 text-sm">#BX006</span>
+              </div>
+              <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
+                <span className="text-[#991b1b] font-medium">7:00 PM - 9:00 PM</span>
+                <span className="text-gray-500 text-sm">#BX006</span>
+              </div>
+              <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
+                <span className="text-[#991b1b] font-medium">7:00 PM - 9:00 PM</span>
+                <span className="text-gray-500 text-sm">#BX006</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
 
       </div>
+
+
+
     </>
   )
 }

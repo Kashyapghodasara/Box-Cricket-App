@@ -106,4 +106,10 @@
     - Availability Slot page started
     - Date implementation logic is completed
 
+#### Day 24 -- Wednesday -- 25-06-2025
+    - Availability Slot page Completed
+    - Basic Change in UI
+    - Set up and document key points for future logic implementation
+    - And now I understand how complicated the backend will be
+
 
