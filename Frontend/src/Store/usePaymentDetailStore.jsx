@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 const usePaymentDetailStore = create(
-    persist(
+    /* persist( */
         (set) => ({
             paymentDetails: {
                 Fullname: '',
@@ -50,6 +50,6 @@ const usePaymentDetailStore = create(
             getStorage: () => localStorage,  // Optional (defaults to localStorage)
         }
     )
-);
+/* ); */
 
 export default usePaymentDetailStore;

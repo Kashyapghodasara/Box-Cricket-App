@@ -112,4 +112,9 @@
     - Set up and document key points for future logic implementation
     - And now I understand how complicated the backend will be
 
+#### Day 25 -- Thursday -- 26-06-2025
+    - Frontend is Done 
+    - Setup backend folders
+
+
 

@@ -2,7 +2,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 const useBoxDetailStore = create(
-    persist(
+    /* persist( */
         (set) => ({
             boxDetails: {
                 Boxid: "",
@@ -36,6 +36,7 @@ const useBoxDetailStore = create(
             name: 'box-details-storage', // 🧠 Key used in localStorage
             getStorage: () => localStorage,  // Optional (defaults to localStorage)
         }
-    ));
+    )
+    /* )); */
 
 export default useBoxDetailStore
