@@ -116,5 +116,10 @@
     - Frontend is Done 
     - Setup backend folders
 
+#### Day 26 -- Friday -- 27-06-2025
+    - Backend Work Started
+    - Create Different DB Models
+    - Setup Server.js File
+
 
 
