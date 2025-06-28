@@ -122,7 +122,8 @@
     - Setup Server.js File
 
 #### Day 27 -- Saturday -- 28-06-2025
-    - Fixing Loop Hole
+    - Fixing Big Loop Hole
+    - Signup, Login and Logout Logic Integrated 
     
 
 
