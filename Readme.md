@@ -120,7 +120,10 @@
     - Backend Work Started
     - Create Different DB Models
     - Setup Server.js File
-    - Fix Bigloop Hole
+
+#### Day 27 -- Saturday -- 28-06-2025
+    - Fixing Loop Hole
+    
 
 
 
