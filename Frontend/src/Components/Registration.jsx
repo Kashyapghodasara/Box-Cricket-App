@@ -5,6 +5,10 @@ import { LuUserCheck } from "react-icons/lu";
 import { MdAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { MdOutlinePassword } from "react-icons/md";
+import axios from "axios"
+import toast from 'react-hot-toast';
+import { USER_BACKEND_URL } from '../Constant';
+import useRegisration from '../Store/useRegistration';
 
 
 const Registration = () => {
@@ -13,8 +17,26 @@ const Registration = () => {
     // Like Min-Max PW is neccessary if don't then show Error toast
 
     const [selectedBox, setSelectedBox] = React.useState(null);
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const { isLoggedIn, login, logout } = useRegisration();
     const User = ["Signup", "Login", "Admin"]
+
+    const toastStyle = {
+        style: {
+            background: "#212121", // dark mode black background
+            color: "#fff",
+            fontSize: "17px",     // white text
+            padding: "12px 20px",
+            borderRadius: "10px",
+            width: "100%",
+            fontWeight: "300",
+            textAlign: "center",
+        },
+        iconTheme: {
+            primary: "#f87171", // red-400 (error icon color)
+            secondary: "#1f2937", // gray-800
+        },
+        duration: 4000, // Optional: auto-close duration
+    }
 
     const [formData, setFormData] = useState({
         name: "",
@@ -31,6 +53,54 @@ const Registration = () => {
         secret_string: ""
     })
 
+    const signupHandler = async (e) => {
+        e.preventDefault();
+        try {
+            if (formData.name === "" || formData.username === "" || formData.email === "" || formData.password === "") {
+                return toast.error("Please fill all the fields", toastStyle);
+            }
+            if (formData.password.length < 4 || formData.password.length > 10) {
+                return toast.error("Password must be between 4 to 10 characters", toastStyle);
+            }
+            const data = {
+                name: formData.name,
+                username: formData.username,
+                email: formData.email,
+                password: formData.password
+            }
+
+            const config = { headers: { "Content-Type": "application/json" } }
+
+            const response = await axios.post(`${USER_BACKEND_URL}/signup`, data, config);
+            console.log("Form going to submit");
+            if (response.data.success) {
+                login()
+                toast.success(response.data.message, toastStyle);
+                setFormData({ name: "", username: "", email: "", password: "" });
+            }
+        } catch (error) {
+            if (error.response.data.message === "User already exists") {
+                toast.error(error.response.data.message, toastStyle);
+            } else {
+                toast.error(error.response.data.message, toastStyle);
+            }
+        }
+
+    }
+
+    const logoutHandler = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(`${USER_BACKEND_URL}/logout`);
+            if (response.data.success) {
+                logout()
+                toast.success(response.data.message, toastStyle);
+            }
+        } catch (error) {
+            toast.error(error.response.data.message, toastStyle);
+        }
+
+    }
     return (
         <>
             <section id='Home'>
@@ -70,6 +140,7 @@ const Registration = () => {
                                 <>
                                     <div className='absolute right-2'>
                                         <button
+                                            onClick={logoutHandler}
                                             className='bg-[#ce290c] hover:bg-[#f88585] px-5 py-2 rounded-full cursor-pointer'
                                         >Logout
                                         </button>
@@ -147,7 +218,9 @@ const Registration = () => {
 
                     {selectedBox === "Signup" && (
                         <>
-                            <form className='relative w-full flex flex-col items-center'>
+                            <form
+                                methode="POST"
+                                className='relative w-full flex flex-col items-center'>
                                 <div className="relative w-full max-w-md m-2 mt-10">
                                     <input
                                         type="text"
@@ -155,7 +228,7 @@ const Registration = () => {
                                         name='name'
                                         id='name'
                                         value={formData.name}
-                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -171,7 +244,7 @@ const Registration = () => {
                                         name='username'
                                         id='username'
                                         value={formData.username}
-                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        onChange={(e) => { setFormData({ ...formData, username: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -187,7 +260,7 @@ const Registration = () => {
                                         name='email'
                                         id='email'
                                         value={formData.email}
-                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        onChange={(e) => { setFormData({ ...formData, email: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -204,8 +277,8 @@ const Registration = () => {
                                         id='password'
                                         value={formData.password}
                                         min={4}
-                                        max={12}
-                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        max={10}
+                                        onChange={(e) => { setFormData({ ...formData, password: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -217,9 +290,10 @@ const Registration = () => {
                                 <div>
                                     <button
                                         type="submit"
+                                        onClick={signupHandler}
                                         className="w-full px-10 mt-8 py-3 bg-[#0C3B2E] text-white font-semibold text-lg rounded-xl 
-               hover:bg-[#0f4c3a] transition-all duration-300 shadow-md cursor-pointer
-               hover:shadow-[0_0_12px_2px_rgba(12,59,46,0.5)] focus:outline-none focus:ring-2 focus:ring-[#0C3B2E]"
+                                        hover:bg-[#0f4c3a] transition-all duration-300 shadow-md cursor-pointer
+                                        hover:shadow-[0_0_12px_2px_rgba(12,59,46,0.5)] focus:outline-none focus:ring-2 focus:ring-[#0C3B2E]"
                                     >
                                         Signup
                                     </button>
@@ -238,7 +312,7 @@ const Registration = () => {
                                         name='username'
                                         id='username'
                                         value={formData.username}
-                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        onChange={(e) => { setFormData({ ...formData, username: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -254,7 +328,7 @@ const Registration = () => {
                                         name='email'
                                         id='email'
                                         value={formData.email}
-                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        onChange={(e) => { setFormData({ ...formData, email: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -272,7 +346,7 @@ const Registration = () => {
                                         value={formData.password}
                                         min={4}
                                         max={12}
-                                        onChange={(e) => { setFormData(e.target.value) }}
+                                        onChange={(e) => { setFormData({ ...formData, password: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -305,7 +379,7 @@ const Registration = () => {
                                         name='name'
                                         id='name'
                                         value={adminData.name}
-                                        onChange={(e) => { setAdminData(e.target.value) }}
+                                        onChange={(e) => { setAdminData({ ...adminData, name: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -321,7 +395,7 @@ const Registration = () => {
                                         name='username'
                                         id='username'
                                         value={adminData.username}
-                                        onChange={(e) => { setAdminData(e.target.value) }}
+                                        onChange={(e) => { setAdminData({ ...adminData, username: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -337,7 +411,7 @@ const Registration = () => {
                                         name='email'
                                         id='email'
                                         value={adminData.email}
-                                        onChange={(e) => { setAdminData(e.target.value) }}
+                                        onChange={(e) => { setAdminData({ ...adminData, email: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -355,7 +429,7 @@ const Registration = () => {
                                         value={adminData.password}
                                         min={5}
                                         max={12}
-                                        onChange={(e) => { setAdminData(e.target.value) }}
+                                        onChange={(e) => { setAdminData({ ...adminData, password: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />
@@ -371,7 +445,7 @@ const Registration = () => {
                                         name='secret_string'
                                         id='secret_string'
                                         value={adminData.secret_string}
-                                        onChange={(e) => { setAdminData(e.target.value) }}
+                                        onChange={(e) => { setAdminData({ ...adminData, secret_string: e.target.value }) }}
                                         className="peer w-full pl-12 pr-4 py-3 text-lg text-zinc-900 border-2 border-gray-900 rounded-xl outline-none 
                                          transition-all duration-300 focus:border-[#0C3B2E] focus:ring-1 focus:ring-[#0C3B2E] shadow-sm placeholder-gray-800"
                                     />

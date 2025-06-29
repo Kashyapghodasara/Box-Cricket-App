@@ -1,10 +1,46 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import RotatingText from './Animation/RotatingText'
+import useRegistration from '../Store/useRegistration';
+import axios from "axios"
+import toast from 'react-hot-toast';
+import { USER_BACKEND_URL } from '../Constant';
 
 const Hero = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const { isLoggedIn, login, logout } = useRegistration();
+
+    const toastStyle = {
+        style: {
+            background: "#212121", // dark mode black background
+            color: "#fff",
+            fontSize: "17px",     // white text
+            padding: "12px 20px",
+            borderRadius: "10px",
+            width: "100%",
+            fontWeight: "300",
+            textAlign: "center",
+        },
+        iconTheme: {
+            primary: "#f87171", // red-400 (error icon color)
+            secondary: "#1f2937", // gray-800
+        },
+        duration: 4000, // Optional: auto-close duration
+    }
+
+    const logoutHandler = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(`${USER_BACKEND_URL}/logout`);
+            if (response.data.success) {
+                logout()
+                toast.success(response.data.message, toastStyle);
+            }
+        } catch (error) {
+            toast.error(error.response.data.message, toastStyle);
+        }
+
+    }
 
     const scrollToSection = (id) => {
         const section = document.getElementById(id);
@@ -53,7 +89,8 @@ const Hero = () => {
                                 <>
                                     <div className='absolute right-2'>
                                         <button
-                                            className='bg-[#ce290c] hover:bg-[#f88585] px-5 py-2 rounded-full cursor-pointer'
+                                            onClick={logoutHandler}
+                                            className='bg-[#f92500] hover:bg-[#ce290c] px-5 py-2 rounded-full cursor-pointer'
                                         >Logout
                                         </button>
                                     </div>

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import useRegistration from '../Store/useRegistration';
+import axios from "axios"
+import toast from 'react-hot-toast';
+import { USER_BACKEND_URL } from '../Constant';
 
 // Now Slote display design is ready - 25-6-25
 // When use clicks on the date button then this button send the date to backend through API
@@ -20,7 +24,38 @@ import { Link } from 'react-router-dom';
 
 const Availability = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const { isLoggedIn, login, logout } = useRegistration();
+  const toastStyle = {
+    style: {
+      background: "#212121", // dark mode black background
+      color: "#fff",
+      fontSize: "17px",     // white text
+      padding: "12px 20px",
+      borderRadius: "10px",
+      width: "100%",
+      fontWeight: "300",
+      textAlign: "center",
+    },
+    iconTheme: {
+      primary: "#f87171", // red-400 (error icon color)
+      secondary: "#1f2937", // gray-800
+    },
+    duration: 4000, // Optional: auto-close duration
+  }
+
+  const logoutHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${USER_BACKEND_URL}/logout`);
+      if (response.data.success) {
+        logout()
+        toast.success(response.data.message, toastStyle);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message, toastStyle);
+    }
+
+  }
 
   const [today, setToday] = useState('')
   const [todayDate, setTodayDate] = useState('')
@@ -32,9 +67,13 @@ const Availability = () => {
 
   const [overmoroDate, setOvermoroDate] = useState('')
   const [overmoroDay, setOvermoroDay] = useState('')
+  const [overmoroMonth, setOvermoroMonth] = useState('')
+
 
 
   useEffect(() => {
+
+    // Issue ------
 
     const Days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
     const Months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
@@ -50,8 +89,12 @@ const Availability = () => {
     setTomorrowDate(Today.getDate() + 1)
     setTomorrowDay(Days[Today.getDay() + 1])
 
-    setOvermoroDate(Today.getDate() + 2)
+    const overmoro = new Date(Today);
+    overmoro.setDate(Today.getDate() + 2);
+    setOvermoroDate(overmoro.getDate())
+
     setOvermoroDay(Days[Today.getDay() + 2])
+    setOvermoroMonth(Months[Today.getMonth() + 1])
 
   }, [])
 
@@ -95,6 +138,7 @@ const Availability = () => {
                 <>
                   <div className='absolute right-2'>
                     <button
+                      onClick={logoutHandler}
                       className='bg-[#ce290c] hover:bg-[#f88585] px-5 py-2 rounded-full cursor-pointer'
                     >Logout
                     </button>

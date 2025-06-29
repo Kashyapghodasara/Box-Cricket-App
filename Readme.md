@@ -124,6 +124,12 @@
 #### Day 27 -- Saturday -- 28-06-2025
     - Fixing Big Loop Hole
     - Signup, Login and Logout Logic Integrated 
+    - Tested on Postman
+
+#### Day 28 -- Sunday -- 29-06-2025
+    - Fixed Small Bugs
+    - Neccessary Logical Changes
+    - Implement Signup and Logout Logic
     
 
 
