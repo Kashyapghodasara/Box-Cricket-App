@@ -9,8 +9,9 @@ import { USER_BACKEND_URL } from '../Constant';
 
 const BoxBooking = () => {
 
-  const { isLoggedIn, login, logout } = useRegistration();
-  const toastStyle = {
+  const { isLoggedIn, login, logout, isSignedUp } = useRegistration();
+
+  const SuccessToastStyle = {
     style: {
       background: "#212121", // dark mode black background
       color: "#fff",
@@ -22,7 +23,24 @@ const BoxBooking = () => {
       textAlign: "center",
     },
     iconTheme: {
-      primary: "#f87171", // red-400 (error icon color)
+      primary: "#39bf04", // red-400 (error icon color)
+      secondary: "#1f2937", // gray-800
+    },
+    duration: 4000, // Optional: auto-close duration
+  }
+  const ErrorToastStyle = {
+    style: {
+      background: "#212121", // dark mode black background
+      color: "#fff",
+      fontSize: "17px",     // white text
+      padding: "12px 20px",
+      borderRadius: "10px",
+      width: "100%",
+      fontWeight: "300",
+      textAlign: "center",
+    },
+    iconTheme: {
+      primary: "#eb1410", // red-400 (error icon color)
       secondary: "#1f2937", // gray-800
     },
     duration: 4000, // Optional: auto-close duration
@@ -34,10 +52,10 @@ const BoxBooking = () => {
       const response = await axios.post(`${USER_BACKEND_URL}/logout`);
       if (response.data.success) {
         logout()
-        toast.success(response.data.message, toastStyle);
+        toast.success(response.data.message, SuccessToastStyle);
       }
     } catch (error) {
-      toast.error(error.response.data.message, toastStyle);
+      toast.error(error.response.data.message, ErrorToastStyle);
     }
 
   }
@@ -78,28 +96,45 @@ const BoxBooking = () => {
                 </button>
               </div>
 
-              {isLoggedIn ? (
+              {isLoggedIn === true && (
                 <>
                   <div className='absolute right-2'>
                     <button
-                    onClick={logoutHandler}
-                      className='bg-[#ce290c] hover:bg-[#f88585] px-5 py-2 rounded-full cursor-pointer'
-                    >Logout
+                      onClick={logoutHandler}
+                      className='bg-[#f92500] hover:bg-[#ce290c] px-5 py-2 rounded-full cursor-pointer'
+                    >
+                      Logout
                     </button>
                   </div>
-                </>)
-                : (
-                  <>
-                    <div className="absolute right-2 flex items-center gap-4">
-                      <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
-                        Signup
-                      </button>
+                </>
+              )}
+
+              {isLoggedIn === false && isSignedUp === true && (
+                <>
+                  <div className="absolute right-2 flex items-center gap-4">
+                    <Link to="/registration">
                       <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
                         Login
                       </button>
-                    </div>
-                  </>
-                )}
+                    </Link>
+                  </div>
+                </>
+              )}
+
+              {isLoggedIn === false && isSignedUp === false && (
+                <>
+                  <div className="absolute right-2 flex items-center gap-4">
+                    <Link to="/registration">
+                      <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                        Signup
+                      </button>
+                      <button className="bg-[#ffc53c] ml-4 hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                        Login
+                      </button>
+                    </Link>
+                  </div>
+                </>
+              )}
             </nav>
           </div>
         </div>

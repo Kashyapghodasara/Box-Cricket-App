@@ -130,6 +130,11 @@
     - Fixed Small Bugs
     - Neccessary Logical Changes
     - Implement Signup and Logout Logic
+
+#### Day 29 -- Monday -- 30-06-2025
+    - Fixed Small Bugs
+    - Neccessary Logical Changes
+    - Implement Signup, Login and Logout Logic
     
 
 

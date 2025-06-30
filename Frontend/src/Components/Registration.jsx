@@ -17,10 +17,10 @@ const Registration = () => {
     // Like Min-Max PW is neccessary if don't then show Error toast
 
     const [selectedBox, setSelectedBox] = React.useState(null);
-    const { isLoggedIn, login, logout } = useRegisration();
+    const { isLoggedIn, login, logout, isSignedUp, signup } = useRegisration();
     const User = ["Signup", "Login", "Admin"]
 
-    const toastStyle = {
+    const SuccessToastStyle = {
         style: {
             background: "#212121", // dark mode black background
             color: "#fff",
@@ -32,7 +32,24 @@ const Registration = () => {
             textAlign: "center",
         },
         iconTheme: {
-            primary: "#f87171", // red-400 (error icon color)
+            primary: "#39bf04", // red-400 (error icon color)
+            secondary: "#1f2937", // gray-800
+        },
+        duration: 4000, // Optional: auto-close duration
+    }
+    const ErrorToastStyle = {
+        style: {
+            background: "#212121", // dark mode black background
+            color: "#fff",
+            fontSize: "17px",     // white text
+            padding: "12px 20px",
+            borderRadius: "10px",
+            width: "100%",
+            fontWeight: "300",
+            textAlign: "center",
+        },
+        iconTheme: {
+            primary: "#eb1410", // red-400 (error icon color)
             secondary: "#1f2937", // gray-800
         },
         duration: 4000, // Optional: auto-close duration
@@ -73,19 +90,54 @@ const Registration = () => {
 
             const response = await axios.post(`${USER_BACKEND_URL}/signup`, data, config);
             console.log("Form going to submit");
-            if (response.data.success) {
-                login()
-                toast.success(response.data.message, toastStyle);
+
+            if (response.data.success === true) {
+                signup()
+                toast.success(response.data.message, SuccessToastStyle);
                 setFormData({ name: "", username: "", email: "", password: "" });
             }
         } catch (error) {
             if (error.response.data.message === "User already exists") {
-                toast.error(error.response.data.message, toastStyle);
+                toast.error(error.response.data.message, ErrorToastStyle);
             } else {
-                toast.error(error.response.data.message, toastStyle);
+                toast.error(error.response.data.message, ErrorToastStyle);
             }
         }
 
+    }
+
+    const loginHandler = async (e) => {
+        e.preventDefault();
+
+        try {
+            if (formData.username === "" || formData.email === "" || formData.password === "") {
+                return toast.error("Please fill all the fields", toastStyle);
+            }
+            if (formData.password.length < 4 || formData.password.length > 10) {
+                return toast.error("Password must be between 4 to 10 characters", toastStyle);
+            }
+            const data = {
+                username: formData.username,
+                email: formData.email,
+                password: formData.password
+            }
+
+            const config = { headers: { contentType: "application/json" } }
+
+            const response = await axios.post(`${USER_BACKEND_URL}/login`, data, config)
+            if (response.data.success === true) {
+                login()
+                toast.success(response.data.message, SuccessToastStyle);
+                setFormData({ name: "", username: "", email: "", password: "" });
+            }
+
+        } catch (error) {
+            if (error.response.data.message === "User not found") {
+                toast.error(error.response.data.message, ErrorToastStyle);
+            } else {
+                toast.error(error.response.data.message, ErrorToastStyle);
+            }
+        }
     }
 
     const logoutHandler = async (e) => {
@@ -94,13 +146,14 @@ const Registration = () => {
             const response = await axios.post(`${USER_BACKEND_URL}/logout`);
             if (response.data.success) {
                 logout()
-                toast.success(response.data.message, toastStyle);
+                toast.success(response.data.message, SuccessToastStyle);
             }
         } catch (error) {
-            toast.error(error.response.data.message, toastStyle);
+            toast.error(error.response.data.message, ErrorToastStyle);
         }
 
     }
+
     return (
         <>
             <section id='Home'>
@@ -136,37 +189,50 @@ const Registration = () => {
                                 </button>
                             </div>
 
-                            {isLoggedIn ? (
+                            {isLoggedIn === true && (
                                 <>
                                     <div className='absolute right-2'>
                                         <button
                                             onClick={logoutHandler}
-                                            className='bg-[#ce290c] hover:bg-[#f88585] px-5 py-2 rounded-full cursor-pointer'
-                                        >Logout
+                                            className='bg-[#f92500] hover:bg-[#ce290c] px-5 py-2 rounded-full cursor-pointer'
+                                        >
+                                            Logout
                                         </button>
                                     </div>
-                                </>)
-                                : (
-                                    <>
-                                        <div className="absolute right-2 flex items-center gap-4">
-                                            <Link to="/registration">
-                                                <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
-                                                    Signup
-                                                </button>
-                                                <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 ml-2 rounded-full cursor-pointer transition">
-                                                    Login
-                                                </button>
-                                            </Link>
-                                        </div>
+                                </>
+                            )}
 
+                            {isLoggedIn === false && isSignedUp === true && (
+                                <>
+                                    <div className="absolute right-2 flex items-center gap-4">
+                                        <Link to="/registration">
+                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                                Login
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </>
+                            )}
 
-                                    </>
-                                )}
-
-                        </nav>
-                    </div>
+                            {isLoggedIn === false && isSignedUp === false && (
+                                <>
+                                    <div className="absolute right-2 flex items-center gap-4">
+                                        <Link to="/registration">
+                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                                Signup
+                                            </button>
+                                            <button className="bg-[#ffc53c] ml-4 hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                                Login
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </>
+                            )}
+    
+                    </nav>
                 </div>
-            </section>
+            </div>
+        </section >
 
             <div className='w-full min-h-screen'>
                 <div className='bg-[#] flex flex-col items-center justify-center '>
@@ -304,7 +370,7 @@ const Registration = () => {
 
                     {selectedBox === "Login" && (
                         <>
-                            <form className='relative w-full flex flex-col items-center'>
+                            <form methode="POST" className='relative w-full flex flex-col items-center'>
                                 <div className="relative w-full max-w-md m-2 mt-10">
                                     <input
                                         type="text"
@@ -358,9 +424,10 @@ const Registration = () => {
                                 <div>
                                     <button
                                         type="submit"
+                                        onClick={loginHandler}
                                         className="w-full px-10 mt-8 py-3 bg-[#0C3B2E] text-white font-semibold text-lg rounded-xl 
-               hover:bg-[#0f4c3a] transition-all duration-300 shadow-md cursor-pointer 
-               hover:shadow-[0_0_12px_2px_rgba(12,59,46,0.5)] focus:outline-none focus:ring-2 focus:ring-[#0C3B2E]"
+                                        hover:bg-[#0f4c3a] transition-all duration-300 shadow-md cursor-pointer 
+                                        hover:shadow-[0_0_12px_2px_rgba(12,59,46,0.5)] focus:outline-none focus:ring-2 focus:ring-[#0C3B2E]"
                                     >
                                         Login
                                     </button>
