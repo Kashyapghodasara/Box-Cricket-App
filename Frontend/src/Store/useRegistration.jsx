@@ -1,16 +1,21 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-const useRegistration = create((set) => ({
-  isLoggedIn: false,
-  isSignedUp: false,
+//create(persis((set) => {...}))
+const useRegistration = create(
+  persist(                                  
+    (set) => ({
+      isLoggedIn: false,
+      isSignedUp: false,
 
-  // Action to set isLoggedIn true
-  login: () => set({ isLoggedIn: true }),
-  logout: () => set({ isLoggedIn: false }),
-  signup: () => set({ isSignedUp: true }),
-}));
+      login: () => set({ isLoggedIn: true }),
+      logout: () => set({ isLoggedIn: false }),
+      signup: () => set({ isSignedUp: true }),
+    }),
+    {
+      name: 'registration-storage',  // Key name in localStorage
+    }
+  )
+);
 
 export default useRegistration;
-
-
-// State change when i refreshed so fix it in future

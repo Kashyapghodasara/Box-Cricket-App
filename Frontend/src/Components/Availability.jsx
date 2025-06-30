@@ -64,16 +64,14 @@ const Availability = () => {
 
   const [tomorrowDate, setTomorrowDate] = useState('')
   const [tomorrowDay, setTomorrowDay] = useState('')
+  const [tomorrowMonth, setTomorrowMonth] = useState('')
 
   const [overmoroDate, setOvermoroDate] = useState('')
   const [overmoroDay, setOvermoroDay] = useState('')
   const [overmoroMonth, setOvermoroMonth] = useState('')
 
 
-
   useEffect(() => {
-
-    // Issue ------
 
     const Days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
     const Months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
@@ -86,15 +84,20 @@ const Availability = () => {
     setTodayDay(Days[Today.getDay()])
     setTodayMonth(Months[Today.getMonth()])
 
-    setTomorrowDate(Today.getDate() + 1)
-    setTomorrowDay(Days[Today.getDay() + 1])
+    // Tomorrow
+    const tomorrow = new Date(Today);
+    tomorrow.setDate(Today.getDate() + 1);
+    setTomorrowDate(tomorrow.getDate());
+    setTomorrowDay(Days[tomorrow.getDay()]);
+    setTomorrowMonth(Months[tomorrow.getMonth()]);
 
+    // Overmorrow
     const overmoro = new Date(Today);
     overmoro.setDate(Today.getDate() + 2);
-    setOvermoroDate(overmoro.getDate())
+    setOvermoroDate(overmoro.getDate());
+    setOvermoroDay(Days[overmoro.getDay()]);
+    setOvermoroMonth(Months[overmoro.getMonth()]);
 
-    setOvermoroDay(Days[Today.getDay() + 2])
-    setOvermoroMonth(Months[Today.getMonth() + 1])
 
   }, [])
 
@@ -186,14 +189,14 @@ const Availability = () => {
           <button className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
             <h2 className="text-sm font-semibold text-[#173b1c] text-center">{tomorrowDay}</h2>
             <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{tomorrowDate}</h1>
-            <h2 className="text-md font-semibold text-[#173b1c] text-center">{todayMonth}</h2>
+            <h2 className="text-md font-semibold text-[#173b1c] text-center">{tomorrowMonth}</h2>
           </button>
 
           {/* Overmorrow */}
           <button className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
             <h2 className="text-sm font-semibold text-[#173b1c] text-center">{overmoroDay}</h2>
             <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{overmoroDate}</h1>
-            <h2 className="text-md font-semibold text-[#173b1c] text-center">{todayMonth}</h2>
+            <h2 className="text-md font-semibold text-[#173b1c] text-center">{overmoroMonth}</h2>
           </button>
         </div>
 
