@@ -1,0 +1,13 @@
+##  GitHub Actions is cloud-based CI/CD
+
+name: Box-Cricket-Backend CI
+
+on:
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
+
+jobs:
+    build-and-test:  ## Job name
+        runs-on: ubuntu-latest ## This is the Github's own service

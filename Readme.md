@@ -137,6 +137,11 @@
     - Implement Signup, Login and Logout Logic
     - The date logic bug was fixed on the Availability page, and it was really interesting!
     
+#### Day 30 -- Monday -- 07-07-2025
+    - Paused Development to Learn MERN Testing ⚙
+    - Install: Jest + Supertest + MongoDB Memory Server
+    - Set up Testing Configuration
+    - Write CI Workflow (.yml)
 
 
 
