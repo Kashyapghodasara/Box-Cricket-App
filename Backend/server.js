@@ -8,7 +8,7 @@ import DBConnection from './config/database.js';
 import userRouter from './routes/userRoute.js'
 
 
-const app = express()
+export const app = express()
 DBConnection()
 dotenv.config({path: ".env"})
 
@@ -27,6 +27,6 @@ app.use(cors({
 
 app.use("/api/v1/user", userRouter)
 
-app.listen(process.env.PORT, () => {
+/* app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT} ⚙`)
-})    
+})    */ 

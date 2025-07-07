@@ -142,6 +142,7 @@
     - Install: Jest + Supertest + MongoDB Memory Server
     - Set up Testing Configuration
     - Write CI Workflow (.yml)
+    - Test User Signup
 
 
 
