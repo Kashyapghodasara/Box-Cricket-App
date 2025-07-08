@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import DBConnection from "../config/database.js"
 import User from "../models/userSchema.js"
 import bcrypt from "bcrypt"
@@ -87,7 +86,7 @@ export const login = async (req, res) => {
 
         return res.cookie("token", token, { expiresIn: "3h", httpOnly: true }).status(200).json({
             message: "User logged in successfully",
-            message: `Welcome ${findUserWithToken.username}`,
+            username: `Welcome ${findUserWithToken.username}`,
             success: true,
             findUserWithToken
         })

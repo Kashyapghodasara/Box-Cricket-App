@@ -4,7 +4,7 @@ import { app } from '../server.js'
 import User from '../models/userSchema.js'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config();
 
 let mongoServer;
 
@@ -44,5 +44,34 @@ describe("User Authentication", () => {
         const findUser = await User.findOne({email: "test@t.com", username: "TEST"})
         expect(findUser.email).toBe(userData.email)
         expect(findUser.username).toBe(userData.username)
+    })
+
+    it('Login Test', async () => {
+
+        //Signup is must, because MMS has no static DB
+        const signupUserData = {name : "test", username:"TEST", email: "test@t.com", password: "test123"}
+        await request(app).post('/api/v1/user/signup').send(signupUserData)
+
+        const loginUserData = {username: 'TEST', email: 'test@t.com', password: 'test123'}
+        const res = await request(app).post('/api/v1/user/login').send(loginUserData)
+
+        expect(res.body).toHaveProperty("message", "User logged in successfully")
+        expect(res.body).toHaveProperty("username", `Welcome ${loginUserData.username}`)
+        expect(res.body.success).toBe(true)
+        expect(res.statusCode).toBe(200)
+    })
+
+    it('Empty Field Reg. Test', async () => {
+        const signupUserData = {name : "", username:"TEST", email: "", password: ""}
+        const res = await request(app).post('/api/v1/user/signup').send(signupUserData)
+        expect(res.statusCode).toBe(401)
+        expect(res.body).toHaveProperty("message", "Please fill all the fields")
+        expect(res.body.success).toBe(false)
+
+        const loginUserData = {username: "", email: "", password: ""}
+        const loginRes = await request(app).post('/api/v1/user/login').send(loginUserData)
+        expect(loginRes.statusCode).toBe(401)
+        expect(loginRes.body).toHaveProperty("message", "Please fill all the fields")
+        expect(loginRes.body.success).toBe(false)
     })
 })

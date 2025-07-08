@@ -144,5 +144,9 @@
     - Write CI Workflow (.yml)
     - Test User Signup
 
+#### Day 31 -- Tuesday -- 08-07-2025
+    - Write Test cases for Login and received empty field
+    - Document the common mistake step with solution in Jest + Supertest + Mongo-m/m-server
+
 
 
