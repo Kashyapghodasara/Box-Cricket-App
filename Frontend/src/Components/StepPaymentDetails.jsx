@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { FaArrowLeft } from "react-icons/fa6";
 import usePaymentDetailStore from '../Store/usePaymentDetailStore';
 import useBoxDetailStore from '../Store/useBoxDetailStore';
+import useRegistration from '../Store/useRegistration';
+import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast';
 
 const StepPaymentDetails = ({ onNext, onPrev }) => {
@@ -25,9 +27,24 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
 
   const [selectedPaymentMethode, setSelectedPaymentMethode] = useState(null)
   const [payment, setPayment] = useState('');
+  const navigate = useNavigate()
 
   const { setPaymentDetails, paymentDetails } = usePaymentDetailStore();
   const { boxDetails } = useBoxDetailStore();
+  const { isLoggedIn } = useRegistration()
+
+
+  useEffect(() => {
+      if (isLoggedIn === false) {
+        toast.error("Please Login First", {
+          style: toastStyle,
+          iconTheme: toastIconTheme,
+          duration: 4000,
+        });
+       navigate('/')
+      }
+  }, [isLoggedIn])
+
 
   const toastStyle = {
     background: "#212121",
@@ -44,11 +61,11 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
     secondary: "#1f2937",
   };
 
+
   const handleEmptyFieldLogic = (e) => {
     e.preventDefault();
 
-    if (
-      Fullname === "" || Email === "" || City === "" || State === "" || Zipcode === "") {
+    if (Fullname === "" || Email === "" || City === "" || State === "" || Zipcode === "") {
       toast.error("All fields are required", {
         style: toastStyle,
         iconTheme: toastIconTheme,
@@ -66,6 +83,15 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
       return;
     }
 
+    if (Zipcode.length !== 6) {
+      toast.error("Zipcode must be 6 characters", {
+        style: toastStyle,
+        iconTheme: toastIconTheme,
+        duration: 4000,
+      });
+      return;
+    }
+
     if (selectedPaymentMethode === 'UPI') {
       if (UPI_id === "" || TransactionId === "" || Remark === "") {
         toast.error("All UPI fields are required", {
@@ -75,22 +101,18 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
         });
         return;
       }
-    } else {
-      if (selectedPaymentMethode === 'Bank Transfer') {
-        if (
-          Ac_name === "" ||
-          Ac_no === "" ||
-          Bankname === "" ||
-          IFSC === ""
-        ) {
-          toast.error("All Bank Transfer fields are required", {
-            style: toastStyle,
-            iconTheme: toastIconTheme,
-            duration: 4000,
-          });
-          return;
-        }
+    }
+
+    if (selectedPaymentMethode === 'Bank Transfer') {
+      if (Ac_name === "" || Ac_no === "" || Bankname === "" || IFSC === "") {
+        toast.error("All Bank Transfer fields are required", {
+          style: toastStyle,
+          iconTheme: toastIconTheme,
+          duration: 4000,
+        });
+        return;
       }
+
       if (IFSC.length !== 11) {
         toast.error("IFSC must be 11 characters", {
           style: toastStyle,
@@ -101,43 +123,62 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
       }
     }
 
-    if (Zipcode.length !== 6) {
-      toast.error("Zipcode must be 6 characters", {
-        style: toastStyle,
-        iconTheme: toastIconTheme,
-        duration: 4000,
-      });
-      return;
-    }
-
     // ✅ All validations passed
     handlePaymentDetails();
   };
 
+
   const handlePaymentDetails = () => {
-
-    // Issue - Fix Both details display part
-
-    setPaymentDetails({
+    const commonDetails = {
       Fullname,
       Email,
       City,
       State,
       Zipcode,
+      Amount: boxDetails.Price,
       paymentMethode: selectedPaymentMethode,
-      UPIid: UPI_id,
-      Transactionid: TransactionId,
-      Amount,
-      Remark,
-      acHolderName: Ac_name,
-      bankName: Bankname,
-      IFSC,
-      acNumber: Ac_no,
       User: [],
-    });
+    };
 
-    onNext(); // continue to next step
+    let finalPaymentDetails = {};
+
+    if (selectedPaymentMethode === 'UPI') {
+      // clear bank fields
+      setAc_name('');
+      setAc_no('');
+      setBankname('');
+      setIFSC('');
+
+      finalPaymentDetails = {
+        ...commonDetails,
+        UPIid: UPI_id,
+        Transactionid: TransactionId,
+        Remark,
+      };
+
+    } else if (selectedPaymentMethode === 'Bank Transfer') {
+      // clear UPI fields
+      setUPI_id('');
+      setTransactionId('');
+      setRemark('');
+
+      finalPaymentDetails = {
+        ...commonDetails,
+        acHolderName: Ac_name,
+        acNumber: Ac_no,
+        bankName: Bankname,
+        IFSC,
+      };
+    }
+
+    setPaymentDetails(finalPaymentDetails);
+
+    console.log("Saved Payment Details: ", finalPaymentDetails);
+
+    onNext();
   };
+
+
 
   return (
     <>
