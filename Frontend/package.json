@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.6",
     "axios": "^1.10.0",
+    "daisyui": "^5.0.46",
     "dom-to-image": "^2.6.0",
     "framer-motion": "^12.18.1",
     "html2canvas": "^1.4.1",

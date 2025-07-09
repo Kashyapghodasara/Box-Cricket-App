@@ -5,10 +5,12 @@ import useRegistration from '../Store/useRegistration';
 import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
+import { useEffect, useRef } from "react";
 
 const Hero = () => {
 
     const { isLoggedIn, login, logout, isSignedUp } = useRegistration();
+    const modalRef = useRef();
 
     const SuccessToastStyle = {
         style: {
@@ -63,6 +65,22 @@ const Hero = () => {
         const section = document.getElementById(id);
         if (section) {
             section.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    const openModal = () => {
+        const modal = modalRef.current;
+        if (modal) {
+            modal.showModal();
+
+            // Disable closing on outside click and ESC
+            modal.addEventListener("cancel", (e) => e.preventDefault());
+            modal.addEventListener("click", (e) => e.stopPropagation());
+
+            // Auto close after 3s
+            setTimeout(() => {
+                modal.close();
+            }, 5000);
         }
     };
 
@@ -141,6 +159,34 @@ const Hero = () => {
                                     </div>
                                 </>
                             )}
+
+                            <button
+                                className="btn btn-accent btn-wide text-white font-semibold tracking-wide shadow-md hover:shadow-lg transition"
+                                onClick={openModal}
+                            >
+                                Proceed to Pay
+                            </button>
+
+                            <dialog
+                                id="my_modal_2"
+                                className="modal no-backdrop pointer-events-none"
+                                ref={modalRef}
+                                
+                            >
+                                <div
+                                    className="modal-box pointer-events-auto"
+                                    onClick={(e) => e.stopPropagation()} // prevent closing on click
+                                >
+                                    <h3 className="font-bold text-lg">Processing Payment…</h3>
+                                    <p className="py-4">Please wait while we process your payment</p>
+
+                                    <div className="space-y-2">
+                                        <div className="skeleton h-4 w-full"></div>
+                                        <div className="skeleton h-4 w-3/4"></div>
+                                        <div className="skeleton h-4 w-1/2"></div>
+                                    </div>
+                                </div>
+                            </dialog>
 
                         </nav>
                     </div>

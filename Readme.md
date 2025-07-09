@@ -151,6 +151,7 @@
 #### Day 32 -- Wednesday -- 09-07-2025
     - Fix app.listen snippet
     - Integrate few more logic in Payment submission form
+    - Install Daisy UI 
     - Fixing Bugs
 
 
