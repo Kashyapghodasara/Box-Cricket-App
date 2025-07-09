@@ -9,6 +9,8 @@ import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
 import useRegisration from '../Store/useRegistration';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Registration = () => {
@@ -17,6 +19,7 @@ const Registration = () => {
     // Like Min-Max PW is neccessary if don't then show Error toast
 
     const [selectedBox, setSelectedBox] = React.useState(null);
+    const navigate = useNavigate();
     const { isLoggedIn, login, logout, isSignedUp, signup } = useRegisration();
     const User = ["Signup", "Login", "Admin"]
 
@@ -129,6 +132,7 @@ const Registration = () => {
                 login()
                 toast.success(response.data.message, SuccessToastStyle);
                 setFormData({ name: "", username: "", email: "", password: "" });
+                navigate('/')
             }
 
         } catch (error) {

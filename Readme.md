@@ -148,5 +148,10 @@
     - Write Test cases for Login and received empty field
     - Document the common mistake step with solution in Jest + Supertest + Mongo-m/m-server
 
+#### Day 32 -- Wednesday -- 09-07-2025
+    - Fix app.listen snippet
+    - Integrate few more logic in Payment submission form
+    - Fixing Bugs
+
 
 

@@ -44,11 +44,12 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
     secondary: "#1f2937",
   };
 
-  const setValuePaymentDetails = (e) => {
+  const handleEmptyFieldLogic = (e) => {
     e.preventDefault();
 
-    /* if (IFSC.length !== 11) {
-      toast.error("IFSC must be 11 characters", {
+    if (
+      Fullname === "" || Email === "" || City === "" || State === "" || Zipcode === "") {
+      toast.error("All fields are required", {
         style: toastStyle,
         iconTheme: toastIconTheme,
         duration: 4000,
@@ -65,33 +66,58 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
       return;
     }
 
-    if (
-      Fullname === "" ||
-      Email === "" ||
-      City === "" ||
-      State === "" ||
-      Zipcode === "" ||
-      UPI_id === "" ||
-      TransactionId === "" ||
-      Amount === "" ||
-      Remark === "" ||
-      Ac_name === "" || 
-      Ac_no === "" ||
-      Bankname === ""
-    ) {
-      toast.error("All fields are required", {
+    if (selectedPaymentMethode === 'UPI') {
+      if (UPI_id === "" || TransactionId === "" || Remark === "") {
+        toast.error("All UPI fields are required", {
+          style: toastStyle,
+          iconTheme: toastIconTheme,
+          duration: 4000,
+        });
+        return;
+      }
+    } else {
+      if (selectedPaymentMethode === 'Bank Transfer') {
+        if (
+          Ac_name === "" ||
+          Ac_no === "" ||
+          Bankname === "" ||
+          IFSC === ""
+        ) {
+          toast.error("All Bank Transfer fields are required", {
+            style: toastStyle,
+            iconTheme: toastIconTheme,
+            duration: 4000,
+          });
+          return;
+        }
+      }
+      if (IFSC.length !== 11) {
+        toast.error("IFSC must be 11 characters", {
+          style: toastStyle,
+          iconTheme: toastIconTheme,
+          duration: 4000,
+        });
+        return;
+      }
+    }
+
+    if (Zipcode.length !== 6) {
+      toast.error("Zipcode must be 6 characters", {
         style: toastStyle,
         iconTheme: toastIconTheme,
         duration: 4000,
       });
       return;
-    } */
+    }
 
     // ✅ All validations passed
     handlePaymentDetails();
   };
 
   const handlePaymentDetails = () => {
+
+    // Issue - Fix Both details display part
+
     setPaymentDetails({
       Fullname,
       Email,
@@ -122,7 +148,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
           <div className='border-2 border-[#003828] h-auto m-6 rounded-xl w-full max-w-3xl p-8 shadow-lg bg-[#F4F1E1]'>
             <h1 className='text-4xl text-center font-bold text-[#0C3B2E] mb-10'>Payment Details</h1>
 
-            <form onSubmit={setValuePaymentDetails}>
+            <form onSubmit={handleEmptyFieldLogic}>
 
               {/* Fullname */}
               <div className='relative w-[90%] m-5 mb-5 mt-10'>
@@ -271,8 +297,6 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
                     id="Zipcode"
                     value={Zipcode}
                     name='zipcode'
-                    min={6}
-                    max={6}
                     onChange={(e) => setZipcode(e.target.value)}
                     className="w-full appearance-none border-b-2 border-gray-400 bg-transparent py-2 px-1 text-lg text-gray-800 focus:outline-none focus:border-[#0C3B2E]"
                   />

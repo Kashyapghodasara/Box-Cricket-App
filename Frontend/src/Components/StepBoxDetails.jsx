@@ -18,10 +18,35 @@ const StepBoxDetails = ({ onNext }) => {
 
     const { setBoxDetails, boxDetails } = useBoxDetailStore();
 
-    const setValueBoxDetails = (e) => {
-        e.preventDefault();
-        console.log("Form is going to submit");
+    const toastStyle = {
+        background: "#212121",
+        color: "#fff",
+        fontSize: "17px",
+        padding: "12px 20px",
+        borderRadius: "10px",
+        width: "100%",
+        fontWeight: "300",
+        textAlign: "center",
+    };
+    const toastIconTheme = {
+        primary: "#f87171",
+        secondary: "#1f2937",
+    };
 
+    const handleEmptyFieldLogic = (e) => {
+        e.preventDefault()
+        if (date === "" || startTime === "" || endTime === "" || price === "" || size === "" || selectedBox === null) {
+            toast.error("All fields are required", {
+                style: toastStyle,
+                iconTheme: toastIconTheme,
+                duration: 3000,
+            });
+            return
+        }
+        setValueBoxDetails()
+    }
+
+    const setValueBoxDetails = (e) => {
         setBoxDetails({
             Boxid: selectedBox,
             Date: date,
@@ -32,11 +57,8 @@ const StepBoxDetails = ({ onNext }) => {
             Duration: duration,
             Payment_status: paymentStatus,
         });
-
-        console.log("Form Submitted");
-        console.log(boxDetails);
-
         onNext(); // ✅ This line is required to proceed to next step
+
     };
 
     const handleStartTimeChange = (e) => {
@@ -228,7 +250,7 @@ const StepBoxDetails = ({ onNext }) => {
 
                         {/* Input Field */}
 
-                        <form onSubmit={setValueBoxDetails}>
+                        <form onSubmit={(e) => handleEmptyFieldLogic(e)}>
                             {/* Box Selection */}
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mt-6">
                                 {BoxIds.map((boxId, index) => (

@@ -10,7 +10,7 @@ import userRouter from './routes/userRoute.js'
 
 export const app = express()
 DBConnection()
-dotenv.config({path: ".env"})
+dotenv.config({ path: ".env" })
 
 const __filename = fileURLToPath(import.meta.url);  // You have to import this first
 const __dirname = path.dirname(__filename);
@@ -27,6 +27,10 @@ app.use(cors({
 
 app.use("/api/v1/user", userRouter)
 
-/* app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT} ⚙`)
-})    */ 
+if (process.env.NODE_ENV === 'development') {
+    dotenv.config();
+    app.listen(process.env.PORT, () => {
+        console.log(`Server is running on port ${process.env.PORT} ⚙`)
+    })
+}
+
