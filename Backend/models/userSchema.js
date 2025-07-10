@@ -17,15 +17,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    ticket_no:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Bookings"
-    }],
+    ticket_no: {
+        type: [Number],  // array of numbers
+        required: true
+    },
     bookings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Bookings"
     }]
-}, {timestamps: true})
+}, { timestamps: true })
 
 const User = mongoose.model("user", userSchema)
 export default User

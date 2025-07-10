@@ -158,6 +158,7 @@
     - Create Box Booking Controller
     - Tested on Postman
     - Some Changes in Auth.js Middleware
+    - Update User Model and Complete other Booking Functionality
     - Fixing Bugs
 
 
