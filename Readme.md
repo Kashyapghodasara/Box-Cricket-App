@@ -154,5 +154,11 @@
     - Install Daisy UI 
     - Fixing Bugs
 
+#### Day 33 -- Thursday -- 10-07-2025
+    - Create Box Booking Controller
+    - Tested on Postman
+    - Some Changes in Auth.js Middleware
+    - Fixing Bugs
+
 
 

@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import DBConnection from './config/database.js';
 import userRouter from './routes/userRoute.js'
+import bookingRoute from './routes/bookingRoute.js'
 
 
 export const app = express()
@@ -26,6 +27,8 @@ app.use(cors({
 }))
 
 app.use("/api/v1/user", userRouter)
+app.use("/api/v1/user", bookingRoute)
+
 
 if (process.env.NODE_ENV === 'development') {
     dotenv.config();

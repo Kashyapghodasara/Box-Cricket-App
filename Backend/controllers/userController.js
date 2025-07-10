@@ -79,7 +79,8 @@ export const login = async (req, res) => {
         }
 
         const tokenData = {
-            id: findUser._id,
+            id: findUser._id,   // This is furthur use in auth middleware 
+                               // Where we actual used ID for find user in DB
         }
         const token = jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: "3h" })
         const findUserWithToken = await User.findOne({ email, username }).select("-password")
