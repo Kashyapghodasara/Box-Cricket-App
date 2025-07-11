@@ -161,5 +161,9 @@
     - Update User Model and Complete other Booking Functionality
     - Fixing Bugs
 
+#### Day 34 -- Friday -- 11-07-2025
+    - Write Box booking test cases
+    - Fix issues
+
 
 

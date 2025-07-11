@@ -7,7 +7,7 @@ export const bookingBox = async (req, res) => {
         const { Boxid, Date, Start_time, End_time, Price, Size, Duration } = req.body  
         // This is Field Name not Actual DB Key's
         if (!Boxid || !Date || !Start_time || !End_time || !Price || !Size || !Duration) {
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Please fill all the fields",
                 success: false
             })

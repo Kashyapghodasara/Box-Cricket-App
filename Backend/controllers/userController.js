@@ -89,6 +89,7 @@ export const login = async (req, res) => {
             message: "User logged in successfully",
             username: `Welcome ${findUserWithToken.username}`,
             success: true,
+            token,
             findUserWithToken
         })
     }
