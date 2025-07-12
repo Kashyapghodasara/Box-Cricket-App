@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import DBConnection from './config/database.js';
 import userRouter from './routes/userRoute.js'
 import bookingRoute from './routes/bookingRoute.js'
-
+import paymentRoute from './routes/paymentRoute.js'
 
 export const app = express()
 DBConnection()
@@ -28,6 +28,7 @@ app.use(cors({
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/user", bookingRoute)
+app.use("/api/v1/user", paymentRoute)
 
 
 if (process.env.NODE_ENV === 'development') {

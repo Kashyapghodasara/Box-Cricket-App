@@ -165,5 +165,10 @@
     - Write Box booking test cases
     - Fix issues
 
+#### Day 35 -- Saturday -- 12-07-2025
+    - Write basic controller of Create Payment 
+    - Tested on postman
+    - Fixing issues
+
 
 

@@ -178,7 +178,8 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
     onNext();
   };
 
-
+// Comman Details
+// finalPaymentDetails
 
   return (
     <>
