@@ -168,6 +168,7 @@
 #### Day 35 -- Saturday -- 12-07-2025
     - Write basic controller of Create Payment 
     - Tested on postman
+    - Integrated Encryption in PaymentDetails to enhance security
     - Fixing issues
 
 

@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     bookings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Bookings"
+    }], 
+    payments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Payment"
     }]
 }, { timestamps: true })
 
