@@ -169,6 +169,7 @@
     - Write basic controller of Create Payment 
     - Tested on postman
     - Integrated Encryption in PaymentDetails to enhance security
+    - API integration of box booking
     - Fixing issues
 
 

@@ -2,28 +2,102 @@ import React from 'react'
 import { FaArrowLeft } from "react-icons/fa6";
 import useBoxDetailStore from '../Store/useBoxDetailStore'
 import usePaymentDetailStore from '../Store/usePaymentDetailStore'
+import axios from "axios"
+import useRegistration from '../Store/useRegistration';
+import { USER_BACKEND_URL } from '../Constant';
+import toast from 'react-hot-toast';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+/* { boxDetails }	req.body.boxDetails
+boxDetails (raw object)	req.body */
 
 // TODO
 // -> Dynamic Change BG according to size of the box
 // -> Dynamic Change Data
 // -> Random Generated Ticket NO
 // -> Send Ticket info to Mail
+// -> Loading Skeleton
 
 const StepPreviewDetails = ({ onNext, onPrev }) => {
 
   const { boxDetails } = useBoxDetailStore();
   const { paymentDetails } = usePaymentDetailStore();
+  const { isLoggedIn } = useRegistration()
   const [isLoading, setIsLoading] = React.useState(false)
+  const navigate = useNavigate()
 
-  const handlePaymentGatway = () => {
-     /*  if(isLoading) return
-      setIsLoading(true) */
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      toast.error("Please Login First", {
+        style: ErrorToastStyle,
+      });
+      navigate('/')
+    }
+  }, [isLoggedIn])
 
-      //Try-Catch to send the data to backend
-      // And call onNext
-
-      onNext();
+  const SuccessToastStyle = {
+    style: {
+      background: "#212121", // dark mode black background
+      color: "#fff",
+      fontSize: "17px",     // white text
+      padding: "12px 20px",
+      borderRadius: "10px",
+      width: "100%",
+      fontWeight: "300",
+      textAlign: "center",
+    },
+    iconTheme: {
+      primary: "#39bf04", // red-400 (error icon color)
+      secondary: "#1f2937", // gray-800
+    },
+    duration: 4000, // Optional: auto-close duration
   }
+  const ErrorToastStyle = {
+    style: {
+      background: "#212121", // dark mode black background
+      color: "#fff",
+      fontSize: "17px",     // white text
+      padding: "12px 20px",
+      borderRadius: "10px",
+      width: "100%",
+      fontWeight: "300",
+      textAlign: "center",
+    },
+    iconTheme: {
+      primary: "#eb1410", // red-400 (error icon color)
+      secondary: "#1f2937", // gray-800
+    },
+    duration: 4000, // Optional: auto-close duration
+  }
+
+   const handlePaymentGatway = async (e) => {
+    e.preventDefault()
+    try {
+      // If you don’t set withCredentials: true → cookies are not sent → backend sees no token.
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true
+      };
+      const res = await axios.post(`${USER_BACKEND_URL}/bookings`, boxDetails, config)
+      console.log(res)
+      if (res.data.success === true) {
+        toast.success(res.data.message, SuccessToastStyle);
+      }
+
+    } catch (error) {
+      if (error.response.data.message === false) {
+        toast.error(error.response.data.message, ErrorToastStyle);
+      } else {
+        toast.error(error.response.data.message, ErrorToastStyle);
+      }
+    }
+
+    // onNext();
+  } 
 
   return (
     <div className='w-[100%]' style={{ overflow: 'hidden' }} >
@@ -34,7 +108,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
           <h1 className='text-4xl text-center font-bold text-[#0C3B2E] mb-5'>Details Preview</h1>
 
 
-          <form>
+          <form methode='POST'>
             <h2 className='text-2xl text-center font-semibold text-[#03573f] mt-2'>━━ Box Details ━━</h2>
             {/* Date - Box ID */}
             <div className='grid grid-cols-1 md:grid-cols-2'>
@@ -267,7 +341,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
 
 
             {paymentDetails.paymentMethode === "UPI" && (
-              <>             
+              <>
                 <div className='grid grid-cols-1 md:grid-cols-2'>
                   <div className='relative w-[90%] m-5 mb-5 mt-10'>
                     <label
@@ -443,6 +517,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
                 </button>
               </div>
               <button
+                type='submit'
                 onClick={handlePaymentGatway}
                 className='bg-[#eba604] cursor-pointer text-white py-2 px-12 rounded-md hover:bg-[#ffb300]'>
                 Proceed to Pay

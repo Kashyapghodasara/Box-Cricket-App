@@ -89,7 +89,7 @@ const Registration = () => {
                 password: formData.password
             }
 
-            const config = { headers: { "Content-Type": "application/json" } }
+            const config = { headers: { "Content-Type": "application/json" },  withCredentials: true }
 
             const response = await axios.post(`${USER_BACKEND_URL}/signup`, data, config);
             console.log("Form going to submit");
@@ -125,7 +125,7 @@ const Registration = () => {
                 password: formData.password
             }
 
-            const config = { headers: { contentType: "application/json" } }
+            const config = { headers: { contentType: "application/json" },  withCredentials: true }
 
             const response = await axios.post(`${USER_BACKEND_URL}/login`, data, config)
             if (response.data.success === true) {

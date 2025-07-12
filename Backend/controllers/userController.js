@@ -69,7 +69,7 @@ export const login = async (req, res) => {
             })
         }
         const hashPW = findUser.password
-        const comparePassword = bcrypt.compare(password, hashPW)
+        const comparePassword = await bcrypt.compare(password, hashPW)
 
         if (!comparePassword) {
             return res.status(401).json({
@@ -80,12 +80,17 @@ export const login = async (req, res) => {
 
         const tokenData = {
             id: findUser._id,   // This is furthur use in auth middleware 
-                               // Where we actual used ID for find user in DB
+            // Where we actual used ID for find user in DB
         }
         const token = jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: "3h" })
         const findUserWithToken = await User.findOne({ email, username }).select("-password")
 
-        return res.cookie("token", token, { expiresIn: "3h", httpOnly: true }).status(200).json({
+        return res.cookie("token", token, {
+            maxAge: 3 * 60 * 60 * 1000,  // 3 hours
+            httpOnly: true,
+            sameSite: "Lax",
+            secure: false
+        }).status(200).json({
             message: "User logged in successfully",
             username: `Welcome ${findUserWithToken.username}`,
             success: true,
