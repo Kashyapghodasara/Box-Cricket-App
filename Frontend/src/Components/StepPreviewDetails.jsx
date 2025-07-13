@@ -71,8 +71,9 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
     duration: 4000, // Optional: auto-close duration
   }
 
-   const handlePaymentGatway = async (e) => {
+  const handleBookingGatway = async (e) => {
     e.preventDefault()
+
     try {
       // If you don’t set withCredentials: true → cookies are not sent → backend sees no token.
 
@@ -87,6 +88,8 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
       if (res.data.success === true) {
         toast.success(res.data.message, SuccessToastStyle);
       }
+      const bookedSloteID = res.data.box_id
+      handlePaymentDetailGatway(bookedSloteID)
 
     } catch (error) {
       if (error.response.data.message === false) {
@@ -96,8 +99,31 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
       }
     }
 
-    // onNext();
-  } 
+    onNext();
+  }
+
+  const handlePaymentDetailGatway = async (bookedSloteID) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true
+      };
+
+      const res = await axios.post(`${USER_BACKEND_URL}/createpayment/${bookedSloteID}`, paymentDetails, config)
+      if(res.data.message === true) {
+        toast.success(res.data.message, SuccessToastStyle)
+      }
+
+    } catch (error) {
+      if (error.response.data.message === false) {
+        toast.error(error.response.data.message, ErrorToastStyle);
+      } else {
+        toast.error(error.response.data.message, ErrorToastStyle);
+      }
+    }
+  }
 
   return (
     <div className='w-[100%]' style={{ overflow: 'hidden' }} >
@@ -518,7 +544,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
               </div>
               <button
                 type='submit'
-                onClick={handlePaymentGatway}
+                onClick={handleBookingGatway}
                 className='bg-[#eba604] cursor-pointer text-white py-2 px-12 rounded-md hover:bg-[#ffb300]'>
                 Proceed to Pay
               </button>

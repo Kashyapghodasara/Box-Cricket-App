@@ -20,7 +20,7 @@ const Registration = () => {
 
     const [selectedBox, setSelectedBox] = React.useState(null);
     const navigate = useNavigate();
-    const { isLoggedIn, login, logout, isSignedUp, signup } = useRegisration();
+    const { isLoggedIn, login, logout, isSignedUp, signup, changeSignuped } = useRegisration();
     const User = ["Signup", "Login", "Admin"]
 
     const SuccessToastStyle = {

@@ -54,7 +54,8 @@ export const bookingBox = async (req, res) => {
 
         return res.status(200).json({
             message: "Box Booked Successfully",
-            success: true
+            success: true,
+            box_id: newBooking._id
         })
 
     } catch (error) {

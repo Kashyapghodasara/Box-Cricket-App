@@ -160,7 +160,7 @@ const Hero = () => {
                                 </>
                             )}
 
-                            <button
+                          {/*   <button
                                 className="btn btn-accent btn-wide text-white font-semibold tracking-wide shadow-md hover:shadow-lg transition"
                                 onClick={openModal}
                             >
@@ -186,7 +186,7 @@ const Hero = () => {
                                         <div className="skeleton h-4 w-1/2"></div>
                                     </div>
                                 </div>
-                            </dialog>
+                            </dialog> */}
 
                         </nav>
                     </div>

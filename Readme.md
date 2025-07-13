@@ -172,5 +172,10 @@
     - API integration of box booking
     - Fixing issues
 
+#### Day 36 -- Sunday -- 13-07-2025
+    - Box Booking - Payment Gateway API integrated
+    - Basic work is completed, now small but neccessary logic integration is remaining
+    - Fixing issues
+
 
 

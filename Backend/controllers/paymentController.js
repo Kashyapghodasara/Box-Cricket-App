@@ -8,6 +8,9 @@ dotenv.config({ path: "../.env" })
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY; // 32 bytes
 const ALGORITHM = process.env.ALGO;
 
+// Box booked id -> Payment schema    - Done
+// Payment created id  -> Box Schema
+
 function encrypt(text) {
     if (!ENCRYPTION_KEY || ENCRYPTION_KEY.length !== 32) {
         throw new Error("ENCRYPTION_KEY must be exactly 32 characters long");
@@ -25,23 +28,22 @@ function encrypt(text) {
 
 export const createPayment = async (req, res) => {
     try {
-
-        // We also have to check finalPayement payload is an object
-        const { Fullname, Email, City, State, Zipcode, paymentMethode, Amount, ...dynamicPayment } = req.body.finalPaymentDetails
+        const { Fullname, Email, City, State, Zipcode, paymentMethode, Amount, ...dynamicPayment } = req.body;
+        const bookedBoxId = req.params.id;
 
         if (!Fullname || !Email || !City || !State || !Zipcode || !paymentMethode || !Amount) {
             return res.status(401).json({
                 message: "Please fill all the fields",
-                success: false
-            })
+                success: false,
+            });
         }
 
-        const findUser = await User.findById(req.user._id)
+        const findUser = await User.findById(req.user._id);
         if (!findUser) {
             return res.status(400).json({
                 message: "User not found",
-                success: false
-            })
+                success: false,
+            });
         }
 
         const encryptedPayment = encrypt(JSON.stringify(dynamicPayment));
@@ -54,20 +56,34 @@ export const createPayment = async (req, res) => {
             zipcode: Zipcode,
             paymentMethode,
             amount: Amount,
-            user: req.user,
-            paymentDetails: encryptedPayment
-        })
+            paymentDetails: encryptedPayment,
+            bookedBoxInfo: bookedBoxId,
+            user: req.user._id,
+        });
 
-        findUser.payments.push(createPayment._id)
-        await findUser.save()
+        findUser.payments.push(createPayment._id);
+        await findUser.save();
+
+        const findBookedBooking = await Booking.findById(bookedBoxId);
+        if (!findBookedBooking) {
+            return res.status(400).json({
+                message: "Box not found",
+                success: false,
+            });
+        }
+
+        findBookedBooking.paymentInfo.push(createPayment._id);
+        await findBookedBooking.save();
 
         return res.status(200).json({
             message: "Payment Created successfully",
-            success: true
-        })
-
+            success: true,
+        });
     } catch (error) {
-        console.log("Error Occure in Payment Process", error.message)
-        console.log(error)
+        console.error("Error Occurred in Payment Process", error);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            success: false,
+        });
     }
-}
+};

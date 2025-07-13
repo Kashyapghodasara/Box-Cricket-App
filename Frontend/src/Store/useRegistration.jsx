@@ -9,7 +9,7 @@ const useRegistration = create(
       isSignedUp: false,
 
       login: () => set({ isLoggedIn: true }),
-      logout: () => set({ isLoggedIn: false }),
+      logout: () => set({ isLoggedIn: false, isSignedUp: false }),
       signup: () => set({ isSignedUp: true }),
     }),
     {
