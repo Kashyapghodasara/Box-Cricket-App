@@ -21,6 +21,10 @@
 ### 💳 Payment Integration
 ![Dummy Manual Integration](https://img.shields.io/badge/Dummy%20Manual%20Integration-orange?style=for-the-badge&logo=mastercard&logoColor=white)
 
+### 🧰 Tools
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+
+
 ---
 ### ⚙️ Daily Grind
 
