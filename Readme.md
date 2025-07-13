@@ -181,6 +181,7 @@
 #### Day 36 -- Sunday -- 13-07-2025
     - Box Booking - Payment Gateway API integrated
     - Basic work is completed, now small but neccessary logic integration is remaining
+    - Adding loading skeleton functionality
     - Fixing issues
 
 

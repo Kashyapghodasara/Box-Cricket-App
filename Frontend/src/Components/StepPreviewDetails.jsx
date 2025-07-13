@@ -6,7 +6,7 @@ import axios from "axios"
 import useRegistration from '../Store/useRegistration';
 import { USER_BACKEND_URL } from '../Constant';
 import toast from 'react-hot-toast';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /* { boxDetails }	req.body.boxDetails
@@ -26,6 +26,13 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
   const { isLoggedIn } = useRegistration()
   const [isLoading, setIsLoading] = React.useState(false)
   const navigate = useNavigate()
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  const openPopup = () => {
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 5000); // hide after 5s
+  };
 
   useEffect(() => {
     if (isLoggedIn === false) {
@@ -103,6 +110,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
   }
 
   const handlePaymentDetailGatway = async (bookedSloteID) => {
+    setShowPopup(true);
     try {
       const config = {
         headers: {
@@ -112,10 +120,13 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
       };
 
       const res = await axios.post(`${USER_BACKEND_URL}/createpayment/${bookedSloteID}`, paymentDetails, config)
-      if(res.data.message === true) {
+      if (res.data.message === true) {
         toast.success(res.data.message, SuccessToastStyle)
       }
-
+      setTimeout(() => {
+        setShowPopup(false);
+        onNext();
+      }, 5000);
     } catch (error) {
       if (error.response.data.message === false) {
         toast.error(error.response.data.message, ErrorToastStyle);
@@ -123,6 +134,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
         toast.error(error.response.data.message, ErrorToastStyle);
       }
     }
+
   }
 
   return (
@@ -549,7 +561,47 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
                 Proceed to Pay
               </button>
             </div>
+            {/* Popup */}
+            {showPopup && (
+              <div className="fixed inset-0 flex justify-center items-center bg-black/30 z-50">
+                <div
+                  className="bg-white rounded-3xl p-6 md:p-8 shadow-2xl max-w-sm w-full transform scale-90 opacity-0 animate-popup"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="text-center">
+                    <div className="text-4xl mb-3 animate-spin-slow">
+                      💳
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800">
+                      Processing Payment…
+                    </h3>
+                    <p className="text-gray-600 mt-2">
+                      Please wait while we process your payment.
+                    </p>
 
+                    <div className="mt-4 space-y-2">
+                      <div className="h-3 bg-gray-200 rounded-full w-full animate-pulse"></div>
+                      <div className="h-3 bg-gray-200 rounded-full w-3/4 animate-pulse"></div>
+                      <div className="h-3 bg-gray-200 rounded-full w-1/2 animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* Animations */}
+            <style>{`
+                  .animate-popup {
+                     animation: popup-in 0.4s ease forwards;
+                  }
+                  @keyframes popup-in {
+                      0% { transform: scale(0.8); opacity: 0; }
+                      100% { transform: scale(1); opacity: 1; }
+                  }
+                  .animate-spin-slow {
+                      animation: spin 2s linear infinite;
+                  }
+          `}
+          </style>
           </form>
         </div>
       </div >

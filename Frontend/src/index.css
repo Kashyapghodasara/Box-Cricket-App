@@ -72,3 +72,23 @@
   right: -75px;
   top: -32px;
 }
+
+.animate-popup {
+  animation: popup-in 0.4s ease forwards;
+}
+
+@keyframes popup-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-spin-slow {
+  animation: spin 2s linear infinite;
+}

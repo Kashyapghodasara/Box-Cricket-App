@@ -1,10 +1,42 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useRegistration from '../Store/useRegistration';
 
 const StepTicketDetails = () => {
 
   const [display, setDisplay] = React.useState(false);
+  const navigate = useNavigate();
+  const { isLoggedIn } = useRegistration()
+
+  const ErrorToastStyle = {
+    style: {
+      background: "#212121", // dark mode black background
+      color: "#fff",
+      fontSize: "17px",     // white text
+      padding: "12px 20px",
+      borderRadius: "10px",
+      width: "100%",
+      fontWeight: "300",
+      textAlign: "center",
+    },
+    iconTheme: {
+      primary: "#eb1410", // red-400 (error icon color)
+      secondary: "#1f2937", // gray-800
+    },
+    duration: 4000, // Optional: auto-close duration
+  }
+
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      toast.error("Please Login First", {
+        style: ErrorToastStyle,
+      });
+      navigate('/')
+    }
+  }, [isLoggedIn])
 
   const handleDisplayTicket = () => {
     // Button Disabled
@@ -71,9 +103,9 @@ const StepTicketDetails = () => {
       </div>
 
       <div className='flex flex-col items-center justify-center mt-[-100px]'>
-        <button 
-        onClick={handleDisplayTicket}
-        className='bg-[#065f46] hover:bg-[#0C3B2E] text-white font-bold py-2 px-4 rounded-md'>
+        <button
+          onClick={handleDisplayTicket}
+          className='bg-[#065f46] hover:bg-[#0C3B2E] text-white font-bold py-2 px-4 rounded-md'>
           Generate Your Ticket
         </button>
       </div>

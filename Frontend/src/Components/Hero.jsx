@@ -5,9 +5,16 @@ import useRegistration from '../Store/useRegistration';
 import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Hero = () => {
+
+    const [showPopup, setShowPopup] = useState(false);
+
+    const openPopup = () => {
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 5000); // hide after 5s
+    };
 
     const { isLoggedIn, login, logout, isSignedUp } = useRegistration();
     const modalRef = useRef();
@@ -160,34 +167,53 @@ const Hero = () => {
                                 </>
                             )}
 
-                          {/*   <button
-                                className="btn btn-accent btn-wide text-white font-semibold tracking-wide shadow-md hover:shadow-lg transition"
-                                onClick={openModal}
+                            <button
+                                onClick={openPopup}
+                                className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition"
                             >
                                 Proceed to Pay
                             </button>
 
-                            <dialog
-                                id="my_modal_2"
-                                className="modal no-backdrop pointer-events-none"
-                                ref={modalRef}
-                                
-                            >
-                                <div
-                                    className="modal-box pointer-events-auto"
-                                    onClick={(e) => e.stopPropagation()} // prevent closing on click
-                                >
-                                    <h3 className="font-bold text-lg">Processing Payment…</h3>
-                                    <p className="py-4">Please wait while we process your payment</p>
+                            {/* Popup */}
+                            {showPopup && (
+                                <div className="fixed inset-0 flex justify-center items-center bg-black/30 z-50">
+                                    <div
+                                        className="bg-white rounded-3xl p-6 md:p-8 shadow-2xl max-w-sm w-full transform scale-90 opacity-0 animate-popup"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <div className="text-center">
+                                            <div className="text-4xl mb-3 animate-spin-slow">
+                                                💳
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-800">
+                                                Processing Payment…
+                                            </h3>
+                                            <p className="text-gray-600 mt-2">
+                                                Please wait while we process your payment.
+                                            </p>
 
-                                    <div className="space-y-2">
-                                        <div className="skeleton h-4 w-full"></div>
-                                        <div className="skeleton h-4 w-3/4"></div>
-                                        <div className="skeleton h-4 w-1/2"></div>
+                                            <div className="mt-4 space-y-2">
+                                                <div className="h-3 bg-gray-200 rounded-full w-full animate-pulse"></div>
+                                                <div className="h-3 bg-gray-200 rounded-full w-3/4 animate-pulse"></div>
+                                                <div className="h-3 bg-gray-200 rounded-full w-1/2 animate-pulse"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </dialog> */}
-
+                            )}
+                            {/* Animations */}
+                            <style>{`
+                                .animate-popup {
+                                 animation: popup-in 0.4s ease forwards;
+                                }
+                                @keyframes popup-in {
+                                0% { transform: scale(0.8); opacity: 0; }
+                                100% { transform: scale(1); opacity: 1; }
+                                        }
+                                .animate-spin-slow {
+                                animation: spin 2s linear infinite;
+                               }
+                            `}</style>
                         </nav>
                     </div>
                 </div>
