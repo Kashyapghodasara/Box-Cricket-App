@@ -17,7 +17,7 @@
 ### 🎨 UI Features
 ![React Bits](https://img.shields.io/badge/React--Bits-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![React Hot Toast](https://img.shields.io/badge/React%20Hot%20Toast-%23FF6B00?style=for-the-badge&logo=react&logoColor=white)
-![DaisyUI](https://img.shields.io/badge/DaisyUI-FF79C6?style=for-the-badge&logo=daisyui&logoColor=333333)
+![DaisyUI](https://img.shields.io/badge/Daisy%20UI-FF79C6?style=for-the-badge&logo=daisyui&logoColor=333333)
 
 
 ### 💳 Payment Integration
