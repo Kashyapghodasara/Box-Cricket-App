@@ -18,16 +18,7 @@ const StepTicketDetails = () => {
   const { isLoggedIn } = useRegistration();
   /* const { paymentId } = usePaymentIdStore(); */
 
-  const [hasHydrated, setHasHydrated] = useState(false);
   const paymentId = usePaymentIdStore((state) => state.paymentId);
-
-  useEffect(() => {
-    const unsub = usePaymentIdStore.persist.onFinishHydration(() => {
-      setHasHydrated(true);
-    });
-    return unsub;
-  }, []);
-
 
   const ErrorToastStyle = {
     style: {
@@ -57,41 +48,40 @@ const StepTicketDetails = () => {
   }, [isLoggedIn])
 
   useEffect(() => {
-  if (!hasHydrated) return;        // wait until zustand finishes hydration
-  if (!paymentId) {
-    toast.error("Payment ID not found", ErrorToastStyle);
-    return;
-  }
-
-  const fetchTicketDetails = async () => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      };
-
-      const res = await axios.get(
-        `${USER_BACKEND_URL}/getPayment/${paymentId}`,
-        config
-      );
-
-      if (res.data.success === true) {
-        setDisplay(true);
-        setTicketNo(res.data.ticketNo);
-      }
-    } catch (error) {
-      if (error.response?.data?.success === false) {
-        toast.error(error.response.data.message, ErrorToastStyle);
-      } else {
-        toast.error(error.message, ErrorToastStyle);
-      }
+    if (!paymentId) {
+      toast.error("Payment ID not found", ErrorToastStyle);
+      return;
     }
-  };
 
-  fetchTicketDetails();
-}, [hasHydrated, paymentId]);
+    const fetchTicketDetails = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        };
+
+        const res = await axios.get(
+          `${USER_BACKEND_URL}/getPayment/${paymentId}`,
+          config
+        );
+        console.log(res)
+        if (res.data.success === true) {
+          setDisplay(true);
+          setTicketNo(res.data.boxData.ticket_no);
+        }
+      } catch (error) {
+        if (error.response?.data?.success === false) {
+          toast.error(error.response.data.message, ErrorToastStyle);
+        } else {
+          toast.error(error.message, ErrorToastStyle);
+        }
+      }
+    };
+
+    fetchTicketDetails();
+  }, [paymentId]);
 
 
   return (
@@ -144,7 +134,12 @@ const StepTicketDetails = () => {
             transition={{ delay: 0.7 }}
             className="mt-6 text-sm text-gray-500"
           >
-            <span className="font-semibold">Ticket NO:</span> {ticketNo}
+            {ticketNo && (
+              <>
+                <span className="font-semibold">Ticket NO:</span>
+                <h1 className='text-[#065f46] text-xl font-semibold'>{ticketNo}</h1>
+              </>
+            )}
           </motion.div>
         </motion.div>
 
@@ -197,7 +192,7 @@ const StepTicketDetails = () => {
                   <h1 className='text-2xl font-semibold font-mono tracking-widest text-[#ffffff]'
                     style={{ fontFamily: 'Roboto Mono, monospace' }}
                   >
-                    684612645587
+                    {ticketNo}
                   </h1>
                 </div>
 

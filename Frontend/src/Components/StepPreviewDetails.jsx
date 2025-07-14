@@ -117,8 +117,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
 
       const res = await axios.post(`${USER_BACKEND_URL}/createpayment/${bookedSloteID}`, paymentDetails, config)
       console.log(res)
-      if (res.data.message === true) {
-        toast.success(res.data.message, SuccessToastStyle)
+      if (res.data.success === true) {
         setPaymentId(res.data.paymentId)
       }
       setTimeout(() => {
