@@ -2,6 +2,7 @@ import React from 'react'
 import { FaArrowLeft } from "react-icons/fa6";
 import useBoxDetailStore from '../Store/useBoxDetailStore'
 import usePaymentDetailStore from '../Store/usePaymentDetailStore'
+import usePaymentIdStore from '../Store/usePaymentIdStore';
 import axios from "axios"
 import useRegistration from '../Store/useRegistration';
 import { USER_BACKEND_URL } from '../Constant';
@@ -23,16 +24,12 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
 
   const { boxDetails } = useBoxDetailStore();
   const { paymentDetails } = usePaymentDetailStore();
+  const {paymentId, setPaymentId} = usePaymentIdStore()
   const { isLoggedIn } = useRegistration()
   const [isLoading, setIsLoading] = React.useState(false)
   const navigate = useNavigate()
 
   const [showPopup, setShowPopup] = useState(false);
-
-  const openPopup = () => {
-    setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 5000); // hide after 5s
-  };
 
   useEffect(() => {
     if (isLoggedIn === false) {
@@ -106,7 +103,6 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
       }
     }
 
-    onNext();
   }
 
   const handlePaymentDetailGatway = async (bookedSloteID) => {
@@ -120,13 +116,16 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
       };
 
       const res = await axios.post(`${USER_BACKEND_URL}/createpayment/${bookedSloteID}`, paymentDetails, config)
+      console.log(res)
       if (res.data.message === true) {
         toast.success(res.data.message, SuccessToastStyle)
+        setPaymentId(res.data.paymentId)
       }
       setTimeout(() => {
         setShowPopup(false);
         onNext();
       }, 5000);
+
     } catch (error) {
       if (error.response.data.message === false) {
         toast.error(error.response.data.message, ErrorToastStyle);
@@ -601,7 +600,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
                       animation: spin 2s linear infinite;
                   }
           `}
-          </style>
+            </style>
           </form>
         </div>
       </div >

@@ -78,6 +78,7 @@ export const createPayment = async (req, res) => {
         return res.status(200).json({
             message: "Payment Created successfully",
             success: true,
+            paymentId: createPayment._id
         });
     } catch (error) {
         console.error("Error Occurred in Payment Process", error);
@@ -87,3 +88,36 @@ export const createPayment = async (req, res) => {
         });
     }
 };
+
+export const getPaymentDetails = async (req, res) => {
+    try {
+        const paymentId = req.params.paymentid;
+        if (!paymentId) {
+            return res.status(404).json({
+                message: "Payment Id not found",
+                success: false
+            })
+        }
+
+        const findPaymentDetails = await Payment.findById(paymentId)
+        if (!findPaymentDetails) {
+            return res.status(404).json({
+                message: "Payment not found",
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "Payment details fetched successfully",
+            success: true,
+            paymentData: findPaymentDetails
+        })
+        
+    } catch (error) {
+        console.error("Error Occurred in Payment Process", error);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            success: false,
+        });
+    }
+}

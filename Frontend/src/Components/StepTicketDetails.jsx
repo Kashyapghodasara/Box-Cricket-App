@@ -4,12 +4,30 @@ import { CheckCircle2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useRegistration from '../Store/useRegistration';
+import usePaymentDetailStore from '../Store/usePaymentDetailStore';
+import usePaymentIdStore from '../Store/usePaymentIdStore';
+import axios from 'axios';
+import { USER_BACKEND_URL } from '../Constant';
+import toast from 'react-hot-toast';
 
 const StepTicketDetails = () => {
 
   const [display, setDisplay] = React.useState(false);
+  const [ticketNo, setTicketNo] = React.useState("");
   const navigate = useNavigate();
-  const { isLoggedIn } = useRegistration()
+  const { isLoggedIn } = useRegistration();
+  /* const { paymentId } = usePaymentIdStore(); */
+
+  const [hasHydrated, setHasHydrated] = useState(false);
+  const paymentId = usePaymentIdStore((state) => state.paymentId);
+
+  useEffect(() => {
+    const unsub = usePaymentIdStore.persist.onFinishHydration(() => {
+      setHasHydrated(true);
+    });
+    return unsub;
+  }, []);
+
 
   const ErrorToastStyle = {
     style: {
@@ -38,12 +56,43 @@ const StepTicketDetails = () => {
     }
   }, [isLoggedIn])
 
-  const handleDisplayTicket = () => {
-    // Button Disabled
-    // Try-catch block to fetch data from backend
-    // When data fetched successfully call setDisplay(true)
-    // Button Inabled
+  useEffect(() => {
+  if (!hasHydrated) return;        // wait until zustand finishes hydration
+  if (!paymentId) {
+    toast.error("Payment ID not found", ErrorToastStyle);
+    return;
   }
+
+  const fetchTicketDetails = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+
+      const res = await axios.get(
+        `${USER_BACKEND_URL}/getPayment/${paymentId}`,
+        config
+      );
+
+      if (res.data.success === true) {
+        setDisplay(true);
+        setTicketNo(res.data.ticketNo);
+      }
+    } catch (error) {
+      if (error.response?.data?.success === false) {
+        toast.error(error.response.data.message, ErrorToastStyle);
+      } else {
+        toast.error(error.message, ErrorToastStyle);
+      }
+    }
+  };
+
+  fetchTicketDetails();
+}, [hasHydrated, paymentId]);
+
 
   return (
     <>
@@ -95,7 +144,7 @@ const StepTicketDetails = () => {
             transition={{ delay: 0.7 }}
             className="mt-6 text-sm text-gray-500"
           >
-            <span className="font-medium">Ticket NO:</span> #TXN1234567890
+            <span className="font-semibold">Ticket NO:</span> {ticketNo}
           </motion.div>
         </motion.div>
 
@@ -104,7 +153,7 @@ const StepTicketDetails = () => {
 
       <div className='flex flex-col items-center justify-center mt-[-100px]'>
         <button
-          onClick={handleDisplayTicket}
+          /* onClick={handleDisplayTicket} */
           className='bg-[#065f46] hover:bg-[#0C3B2E] text-white font-bold py-2 px-4 rounded-md'>
           Generate Your Ticket
         </button>

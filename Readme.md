@@ -184,5 +184,8 @@
     - Adding loading skeleton functionality
     - Fixing issues
 
+#### Day 37 -- Monday -- 14-07-2025
+    - Add small logics
+    - Fixing issues
 
 
