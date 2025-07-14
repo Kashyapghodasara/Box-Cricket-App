@@ -186,6 +186,9 @@
 
 #### Day 37 -- Monday -- 14-07-2025
     - Add small logics
+    - Booking Submission form is completed
+    - That’s the beauty (and pain) of debugging 💔
+    - Experience - It’s almost always something small and silly, but hidden in the noise
     - Fixing issues
 
 

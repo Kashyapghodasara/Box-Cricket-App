@@ -100,9 +100,10 @@ export const getPaymentDetails = async (req, res) => {
         }
 
         const findPaymentDetails = await Payment.findById(paymentId)
-        if (!findPaymentDetails) {
+        const findBookingDetails = await Booking.findById(findPaymentDetails.bookedBoxInfo)
+        if (!findPaymentDetails || !findBookingDetails) {
             return res.status(404).json({
-                message: "Payment not found",
+                message: "Booking Details not found",
                 success: false
             })
         }
@@ -110,7 +111,8 @@ export const getPaymentDetails = async (req, res) => {
         return res.status(200).json({
             message: "Payment details fetched successfully",
             success: true,
-            paymentData: findPaymentDetails
+            paymentData: findPaymentDetails,
+            boxData: findBookingDetails
         })
         
     } catch (error) {
