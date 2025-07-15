@@ -1,8 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom';
-import RotatingText from './Animation/RotatingText'
 import useRegistration from '../Store/useRegistration';
+import usePaymentIdStore from '../Store/usePaymentIdStore';
 import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
@@ -10,6 +10,8 @@ import { USER_BACKEND_URL } from '../Constant';
 const ShowBookings = () => {
 
     const { isLoggedIn, login, logout, isSignedUp } = useRegistration();
+    const paymentId = usePaymentIdStore((state) => state.paymentId);
+
 
     const SuccessToastStyle = {
         style: {
@@ -66,6 +68,7 @@ const ShowBookings = () => {
             section.scrollIntoView({ behavior: 'smooth' });
         }
     };
+
 
     return (
         <>

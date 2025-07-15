@@ -12,7 +12,7 @@ const Body = () => {
         {
             path: "/",
             element: <Home />,
-           
+
         },
         {
             path: "availabel",
@@ -21,11 +21,11 @@ const Body = () => {
         {
             path: "booking",
             element: <BoxBooking />
-        }, 
+        },
         {
             path: "showBookings",
             element: <ShowBookings />
-        }, 
+        },
         {
             path: "registration",
             element: <Registration />

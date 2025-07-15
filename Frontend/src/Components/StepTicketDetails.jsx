@@ -14,9 +14,11 @@ const StepTicketDetails = () => {
 
   const [display, setDisplay] = React.useState(false);
   const [ticketNo, setTicketNo] = React.useState("");
+  const [boxData, setBoxData] = React.useState({});
+  const [paymentData, setPaymentData] = React.useState({});
+
   const navigate = useNavigate();
   const { isLoggedIn } = useRegistration();
-  /* const { paymentId } = usePaymentIdStore(); */
 
   const paymentId = usePaymentIdStore((state) => state.paymentId);
 
@@ -36,6 +38,37 @@ const StepTicketDetails = () => {
       secondary: "#1f2937", // gray-800
     },
     duration: 4000, // Optional: auto-close duration
+  }
+
+  const smallBoxBGImage = {
+    clipPath: 'polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px)',
+    backgroundImage: 'url("/Images/Orange4.jpeg")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    position: 'relative',
+    transform: 'translateX(-5%) translateY(-25%)',
+    zIndex: -5,
+  }
+  const mediumBoxBGImage = {
+    clipPath: 'polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px)',
+    backgroundImage: 'url("/Images/Blue2.jpeg")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    position: 'relative',
+    transform: 'translateX(-5%) translateY(-25%)',
+    zIndex: -5,
+  }
+  const largeBoxBGImage = {
+    clipPath: 'polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px)',
+    backgroundImage: 'url("/Images/Green4.jpeg")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    position: 'relative',
+    transform: 'translateX(-5%) translateY(-25%)',
+    zIndex: -5,
   }
 
   useEffect(() => {
@@ -66,9 +99,10 @@ const StepTicketDetails = () => {
           `${USER_BACKEND_URL}/getPayment/${paymentId}`,
           config
         );
-        console.log(res)
+        setBoxData(res.data.boxData)
+        setPaymentData(res.data.paymentData)
+
         if (res.data.success === true) {
-          setDisplay(true);
           setTicketNo(res.data.boxData.ticket_no);
         }
       } catch (error) {
@@ -83,6 +117,13 @@ const StepTicketDetails = () => {
     fetchTicketDetails();
   }, [paymentId]);
 
+  const to12HourFormat = (time24) => {
+    const [hourStr, minute] = time24.split(':');
+    let hour = parseInt(hourStr, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12 || 12; // convert 0 -> 12
+    return `${hour}:${minute} ${ampm}`;
+  };
 
   return (
     <>
@@ -148,7 +189,7 @@ const StepTicketDetails = () => {
 
       <div className='flex flex-col items-center justify-center mt-[-100px]'>
         <button
-          /* onClick={handleDisplayTicket} */
+          onClick={(e) => { setDisplay(true) }}
           className='bg-[#065f46] hover:bg-[#0C3B2E] text-white font-bold py-2 px-4 rounded-md'>
           Generate Your Ticket
         </button>
@@ -169,17 +210,13 @@ const StepTicketDetails = () => {
             {/* Ticket 2 */}
             <div
               className="w-[60%] h-[300px]  m-5 shadow-lg relative"
-
-              style={{
-                clipPath: 'polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px)',
-                backgroundImage: 'url("/Images/Green4.jpeg")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                transform: 'translateX(-5%) translateY(-25%)',
-                zIndex: -5,
-              }}
+              style={
+                boxData.size === "Small"
+                  ? smallBoxBGImage
+                  : boxData.size === "Medium"
+                  ? mediumBoxBGImage
+                  : largeBoxBGImage
+              }
 
             >
               <div>
@@ -206,26 +243,26 @@ const StepTicketDetails = () => {
                 <div className='absolute flex justify-center text-center top-1/5 left-4/12 transform -translate-x-1/2 -translate-y-1/2'>
                   <div>
                     <h1 className='text-3xl font-bold text-[#ffffff]'>Time</h1>
-                    <h2 className='text-lg'>9:00 pm - 11:00 pm</h2>
+                    <h2 className='text-lg'>{to12HourFormat(boxData.start_time)} - {to12HourFormat(boxData.end_time)}</h2>
                   </div>
                 </div>
                 <div className='absolute flex justify-center text-center top-1/5 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
                   <div>
                     <h1 className='text-3xl font-bold text-[#ffffff]'>Date</h1>
-                    <h2 className='text-lg'>10 - 06 - 2025  &nbsp; &nbsp; -  &nbsp; &nbsp; Tuesday</h2>
+                    <h2 className='text-lg'>{new Date(boxData.date).toLocaleDateString()}</h2>
                   </div>
                 </div>
                 <div className='absolute flex justify-center text-center top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2'>
                   <div>
                     <h1 className='text-3xl font-bold text-[#ffffff]'>Box</h1>
-                    <h2 className='text-lg'>#BX002 &nbsp; &nbsp; -  &nbsp; &nbsp; Small</h2>
+                    <h2 className='text-lg'>#{boxData.box_id} &nbsp; &nbsp; -  &nbsp; &nbsp; {boxData.size}</h2>
                   </div>
                 </div>
                 <div className='absolute flex justify-center text-center top-1/2 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
                   <div className="bg-white/10 backdrop-blur-sm px-12 py-2 rounded-xl shadow-md border border-white/20">
                     <h1 className='text-2xl font-bold text-[#ffffff]'>Price</h1>
                     <h2 className='text-xl font-semibold text-[#FFD700] tracking-widest glow'>
-                      ₹ 1000
+                      ₹ {boxData.price}
                     </h2>
                   </div>
                 </div>

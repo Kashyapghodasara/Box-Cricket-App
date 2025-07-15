@@ -191,4 +191,8 @@
     - Experience - It’s almost always something small and silly, but hidden in the noise
     - Fixing issues
 
+#### Day 38 -- Tuesday -- 15-07-2025
+    - Ticket generation and Payment Successed step completed
+    - Fixing issue
+
 
