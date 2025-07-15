@@ -9,6 +9,7 @@ import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
 import useRegisration from '../Store/useRegistration';
+import useUserIdStore from '../Store/useUserIdStore';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -18,9 +19,10 @@ const Registration = () => {
     // Set Field Security when Each Option Function Called
     // Like Min-Max PW is neccessary if don't then show Error toast
 
-    const [selectedBox, setSelectedBox] = React.useState(null);
     const navigate = useNavigate();
+    const [selectedBox, setSelectedBox] = React.useState(null);
     const { isLoggedIn, login, logout, isSignedUp, signup, changeSignuped } = useRegisration();
+    const { loggedInUserId, setUserId } = useUserIdStore()
     const User = ["Signup", "Login", "Admin"]
 
     const SuccessToastStyle = {
@@ -89,7 +91,7 @@ const Registration = () => {
                 password: formData.password
             }
 
-            const config = { headers: { "Content-Type": "application/json" },  withCredentials: true }
+            const config = { headers: { "Content-Type": "application/json" }, withCredentials: true }
 
             const response = await axios.post(`${USER_BACKEND_URL}/signup`, data, config);
             console.log("Form going to submit");
@@ -125,11 +127,14 @@ const Registration = () => {
                 password: formData.password
             }
 
-            const config = { headers: { contentType: "application/json" },  withCredentials: true }
+            const config = { headers: { contentType: "application/json" }, withCredentials: true }
 
             const response = await axios.post(`${USER_BACKEND_URL}/login`, data, config)
             if (response.data.success === true) {
                 login()
+                setUserId(response.data.findUserWithToken._id)
+                console.log(loggedInUserId)
+                
                 toast.success(response.data.message, SuccessToastStyle);
                 setFormData({ name: "", username: "", email: "", password: "" });
                 navigate('/')
@@ -232,11 +237,11 @@ const Registration = () => {
                                     </div>
                                 </>
                             )}
-    
-                    </nav>
+
+                        </nav>
+                    </div>
                 </div>
-            </div>
-        </section >
+            </section >
 
             <div className='w-full min-h-screen'>
                 <div className='bg-[#] flex flex-col items-center justify-center '>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom';
 import useRegistration from '../Store/useRegistration';
 import usePaymentIdStore from '../Store/usePaymentIdStore';
+import useUserIdStore from '../Store/useUserIdStore';
 import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
@@ -11,6 +12,7 @@ const ShowBookings = () => {
 
     const { isLoggedIn, login, logout, isSignedUp } = useRegistration();
     const paymentId = usePaymentIdStore((state) => state.paymentId);
+    const { loggedInUserId } = useUserIdStore()
 
 
     const SuccessToastStyle = {
@@ -68,6 +70,21 @@ const ShowBookings = () => {
             section.scrollIntoView({ behavior: 'smooth' });
         }
     };
+
+    const getAllBookingDetails = async () => {
+        try {
+            const config = {headers: {"Content/Type": "application/json"}, withCredentials: true}
+            // Send userid to backend 
+            // then get userdetails
+            // get bookingArray id and use populate to get all booking details
+            // get paymentArray id and use populate to get all payment details
+            
+
+            
+        } catch (error) {
+            console.log("Error ocuured in getting all booking details", error.message);
+        }
+    }
 
 
     return (
