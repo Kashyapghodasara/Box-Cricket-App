@@ -194,6 +194,7 @@
 #### Day 38 -- Tuesday -- 15-07-2025
     - Ticket generation and Payment Successed step completed
     - Starting showBookingDetails Page
+    - Database model fixed
     - Fixing issue
 
 

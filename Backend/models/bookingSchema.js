@@ -7,7 +7,7 @@ const bookingSchema = new mongoose.Schema({
     }, 
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
         required: true
     },
     date: {
@@ -40,12 +40,12 @@ const bookingSchema = new mongoose.Schema({
     },
     paymentInfo: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Payment",
+        ref: "payment",
         required: true
     }],
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
         required: true
     }
 }, {timestamps: true})

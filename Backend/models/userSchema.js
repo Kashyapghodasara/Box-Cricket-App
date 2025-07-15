@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import Bookings from "./bookingSchema.js"
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -23,11 +24,11 @@ const userSchema = new mongoose.Schema({
     },
     bookings: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Bookings"
+        ref: "booking"
     }], 
     payments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Payment"
+        ref: "payment"
     }]
 }, { timestamps: true })
 

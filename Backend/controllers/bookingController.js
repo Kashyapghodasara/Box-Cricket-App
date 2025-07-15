@@ -4,7 +4,7 @@ import Booking from '../models/bookingSchema.js'
 
 export const bookingBox = async (req, res) => {
     try {
-        const { Boxid, Date, Start_time, End_time, Price, Size, Duration } = req.body  
+        const { Boxid, Date, Start_time, End_time, Price, Size, Duration } = req.body
         // This is Field Name not Actual DB Key's
         if (!Boxid || !Date || !Start_time || !End_time || !Price || !Size || !Duration) {
             return res.status(401).json({
@@ -42,7 +42,7 @@ export const bookingBox = async (req, res) => {
         })
 
         const findUser = await User.findById(req.user._id)
-        if(!findUser){
+        if (!findUser) {
             return res.status(404).json({
                 message: "User Not Found",
                 success: false
@@ -62,4 +62,40 @@ export const bookingBox = async (req, res) => {
         console.log("Error Occure in Booking", error.message)
     }
 
+}
+
+export const getBookingDetails = async (req, res) => {
+    try {
+        const userId = req.params.userId
+        if (!userId) {
+            return res.status(404).json({
+                message: "User Not Found",
+                success: false
+            })
+        }
+
+        const findUser = await User.findById(userId)
+            .populate("bookings") // assuming you want all fields in bookings
+            .populate({
+                path: "payments",
+                select: "-paymentDetails"
+            })
+            .select("-password");
+
+        if (!findUser) {
+            return res.status(404).json({
+                message: "User Not Found",
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "User Bookings Fetched Successfully",
+            success: true,
+            bookingData: findUser
+        })
+
+    } catch (error) {
+        console.log("Error Occure in getBookingDetails", error.message)
+    }
 }

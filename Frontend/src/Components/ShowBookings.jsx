@@ -7,6 +7,7 @@ import useUserIdStore from '../Store/useUserIdStore';
 import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
+import { useEffect } from 'react';
 
 const ShowBookings = () => {
 
@@ -73,19 +74,22 @@ const ShowBookings = () => {
 
     const getAllBookingDetails = async () => {
         try {
-            const config = {headers: {"Content/Type": "application/json"}, withCredentials: true}
-            // Send userid to backend 
-            // then get userdetails
-            // get bookingArray id and use populate to get all booking details
-            // get paymentArray id and use populate to get all payment details
-            
+            const config = { headers: { "Content-Type": "application/json", }, withCredentials: true }
 
-            
+            const res = await axios.get(`${USER_BACKEND_URL}/getBookingsDetails/${loggedInUserId}`, config)
+            console.log(res)
+            if (res.data.success === true) {
+                toast.success(res.data.message, SuccessToastStyle);
+            }
+
         } catch (error) {
             console.log("Error ocuured in getting all booking details", error.message);
         }
     }
 
+    useEffect(() => {
+        getAllBookingDetails()
+    }, [])
 
     return (
         <>
