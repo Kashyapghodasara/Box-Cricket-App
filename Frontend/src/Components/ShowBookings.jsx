@@ -14,6 +14,7 @@ const ShowBookings = () => {
     const { isLoggedIn, login, logout, isSignedUp } = useRegistration();
     const paymentId = usePaymentIdStore((state) => state.paymentId);
     const { loggedInUserId } = useUserIdStore()
+    const [resData, setResData] = React.useState([])
 
 
     const SuccessToastStyle = {
@@ -78,6 +79,7 @@ const ShowBookings = () => {
 
             const res = await axios.get(`${USER_BACKEND_URL}/getBookingsDetails/${loggedInUserId}`, config)
             console.log(res)
+            setResData(res.data.bookingData)
             if (res.data.success === true) {
                 toast.success(res.data.message, SuccessToastStyle);
             }
@@ -90,6 +92,14 @@ const ShowBookings = () => {
     useEffect(() => {
         getAllBookingDetails()
     }, [])
+
+    const to12HourFormat = (time24) => {
+        const [hourStr, minute] = time24.split(':');
+        let hour = parseInt(hourStr, 10);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12 || 12; // convert 0 -> 12
+        return `${hour}:${minute} ${ampm}`;
+    };
 
     return (
         <>
@@ -181,59 +191,81 @@ const ShowBookings = () => {
                         Your Bookings
                     </motion.h1>
 
-                    {/* Booking Details - 1 */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                        className="w-full max-w-5xl bg-white/10 border mb-3 border-emerald-100 rounded-xl backdrop-blur-xl shadow-[0_8px_32px_0_rgba(16,185,129,0.5)] p-4"
-                    >
-                        <div className="flex flex-col lg:flex-row justify-between gap-4">
-                            {/* Left Section */}
-                            <section className="flex flex-col gap-2 text-white">
-                                <div className="flex gap-2 text-xl">
-                                    <span className="font-semibold">📅 Date:</span>
-                                    <span className="text-emerald-100">20-06-2025</span>
-                                </div>
-                                <div className="flex gap-2 text-lg">
-                                    <span>Size:</span>
-                                    <span className="text-emerald-100">Large</span>
-                                </div>
-                                <div className="flex gap-2 text-lg">
-                                    <span>Duration:</span>
-                                    <span className="text-emerald-100">2 Hours</span>
-                                </div>
-                                <div className="flex gap-2 text-lg">
-                                    <span>Start Time:</span>
-                                    <span className="text-emerald-100">10:00 AM</span>
-                                </div>
-                                <div className="flex gap-2 text-lg">
-                                    <span>End Time:</span>
-                                    <span className="text-emerald-100">12:00 PM</span>
-                                </div>
-                            </section>
+                    {/* Use optional chain operator */}
+                    {
+                        resData?.bookings?.length > 0 ? (
+                            <>
+                                {resData?.bookings?.map((item, index) => {
+                                    const payment = resData?.payments?.[index];
 
-                            {/* Right Section */}
-                            <section className="flex flex-col gap-2 text-white text-right lg:items-end">
-                                <div className="flex gap-2 text-2xl font-semibold">
-                                    <span>🎟️ Ticket No:</span>
-                                    <span className="text-emerald-100">123456789123</span>
-                                </div>
-                                <div className="flex gap-2 text-lg">
-                                    <span>Price:</span>
-                                    <span className="text-emerald-100">Rs. 900</span>
-                                </div>
-                                <div className="flex gap-2 text-lg">
-                                    <span>Payment:</span>
-                                    <span className="text-emerald-100">UPI</span>
-                                </div>
-                            </section>
-                        </div>
-                    </motion.div>
+                                    return (
+                                        <div key={item._id}>
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.95 }}
+                                                whileInView={{ opacity: 1, scale: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ duration: 0.5, ease: "easeOut" }}
+                                                className="w-full min-w-7xl md:min-w-2xl sm:min-w-lg bg-white/10 border mb-3 border-emerald-100 rounded-xl backdrop-blur-xl shadow-[0_8px_32px_0_rgba(16,185,129,0.5)] p-4"
+                                            >
+                                                <div className="flex flex-col lg:flex-row justify-between gap-4 min-w-full">
+                                                    {/* Left Section */}
+                                                    <section className="flex flex-col gap-2 text-white">
+                                                        <div className="flex gap-2 text-xl">
+                                                            <span className="font-semibold">📅 Date:</span>
+                                                            <span className="text-emerald-100">
+                                                                {new Date(item?.date).toLocaleDateString()}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex gap-2 text-lg">
+                                                            <span>Size:</span>
+                                                            <span className="text-emerald-100">{item?.size}</span>
+                                                        </div>
+                                                        <div className="flex gap-2 text-lg">
+                                                            <span>Duration:</span>
+                                                            <span className="text-emerald-100">{item?.duration}</span>
+                                                        </div>
+                                                        <div className="flex gap-2 text-lg">
+                                                            <span>Start Time:</span>
+                                                            <span className="text-emerald-100">{to12HourFormat(item?.start_time)}</span>
+                                                        </div>
+                                                        <div className="flex gap-2 text-lg">
+                                                            <span>End Time:</span>
+                                                            <span className="text-emerald-100">{to12HourFormat(item?.end_time)}</span>
+                                                        </div>
+                                                    </section>
+
+                                                    {/* Right Section */}
+                                                    <section className="flex flex-col gap-2 text-white text-right lg:items-end">
+                                                        <div className="flex gap-2 text-2xl font-semibold">
+                                                            <span>🎟️ Ticket No:</span>
+                                                            <span className="text-emerald-100">{item?.ticket_no}</span>
+                                                        </div>
+                                                        <div className="flex gap-2 text-lg">
+                                                            <span>Price:</span>
+                                                            <span className="text-emerald-100">{item?.price}</span>
+                                                        </div>
+                                                        <div className="flex gap-2 text-lg">
+                                                            <span>Payment:</span>
+                                                            <span className="text-emerald-100">{payment?.paymentMethode}</span>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                            </motion.div>
+                                        </div>
+                                    )
+                                })}
+                            </>
+                        ) : (
+                            <p>No bookings found</p>
+                        )
+                    }
+
+
+
+
 
                     {/* Booking Details - 2 */}
-                    <motion.div
+                    {/* <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -241,7 +273,7 @@ const ShowBookings = () => {
                         className="w-full max-w-5xl bg-white/10 border border-emerald-100 rounded-xl backdrop-blur-xl shadow-[0_8px_32px_0_rgba(16,185,129,0.5)] p-4"
                     >
                         <div className="flex flex-col lg:flex-row justify-between gap-4">
-                            {/* Left Section */}
+                            {/* Left Section 
                             <section className="flex flex-col gap-2 text-white">
                                 <div className="flex gap-2 text-xl">
                                     <span className="font-semibold">📅 Date:</span>
@@ -265,7 +297,7 @@ const ShowBookings = () => {
                                 </div>
                             </section>
 
-                            {/* Right Section */}
+                            {/* Right Section 
                             <section className="flex flex-col gap-2 text-white text-right lg:items-end">
                                 <div className="flex gap-2 text-2xl font-semibold">
                                     <span>🎟️ Ticket No:</span>
@@ -281,7 +313,7 @@ const ShowBookings = () => {
                                 </div>
                             </section>
                         </div>
-                    </motion.div>
+                    </motion.div> */}
 
                 </div>
             </section>

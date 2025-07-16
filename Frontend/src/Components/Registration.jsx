@@ -133,7 +133,6 @@ const Registration = () => {
             if (response.data.success === true) {
                 login()
                 setUserId(response.data.findUserWithToken._id)
-                console.log(loggedInUserId)
                 
                 toast.success(response.data.message, SuccessToastStyle);
                 setFormData({ name: "", username: "", email: "", password: "" });
