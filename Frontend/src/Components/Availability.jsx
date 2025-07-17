@@ -130,24 +130,36 @@ const Availability = () => {
 
   }, [])
 
-  const todayBookedSlotes = async () => {
+  const fetchBookedSlots = async (date) => {
     try {
-      const Todaydate = new Date().toISOString();  
-      console.log(Todaydate)
-      const config = { headers: { "Content-Type": "application/json", }, withCredentials: true }
+      const formattedDate = new Date(date).toISOString();
+      const config = { headers: { "Content-Type": "application/json" }, withCredentials: true };
 
-      // Send as object
-      const res = await axios.post(`${USER_BACKEND_URL}/availableSlote/${loggedInUserId}`,{ todayDate: Todaydate }, config )
+      const res = await axios.post(
+        `${USER_BACKEND_URL}/availableSlote/${loggedInUserId}`,
+        { getDate: formattedDate },
+        config
+      );
 
+      if (res.data.success === true) {
+        console.log(res.data)
+        console.log(formattedDate)
+        setSloteDetails(res.data.bookedSloteData)
+        toast.success(res.data.message, SuccessToastStyle);
+      }
 
-    } catch (error) {
-      console.log(error.message)
+    } catch (err) {
+      console.log(err.message);
     }
-  }
+  };
 
-  useEffect(() => {
-
-  }, [])
+  const to12HourFormat = (time24) => {
+    const [hourStr, minute] = time24.split(':');
+    let hour = parseInt(hourStr, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12 || 12; // convert 0 -> 12
+    return `${hour}:${minute} ${ampm}`;
+  };
 
   return (
     <>
@@ -228,7 +240,7 @@ const Availability = () => {
         <div className="flex flex-col gap-6 mt-6 ml-4">
           {/* Today */}
           <button
-            onClick={todayBookedSlotes}
+            onClick={() => fetchBookedSlots(new Date())}
             className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
             <h2 className="text-sm font-semibold text-[#173b1c] text-center">{todayDay}</h2>
             <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{todayDate}</h1>
@@ -236,14 +248,18 @@ const Availability = () => {
           </button>
 
           {/* Tomorrow */}
-          <button className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
+          <button
+            onClick={() => fetchBookedSlots(tomorrowDate)}
+            className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
             <h2 className="text-sm font-semibold text-[#173b1c] text-center">{tomorrowDay}</h2>
             <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{tomorrowDate}</h1>
             <h2 className="text-md font-semibold text-[#173b1c] text-center">{tomorrowMonth}</h2>
           </button>
 
           {/* Overmorrow */}
-          <button className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
+          <button
+            onClick={() => fetchBookedSlots(overmoroDate)}
+            className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
             <h2 className="text-sm font-semibold text-[#173b1c] text-center">{overmoroDay}</h2>
             <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{overmoroDate}</h1>
             <h2 className="text-md font-semibold text-[#173b1c] text-center">{overmoroMonth}</h2>
@@ -252,29 +268,28 @@ const Availability = () => {
 
         <div className="grid grid-cols-3 gap-6 mt-6 w-full">
 
-          {/* Small Box */}
           <div className="border-2 border-[#1e1f1f] hover:bg-[#f1f1f1] cursor-pointer rounded-xl shadow-md transition-all duration-300 hover:shadow-lg p-4">
             <h1 className="text-[#0C3B2E] font-bold text-2xl mb-3">Small Box</h1>
-
-            {/* Booked Slots for Small */}
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row items-center justify-between bg-[#f0fdf4] px-4 py-2 rounded-lg shadow-sm hover:bg-[#dcfce7] transition">
-                <span className="text-[#14532d] font-medium">9:00 AM - 11:00 AM</span>
-                <span className="text-gray-500 text-sm">#BX001</span>
-              </div>
-
-              <div className="flex flex-row items-center justify-between bg-[#f0fdf4] px-4 py-2 rounded-lg shadow-sm hover:bg-[#dcfce7] transition">
-                <span className="text-[#14532d] font-medium">1:00 PM - 3:00 PM</span>
-                <span className="text-gray-500 text-sm">#BX002</span>
-              </div>
-
-
-              <div className="flex flex-row items-center justify-between bg-[#f0fdf4] px-4 py-2 rounded-lg shadow-sm hover:bg-[#dcfce7] transition">
-                <span className="text-[#14532d] font-medium">1:00 PM - 3:00 PM</span>
-                <span className="text-gray-500 text-sm">#BX002</span>
-              </div>
-            </div>
+            {sloteDetails?.length > 0 ? (
+              sloteDetails.map((slot) => (
+                <div key={slot._id}>
+                  {slot?.size === 'Small' && (
+                    <>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex flex-row items-center justify-between bg-[#f0fdf4] px-4 py-2 rounded-lg shadow-sm hover:bg-[#dcfce7] transition">
+                          <span className="text-[#14532d] font-medium">{to12HourFormat(slot?.start_time) - to12HourFormat(slot?.end)}</span>
+                          <span className="text-gray-500 text-sm">#{slot?.size}</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))
+            ) : (
+              <h1>No Slots Available</h1>
+            )}
           </div>
+
 
           {/* Medium Box */}
           <div className="border-2 border-[#1e1f1f] hover:bg-[#f1f1f1] cursor-pointer rounded-xl shadow-md transition-all duration-300 hover:shadow-lg p-4">

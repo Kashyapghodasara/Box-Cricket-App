@@ -102,10 +102,11 @@ export const getBookingDetails = async (req, res) => {
 
 export const bookedSloteChecking = async (req, res) => {
     try {
+        console.log(req.body)
         const userId = req.params.userId;
-        const todayData = req.body.todayDate
+        const { getDate } = req.body
 
-        if(!todayData){
+        if(!getDate){
             return res.status(404).json({
                 message: "Date Not Found",
                 success: false
@@ -133,8 +134,8 @@ export const bookedSloteChecking = async (req, res) => {
             })
         }
 
-        const min = new Date(new Date(todayData).setUTCHours(0, 0, 0, 0));
-        const max = new Date(new Date(todayData).setUTCHours(23, 59, 59, 999));
+        const min = new Date(new Date(getDate).setUTCHours(0, 0, 0, 0));
+        const max = new Date(new Date(getDate).setUTCHours(23, 59, 59, 999));
 
         const bookedSlotsToday = findUser.bookings.filter((booked) => {    // filter only return true or false
             return booked.date >= min && booked.date <= max;

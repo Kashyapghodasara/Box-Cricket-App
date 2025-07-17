@@ -199,6 +199,8 @@
 
 #### Day 39 -- Thursday -- 17-07-2025
     - bookedSlote Detail page started
+    - Start working on Implementation of API 
+    - Tested on Postman
     - Fixing issue
 
 
