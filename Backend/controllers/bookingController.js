@@ -99,3 +99,56 @@ export const getBookingDetails = async (req, res) => {
         console.log("Error Occure in getBookingDetails", error.message)
     }
 }
+
+export const bookedSloteChecking = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const todayData = req.body.todayDate
+
+        if(!todayData){
+            return res.status(404).json({
+                message: "Date Not Found",
+                success: false
+            })
+        }
+
+        if (!userId) {
+            return res.status(404).json({
+                message: "User Id Not Found",
+                success: false
+            })
+        }
+
+        const findUser = await User.findById(userId)
+            .populate({
+                path: "bookings",
+                select: "-paymentInfo"
+            })
+            .select("-password -ticket_no -payments");
+
+        if (!findUser) {
+            return res.status(404).json({
+                message: "User Not Found",
+                success: false
+            })
+        }
+
+        const min = new Date(new Date(todayData).setUTCHours(0, 0, 0, 0));
+        const max = new Date(new Date(todayData).setUTCHours(23, 59, 59, 999));
+
+        const bookedSlotsToday = findUser.bookings.filter((booked) => {    // filter only return true or false
+            return booked.date >= min && booked.date <= max;
+        });
+
+        return res.status(200).json({
+            message: "Booked Slote Details Fetched",
+            success: true,
+            bookedSloteData: bookedSlotsToday
+        })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error", success: false });
+    }
+}
+

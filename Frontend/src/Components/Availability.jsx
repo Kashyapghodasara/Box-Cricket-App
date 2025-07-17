@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import useRegistration from '../Store/useRegistration';
+import useUserIdStore from '../Store/useUserIdStore';
 import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
+
 
 // Now Slote display design is ready - 25-6-25
 // When use clicks on the date button then this button send the date to backend through API
@@ -25,7 +27,9 @@ import { USER_BACKEND_URL } from '../Constant';
 const Availability = () => {
 
   const { isLoggedIn, login, logout } = useRegistration();
-  const toastStyle = {
+  const { loggedInUserId } = useUserIdStore()
+
+  const SuccessToastStyle = {
     style: {
       background: "#212121", // dark mode black background
       color: "#fff",
@@ -37,10 +41,27 @@ const Availability = () => {
       textAlign: "center",
     },
     iconTheme: {
-      primary: "#f87171", // red-400 (error icon color)
+      primary: "#39bf04", // red-400 (error icon color)
       secondary: "#1f2937", // gray-800
     },
-    duration: 4000, // Optional: auto-close duration
+    duration: 2000, // Optional: auto-close duration
+  }
+  const ErrorToastStyle = {
+    style: {
+      background: "#212121", // dark mode black background
+      color: "#fff",
+      fontSize: "17px",     // white text
+      padding: "12px 20px",
+      borderRadius: "10px",
+      width: "100%",
+      fontWeight: "300",
+      textAlign: "center",
+    },
+    iconTheme: {
+      primary: "#eb1410", // red-400 (error icon color)
+      secondary: "#1f2937", // gray-800
+    },
+    duration: 2000, // Optional: auto-close duration
   }
 
   const logoutHandler = async (e) => {
@@ -70,6 +91,14 @@ const Availability = () => {
   const [overmoroDay, setOvermoroDay] = useState('')
   const [overmoroMonth, setOvermoroMonth] = useState('')
 
+  const [sloteDetails, setSloteDetails] = useState([])
+
+  // bookings get request 
+  // get box detail in array
+  // send back to frontend
+  // use map for 3 slotes with diff. size condition and fetch details
+
+
 
   useEffect(() => {
 
@@ -98,6 +127,25 @@ const Availability = () => {
     setOvermoroDay(Days[overmoro.getDay()]);
     setOvermoroMonth(Months[overmoro.getMonth()]);
 
+
+  }, [])
+
+  const todayBookedSlotes = async () => {
+    try {
+      const Todaydate = new Date().toISOString();  
+      console.log(Todaydate)
+      const config = { headers: { "Content-Type": "application/json", }, withCredentials: true }
+
+      // Send as object
+      const res = await axios.post(`${USER_BACKEND_URL}/availableSlote/${loggedInUserId}`,{ todayDate: Todaydate }, config )
+
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  useEffect(() => {
 
   }, [])
 
@@ -179,7 +227,9 @@ const Availability = () => {
         {/* Left Side - Date Buttons */}
         <div className="flex flex-col gap-6 mt-6 ml-4">
           {/* Today */}
-          <button className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
+          <button
+            onClick={todayBookedSlotes}
+            className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
             <h2 className="text-sm font-semibold text-[#173b1c] text-center">{todayDay}</h2>
             <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{todayDate}</h1>
             <h2 className="text-md font-semibold text-[#173b1c] text-center">{todayMonth}</h2>

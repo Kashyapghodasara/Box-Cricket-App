@@ -40,7 +40,7 @@ const Registration = () => {
             primary: "#39bf04", // red-400 (error icon color)
             secondary: "#1f2937", // gray-800
         },
-        duration: 4000, // Optional: auto-close duration
+        duration: 2000, // Optional: auto-close duration
     }
     const ErrorToastStyle = {
         style: {
@@ -57,7 +57,7 @@ const Registration = () => {
             primary: "#eb1410", // red-400 (error icon color)
             secondary: "#1f2937", // gray-800
         },
-        duration: 4000, // Optional: auto-close duration
+        duration: 2000, // Optional: auto-close duration
     }
 
     const [formData, setFormData] = useState({

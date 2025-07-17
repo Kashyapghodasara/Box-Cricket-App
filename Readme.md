@@ -197,4 +197,8 @@
     - Database model fixed
     - Fixing issue
 
+#### Day 39 -- Thursday -- 17-07-2025
+    - bookedSlote Detail page started
+    - Fixing issue
+
 
