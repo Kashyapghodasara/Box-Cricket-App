@@ -203,4 +203,8 @@
     - Tested on Postman
     - Fixing issue
 
+#### Day 40 -- Friday -- 18-07-2025
+    - Admin seeding completed
+    - Fix issues
+
 

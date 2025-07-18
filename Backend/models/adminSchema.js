@@ -17,15 +17,11 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    code : {
-        type: Number,
-        required: true,
-    },
     secret_string: {
         type: String,
-        required: True
+        required: true
     }
 }, { timestamps: true })
 
-const Admin = mongoose.model("admin", adminSchema)
+const Admin = mongoose.model("admin", adminSchema);
 export default Admin
