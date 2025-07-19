@@ -8,6 +8,7 @@ import DBConnection from './config/database.js';
 import userRouter from './routes/userRoute.js'
 import bookingRoute from './routes/bookingRoute.js'
 import paymentRoute from './routes/paymentRoute.js'
+import adminRouter from './routes/adminRoute.js'
 
 export const app = express()
 DBConnection()
@@ -29,6 +30,7 @@ app.use(cors({
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/user", bookingRoute)
 app.use("/api/v1/user", paymentRoute)
+app.use("/api/v1/admin", adminRouter)
 
 
 if (process.env.NODE_ENV === 'development') {

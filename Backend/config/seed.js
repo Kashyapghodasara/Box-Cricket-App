@@ -33,19 +33,19 @@ export const seedAdmin = async () => {
         }
 
         const hashPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 16);
-        const encryptSecretString = encrypt(
-            JSON.stringify(process.env.ADMIN_SECRET_STRING)
-        );
+        const encryptSecretString = encrypt(process.env.ADMIN_SECRET_STRING);
 
         await Admin.create({
             name: process.env.ADMIN_NAME,
             username: process.env.ADMIN_USERNAME,
             email: process.env.ADMIN_EMAIL,
             password: hashPassword,
-            secret_string: JSON.stringify(encryptSecretString),
+            secret_string: encryptSecretString, 
+            // Remove JSON.Stringify cause it doesn;t include ""
+            // Because encryptedString is an Object
         });
 
-        console.log("Admin created successfully ✅");
+        return console.log("Admin created successfully ✅");
 
     } catch (error) {
         console.error("❌ Error in Admin Seeding Process:", error.message);

@@ -18,8 +18,14 @@ const adminSchema = new mongoose.Schema({
         required: true
     },
     secret_string: {
-        type: String,
-        required: true
+        iv: {
+            type: String,
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        }
     }
 }, { timestamps: true })
 

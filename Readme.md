@@ -207,4 +207,11 @@
     - Admin seeding completed
     - Fix issues
 
+#### Day 41 -- Saturday -- 19-07-2025
+    - Admin Login Completed on Postman
+    - Update Admin schema
+    - Update encryption - decryption function with the help of ChatGPT
+    - Update Admin seed.js function
+    - Fix issues
+
 

@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { seedAdmin } from './seed.js';
 
+let isConnected = false;
 
 // 🌱 Load .env or .env.test depending on NODE_ENV
 if (process.env.NODE_ENV === 'test') {
@@ -16,10 +17,16 @@ const DBConnection = async () => {
         return;
     }
 
+    if (isConnected) {
+        console.log("✅ Already connected");
+        return;
+    }
+
     try {
         await mongoose.connect(process.env.MONGO_URI);
+        isConnected = true;
         console.log("✅ Database connection successful");
-        /* seedAdmin() */
+        /* return seedAdmin() */
     } catch (err) {
         console.error("❌ Database connection failed:", err.message);
         process.exit(1);
