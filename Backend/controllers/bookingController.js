@@ -136,6 +136,7 @@ export const bookedSloteChecking = async (req, res) => {
 
         const min = new Date(new Date(getDate).setUTCHours(0, 0, 0, 0));
         const max = new Date(new Date(getDate).setUTCHours(23, 59, 59, 999));
+        const getSetDate = new Date(new Date(getDate).setUTCHours(0, 0, 0, 0));
 
         const bookedSlotsToday = findUser.bookings.filter((booked) => {    // filter only return true or false
             return booked.date >= min && booked.date <= max;

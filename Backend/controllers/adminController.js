@@ -45,7 +45,6 @@ function decryptText(encrypted) {
 
 export const adminLogin = async (req, res) => {
     try {
-        console.log(req.body)
         const { name, username, email, password, secret_string } = req.body
 
 
@@ -57,7 +56,6 @@ export const adminLogin = async (req, res) => {
         if (!findAdmin) {
             return res.status(400).json({ message: "Admin not found", success: false })
         }
-        console.log("Username email mathc")
 
         const decryptString = await decryptText(findAdmin.secret_string)
 
@@ -94,8 +92,9 @@ export const adminLogin = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("Error occure in Admin Login Process", error.message)
-        console.log(error)
-        return res.status(500).json({ message: "Internal Server Error", success: false })
+        return res.status(400).json({
+            message: error.message,
+            success: false
+        })
     }
 }

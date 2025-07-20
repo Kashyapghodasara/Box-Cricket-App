@@ -214,4 +214,10 @@
     - Update Admin seed.js function
     - Fix issues
 
+#### Day 42 -- Sunday -- 20-07-2025
+    - Admin Login integration completed
+    - Availability slot Page completed
+    - Most of the backend work Done
+    - Fix issues
+
 

@@ -24,7 +24,7 @@ const DBConnection = async () => {
 
     try {
         await mongoose.connect(process.env.MONGO_URI);
-        isConnected = true;
+        /* isConnected = true; */
         console.log("✅ Database connection successful");
         /* return seedAdmin() */
     } catch (err) {

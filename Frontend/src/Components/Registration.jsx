@@ -8,6 +8,7 @@ import { MdOutlinePassword } from "react-icons/md";
 import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
+import { ADMIN_BACKEND_URL } from '../Constant'
 import useRegisration from '../Store/useRegistration';
 import useUserIdStore from '../Store/useUserIdStore';
 import { useNavigate } from 'react-router-dom';
@@ -133,7 +134,7 @@ const Registration = () => {
             if (response.data.success === true) {
                 login()
                 setUserId(response.data.findUserWithToken._id)
-                
+
                 toast.success(response.data.message, SuccessToastStyle);
                 setFormData({ name: "", username: "", email: "", password: "" });
                 navigate('/')
@@ -160,6 +161,35 @@ const Registration = () => {
             toast.error(error.response.data.message, ErrorToastStyle);
         }
 
+    }
+
+    const adminLoginHandler = async (e) => {
+        e.preventDefault()
+        if (!adminData.name || !adminData.username || !adminData.email || !adminData.password || !adminData.secret_string) {
+            return toast.error("Please fill all the fields", ErrorToastStyle);
+        }
+        if (adminData.password.length < 4) {
+            return toast.error("Password Doesn't Match It's credential", ErrorToastStyle);
+        }
+        try {
+            const config = { headers: { "Content-Type": "application/json" }, withCredentials: true }
+            const Data = {
+                name: adminData.name,
+                username: adminData.username,
+                email: adminData.email,
+                password: adminData.password,
+                secret_string: adminData.secret_string
+            }
+            const res = await axios.post(`${ADMIN_BACKEND_URL}/adminLogin`, Data, config)
+            if (res.data.success === true) {
+                toast.success(res.data.message, SuccessToastStyle);
+                setAdminData({ name: "", username: "", email: "", password: "", secret_string: "" })
+                navigate('/adminDashboard')
+            }
+        } catch (error) {
+            toast.error("Error occured in admin login", ErrorToastStyle);
+            console.log(error)
+        }
     }
 
     return (
@@ -446,7 +476,7 @@ const Registration = () => {
 
                     {selectedBox === "Admin" && (
                         <>
-                            <form className='relative w-full flex flex-col items-center m-3'>
+                            <form methode="POST" className='relative w-full flex flex-col items-center m-3'>
                                 <div className="relative w-full max-w-md m-2 mt-10">
                                     <input
                                         type="text"
@@ -515,7 +545,7 @@ const Registration = () => {
 
                                 <div className="relative w-full max-w-md m-2">
                                     <input
-                                        type="text"
+                                        type="password"
                                         placeholder="Enter Secret String"
                                         name='secret_string'
                                         id='secret_string'
@@ -532,9 +562,10 @@ const Registration = () => {
                                 <div>
                                     <button
                                         type="submit"
+                                        onClick={adminLoginHandler}
                                         className="w-full px-10 mt-8 py-3 bg-[#ffb804] text-zinc-900 font-semibold text-lg rounded-xl 
                                         hover:bg-[#ff9f04] transition-all duration-300 shadow-md cursor-pointer
-                                        hover:shadow-[0_0_12px_2px_rgba(12,59,46,0.5)] focus:outline-none focus:ring-2 focus:ring-[#ff4a4a]"
+                                        hover:shadow-[0_0_12px_2px_rgba(12,59,46,0.5)] focus:outline-none focus:ring-2 focus:ring-[#ffbd4a]"
                                     >
                                         Admin
                                     </button>

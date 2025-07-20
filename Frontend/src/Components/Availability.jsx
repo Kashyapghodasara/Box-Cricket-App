@@ -153,13 +153,25 @@ const Availability = () => {
     }
   };
 
-  const to12HourFormat = (time24) => {
-    const [hourStr, minute] = time24.split(':');
-    let hour = parseInt(hourStr, 10);
+  function to12HourFormat(time) {
+    if (!time || typeof time !== 'string' || !time.includes(':')) {
+      return '--:--';
+    }
+
+    const [hourStr, minuteStr] = time.split(':');
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr, 10);
+
+    if (isNaN(hour) || isNaN(minute)) {
+      return '--:--';
+    }
+
     const ampm = hour >= 12 ? 'PM' : 'AM';
-    hour = hour % 12 || 12; // convert 0 -> 12
-    return `${hour}:${minute} ${ampm}`;
-  };
+    const hour12 = hour % 12 || 12;
+
+    return `${hour12}:${minuteStr.padStart(2, '0')} ${ampm}`;
+  }
+
 
   return (
     <>
@@ -268,17 +280,18 @@ const Availability = () => {
 
         <div className="grid grid-cols-3 gap-6 mt-6 w-full">
 
+          {/* Small Box */}
           <div className="border-2 border-[#1e1f1f] hover:bg-[#f1f1f1] cursor-pointer rounded-xl shadow-md transition-all duration-300 hover:shadow-lg p-4">
             <h1 className="text-[#0C3B2E] font-bold text-2xl mb-3">Small Box</h1>
             {sloteDetails?.length > 0 ? (
               sloteDetails.map((slot) => (
-                <div key={slot._id}>
+                <div key={slot?._id}>
                   {slot?.size === 'Small' && (
                     <>
                       <div className="flex flex-col gap-2">
                         <div className="flex flex-row items-center justify-between bg-[#f0fdf4] px-4 py-2 rounded-lg shadow-sm hover:bg-[#dcfce7] transition">
-                          <span className="text-[#14532d] font-medium">{to12HourFormat(slot?.start_time) - to12HourFormat(slot?.end)}</span>
-                          <span className="text-gray-500 text-sm">#{slot?.size}</span>
+                          <span className="text-[#14532d] font-medium">{to12HourFormat(slot?.start_time)} - {to12HourFormat(slot?.end_time)}</span>
+                          <span className="text-gray-500 text-sm">#{slot?.box_id}</span>
                         </div>
                       </div>
                     </>
@@ -286,7 +299,7 @@ const Availability = () => {
                 </div>
               ))
             ) : (
-              <h1>No Slots Available</h1>
+              <h1 className='text-xl font-semibold text-[#2a6353]'>No Slots Available</h1>
             )}
           </div>
 
@@ -294,45 +307,54 @@ const Availability = () => {
           {/* Medium Box */}
           <div className="border-2 border-[#1e1f1f] hover:bg-[#f1f1f1] cursor-pointer rounded-xl shadow-md transition-all duration-300 hover:shadow-lg p-4">
             <h1 className="text-[#0C3B2E] font-bold text-2xl mb-3">Medium Box</h1>
-
-            {/* Booked Slots for Medium */}
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row items-center justify-between bg-[#fefce8] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fef9c3] transition">
-                <span className="text-[#713f12] font-medium">11:00 AM - 1:00 PM</span>
-                <span className="text-gray-500 text-sm">#BX003</span>
-              </div>
-
-              <div className="flex flex-row items-center justify-between bg-[#fefce8] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fef9c3] transition">
-                <span className="text-[#713f12] font-medium">3:00 PM - 5:00 PM</span>
-                <span className="text-gray-500 text-sm">#BX004</span>
-              </div>
-            </div>
+            {sloteDetails?.length > 0 ? (
+              sloteDetails.map((slot) => (
+                <div key={slot?._id}>
+                  {slot?.size === 'Medium' && (
+                    <>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex flex-row items-center justify-between bg-[#fefce8] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fef9c3] transition">
+                          <span className="text-[#713f12] font-medium">
+                            {to12HourFormat(slot?.start_time)} - {to12HourFormat(slot?.end_time)}
+                          </span>
+                          <span className="text-gray-500 text-sm">#{slot?.box_id}</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))
+            ) : (
+              <h1 className='text-xl font-semibold text-[#2a6353]'>No Slots Available</h1>
+            )}
           </div>
+
 
           {/* Large Box */}
           <div className="border-2 border-[#1e1f1f] hover:bg-[#f1f1f1] cursor-pointer rounded-xl shadow-md transition-all duration-300 hover:shadow-lg p-4">
             <h1 className="text-[#0C3B2E] font-bold text-2xl mb-3">Large Box</h1>
-
-            {/* Booked Slots for Large */}
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
-                <span className="text-[#991b1b] font-medium">5:00 PM - 7:00 PM</span>
-                <span className="text-gray-500 text-sm">#BX005</span>
-              </div>
-              <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
-                <span className="text-[#991b1b] font-medium">7:00 PM - 9:00 PM</span>
-                <span className="text-gray-500 text-sm">#BX006</span>
-              </div>
-              <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
-                <span className="text-[#991b1b] font-medium">7:00 PM - 9:00 PM</span>
-                <span className="text-gray-500 text-sm">#BX006</span>
-              </div>
-              <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
-                <span className="text-[#991b1b] font-medium">7:00 PM - 9:00 PM</span>
-                <span className="text-gray-500 text-sm">#BX006</span>
-              </div>
-            </div>
+            {sloteDetails?.length > 0 ? (
+              sloteDetails.map((slot) => (
+                <div key={slot?._id}>
+                  {slot?.size === 'Large' && (
+                    <>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex flex-row items-center justify-between bg-[#fef2f2] px-4 py-2 rounded-lg shadow-sm hover:bg-[#fee2e2] transition">
+                          <span className="text-[#991b1b] font-medium">
+                            {to12HourFormat(slot?.start_time)} - {to12HourFormat(slot?.end_time)}
+                          </span>
+                          <span className="text-gray-500 text-sm">#{slot?.box_id}</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))
+            ) : (
+              <h1 className='text-xl font-semibold text-[#2a6353]'>No Slots Available</h1>
+            )}
           </div>
+
 
         </div>
 

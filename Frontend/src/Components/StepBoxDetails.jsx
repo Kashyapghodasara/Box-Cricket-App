@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import useBoxDetailStore from '../Store/useBoxDetailStore.jsx';
+import useRegistration from '../Store/useRegistration.jsx';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const StepBoxDetails = ({ onNext }) => {
@@ -17,6 +19,8 @@ const StepBoxDetails = ({ onNext }) => {
     const BoxIds = ["BX001", "BX002", "BX003", "BX004", "BX005", "BX006"]
 
     const { setBoxDetails, boxDetails } = useBoxDetailStore();
+    const { isLoggedIn } = useRegistration()
+    const navigate = useNavigate()
 
     const toastStyle = {
         background: "#212121",
@@ -191,6 +195,17 @@ const StepBoxDetails = ({ onNext }) => {
         }
     };
 
+
+    useEffect(() => {
+        if (isLoggedIn === false) {
+            toast.error("Please Login First", {
+                style: toastStyle,
+                iconTheme: toastIconTheme,
+                duration: 4000,
+            });
+            navigate('/')
+        }
+    }, [isLoggedIn])
 
     useEffect(() => {
         const durationValue = document.getElementById('Duration').value;
