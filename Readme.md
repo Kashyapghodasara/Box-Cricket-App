@@ -220,4 +220,7 @@
     - Most of the backend work Done
     - Fix issues
 
+#### Day 43 -- Monday -- 21-07-2025
+    - Admin folder setup
+
 
