@@ -223,4 +223,7 @@
 #### Day 43 -- Monday -- 21-07-2025
     - Admin folder setup
 
+#### Day 44 -- Tuesday -- 22-07-2025
+    - Admin folder setup
+    - Add neccessary packages
 
