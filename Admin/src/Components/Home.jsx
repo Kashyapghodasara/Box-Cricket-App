@@ -1,9 +1,12 @@
 import React from 'react'
+import Sidebar from './Sidebar'
 
 
 const Home = () => {
   return (
-    <div className='text-3xl text-amber-100'>Home</div>
+    <div className=''>
+      <Sidebar />
+    </div>
   )
 }
 
