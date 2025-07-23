@@ -220,10 +220,18 @@
     - Most of the backend work Done
     - Fix issues
 
+---
+### --- ADMIN DASHBOARD ---
+
 #### Day 43 -- Monday -- 21-07-2025
     - Admin folder setup
 
 #### Day 44 -- Tuesday -- 22-07-2025
     - Admin folder setup
     - Add neccessary packages
+
+#### Day 45 -- Wednesday -- 23-07-2025
+    - Sidebar completed
+    - Install neccessary packages
+
 
