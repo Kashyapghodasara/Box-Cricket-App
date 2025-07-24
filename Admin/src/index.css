@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Oxygen", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -39,7 +39,7 @@
   background: var(--orange);
   clip-path: circle(0% at 50% 50%);
   z-index: -1;
-  transition: all cubic-bezier(0, 0.96, 0.58, 1.1) 2s;
+  transition: all cubic-bezier(0, 0.96, 0.58, 1.1) 1s;
 }
 
 .my-button:hover {

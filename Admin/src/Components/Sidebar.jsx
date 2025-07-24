@@ -1,50 +1,86 @@
+"use client";
 import React from 'react'
-import { LuLayoutDashboard } from "react-icons/lu"
 import { RiMoneyRupeeCircleLine, RiBankLine } from "react-icons/ri"
-import { GoGraph } from "react-icons/go"
+import { ChartNoAxes } from '../Animation/ChartNoAxes'
+import { LayoutGrid } from '../Animation/LayoutGrid'
+import { BadgeDollarSign } from "../Animation/BadgeDollarSign";
+import { ScanText } from '../Animation/ScanText';
+import { useState } from 'react'
 
 const Sidebar = () => {
-  return (
-    <div className='w-full h-screen bg-[#161616] flex'>
-      {/* Sidebar */}
-      <aside className='w-[19%] h-screen bg-[#f1e8df] rounded-r-4xl flex flex-col items-center py-6'>
 
+  const [isHovered, setIsHovered] = useState(false);
+  const [isHoveredOverview, setIsHoveredOverview] = useState(false);
+  const [isHoveredRevenue, setIsHoveredRevenue] = useState(false);
+  const [isHoveredTransactions, setIsHoveredTransactions] = useState(false);
+
+
+
+  return (
+    <>
+      {/* Sidebar */}
+      <aside className='w-[19%] h-screen bg-[#f1e8df] rounded-r-[30px] shadow-lg border-r-2 flex flex-col justify-between items-center py-6'>
         {/* Top: Admin + Menu */}
-        <div className='flex flex-col gap-6 items-center text-xl text-[#191a1a] font-semibold '>
-          <h1 className='text-4xl text-center font-bold text-[#191a1a] mb-8'>
+        <div className='flex flex-col gap-6 items-center text-xl text-[#191a1a] font-semibold'>
+          <h1 className='text-4xl text-center font-extrabold text-[#191a1a] mb-8 mt-2 tracking-wider'>
             Admin
           </h1>
 
-          <button className="my-button w-44 flex items-center justify-center gap-3 py-2 rounded-full">
-            <LuLayoutDashboard className="text-2xl" />
-            <span>Overview</span>
+          {/* Menu Buttons */}
+          <button
+            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full"
+            onMouseEnter={() => setIsHoveredOverview(true)}
+            onMouseLeave={() => setIsHoveredOverview(false)}
+          >
+            <LayoutGrid hovered={isHoveredOverview} className="text-lg" />
+            <span className="text-[#191a1a] group-hover:text-white transition-colors duration-300">
+              Overview
+            </span>
           </button>
 
-          <button className="my-button w-44 flex items-center justify-center gap-3 py-2 rounded-full">
-            <RiMoneyRupeeCircleLine className="text-2xl" />
-            <span>Revenue</span>
+          <button
+            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full"
+            onMouseEnter={() => setIsHoveredRevenue(true)}
+            onMouseLeave={() => setIsHoveredRevenue(false)}
+          >
+            <BadgeDollarSign hovered={isHoveredRevenue} className="text-xl" />
+            <span className="text-[#191a1a] group-hover:text-white transition-colors duration-300">
+              Revenue
+            </span>
           </button>
 
-          <button className="my-button w-44 flex items-center justify-center gap-3 py-2 rounded-full">
-            <RiBankLine className="text-2xl" />
-            <span>Transaction</span>
+          <button
+            className="w-44 my-button group flex items-center justify-center gap-3 py-3 rounded-full"
+            onMouseEnter={() => setIsHoveredTransactions(true)}
+            onMouseLeave={() => setIsHoveredTransactions(false)}
+          >
+            <ScanText hovered={isHoveredTransactions} />
+            <span className="text-[#191a1a] group-hover:text-white transition-colors duration-300">
+              Transaction
+            </span>
           </button>
 
-          <button className="my-button w-44 flex items-center justify-center gap-3 py-2 rounded-full">
-            <GoGraph className="text-2xl" />
-            <span>Statistics</span>
+          <button
+            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <ChartNoAxes hovered={isHovered} />
+            <span className="text-[#191a1a] group-hover:text-white transition-colors duration-300">
+              Statistics
+            </span>
           </button>
         </div>
 
         {/* Bottom: Logout */}
-        <div className="mt-auto">
+        <div className="mb-4">
           <button className="my-button w-40 py-2 text-xl font-semibold text-center text-[#241818] rounded-full">
             Logout
           </button>
         </div>
-
       </aside>
-    </div>
+
+    </>
   )
 }
 
