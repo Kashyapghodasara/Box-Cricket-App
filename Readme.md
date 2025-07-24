@@ -234,4 +234,10 @@
     - Sidebar completed
     - Install neccessary packages
 
+#### Day 46 -- Thursday -- 24-07-2025
+    - Sidebar completed
+    - UI Updated
+    - Install neccessary packages
+    - Fix issues
+
 
