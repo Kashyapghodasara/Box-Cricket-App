@@ -3,28 +3,29 @@
 ---
 
 ### 🏡 Frontend
-![React](https://img.shields.io/badge/React.js-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+[![React, Tailwind](https://skillicons.dev/icons?i=react,tailwind)](https://skillicons.dev)
+
 
 ### 🔧 Backend
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
-![REST API](https://img.shields.io/badge/REST%20API-4CAF50?style=for-the-badge&logo=swagger&logoColor=white)
+[![Node, Express, Mongo](https://skillicons.dev/icons?i=nodejs,express)](https://skillicons.dev)
+
 
 ### 🗃️ Database
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+[![MongoDB](https://skillicons.dev/icons?i=mongodb)](https://skillicons.dev)
 
-### 🎨 UI Features
+
+<!-- ### 🎨 UI Features
 ![React Bits](https://img.shields.io/badge/React--Bits-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![React Hot Toast](https://img.shields.io/badge/React%20Hot%20Toast-%23FF6B00?style=for-the-badge&logo=react&logoColor=white)
-<!-- ![DaisyUI](https://img.shields.io/badge/Daisy%20UI-FF79C6?style=for-the-badge&logo=daisyui&logoColor=333333) -->
+<!-- ![DaisyUI](https://img.shields.io/badge/Daisy%20UI-FF79C6?style=for-the-badge&logo=daisyui&logoColor=333333) 
 
 
 ### 💳 Payment Integration
-![Dummy Manual Integration](https://img.shields.io/badge/Dummy%20Manual%20Integration-orange?style=for-the-badge&logo=mastercard&logoColor=white)
+![Dummy Manual Integration](https://img.shields.io/badge/Dummy%20Manual%20Integration-orange?style=for-the-badge&logo=mastercard&logoColor=white) -->
 
 ### 🧰 Tools
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+[![Postman](https://skillicons.dev/icons?i=postman)](https://skillicons.dev)
+
 
 
 ---
@@ -238,6 +239,10 @@
     - Sidebar completed
     - UI Updated
     - Install neccessary packages
+    - Fix issues
+
+#### Day 47 -- Friday -- 25-07-2025
+    - Dashboard Started
     - Fix issues
 
 
