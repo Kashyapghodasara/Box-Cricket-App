@@ -28,7 +28,7 @@ const Sidebar = () => {
 
           {/* Menu Buttons */}
           <button
-            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full"
+            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full cursor-pointer"
             onMouseEnter={() => setIsHoveredOverview(true)}
             onMouseLeave={() => setIsHoveredOverview(false)}
           >
@@ -39,7 +39,7 @@ const Sidebar = () => {
           </button>
 
           <button
-            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full"
+            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full cursor-pointer"
             onMouseEnter={() => setIsHoveredRevenue(true)}
             onMouseLeave={() => setIsHoveredRevenue(false)}
           >
@@ -50,7 +50,7 @@ const Sidebar = () => {
           </button>
 
           <button
-            className="w-44 my-button group flex items-center justify-center gap-3 py-3 rounded-full"
+            className="w-44 my-button group flex items-center justify-center gap-3 py-3 rounded-full cursor-pointer"
             onMouseEnter={() => setIsHoveredTransactions(true)}
             onMouseLeave={() => setIsHoveredTransactions(false)}
           >
@@ -61,7 +61,7 @@ const Sidebar = () => {
           </button>
 
           <button
-            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full"
+            className="w-44 my-button group flex items-center justify-center gap-3 py-2.5 rounded-full cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -73,8 +73,8 @@ const Sidebar = () => {
         </div>
 
         {/* Bottom: Logout */}
-        <div className="mb-4">
-          <button className="my-button w-40 py-2 text-xl font-semibold text-center text-[#241818] rounded-full">
+        <div className="mb-4 ">
+          <button className="my-button w-40 py-2 cursor-pointer text-xl font-semibold text-center text-[#241818] rounded-full">
             Logout
           </button>
         </div>
