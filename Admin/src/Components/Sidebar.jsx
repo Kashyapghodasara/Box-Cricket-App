@@ -19,7 +19,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Sidebar */}
-      <aside className='w-[19%] h-screen bg-[#f1e8df] rounded-r-[30px] shadow-lg border-r-2 flex flex-col justify-between items-center py-6'>
+      <aside className='w-[17%] h-screen bg-[#f1e8df] rounded-r-[30px] shadow-lg border-r-2 flex flex-col justify-between items-center py-6'>
         {/* Top: Admin + Menu */}
         <div className='flex flex-col gap-6 items-center text-xl text-[#191a1a] font-semibold'>
           <h1 className='text-4xl text-center font-extrabold text-[#191a1a] mb-8 mt-2 tracking-wider'>
