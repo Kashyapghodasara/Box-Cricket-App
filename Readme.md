@@ -12,6 +12,8 @@
 
 ### 🗃️ Database
 [![MongoDB](https://skillicons.dev/icons?i=mongodb)](https://skillicons.dev)
+<img src="./Frontend/public/Images/shadcn-rmbg.png" alt="Shadcn UI" style="height: 60px; width: 60px; vertical-align: middle; margin-top: -40px;" />
+
 
 
 <!-- ### 🎨 UI Features
