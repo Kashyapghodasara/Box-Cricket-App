@@ -15,6 +15,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@font-face {
+  font-family: 'DuneRiseFont';
+  src: url('/fonts/Dune_Rise.otf') format('opentype'); /* or .ttf with format('truetype') */
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 :root {
   --white: #ffffff;
   --gray: #1f1e1e;
