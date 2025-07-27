@@ -10,16 +10,6 @@ import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-/* { boxDetails }	req.body.boxDetails
-boxDetails (raw object)	req.body */
-
-// TODO
-// -> Dynamic Change BG according to size of the box
-// -> Dynamic Change Data
-// -> Random Generated Ticket NO
-// -> Send Ticket info to Mail
-// -> Loading Skeleton
-
 const StepPreviewDetails = ({ onNext, onPrev }) => {
 
   const { boxDetails } = useBoxDetailStore();

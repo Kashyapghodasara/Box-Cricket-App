@@ -12,7 +12,7 @@
 
 ### 🗃️ Database
 [![MongoDB](https://skillicons.dev/icons?i=mongodb)](https://skillicons.dev)
-<img src="./Frontend/public/Images/shadcn-rmbg.png" alt="Shadcn UI" style="height: 60px; width: 60px; vertical-align: middle; margin-top: -40px;" />
+<img src="./Frontend/public/Images/shadcn-rmbg.png" alt="Shadcn UI" style="height: 60px; width: 60px; vertical-align: middle; margin-top: -32px;" />
 
 
 
@@ -249,6 +249,11 @@
 
 #### Day 48 -- Saturday -- 26-07-2025
     - Credit Card UI completed
+    - Fix issues
+
+#### Day 49 -- Sunday -- 27-07-2025
+    - Credit Card UI completed - Date/Time UI added
+    - One more security added with the help of chatGPT in User module
     - Fix issues
 
 
