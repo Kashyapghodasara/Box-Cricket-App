@@ -4,8 +4,19 @@ import { RiVisaLine } from "react-icons/ri";
 import { FcSimCardChip } from "react-icons/fc";
 import { BsCreditCard2Back } from "react-icons/bs";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import GlassIcons from '../Animation/GlassIcons.jsx'
+import { FaBookmark } from "react-icons/fa6";
 
 const Dashboard = () => {
+
+    // update with your own icons and colors
+    const items = [
+        { icon: <FaBookmark />, color: 'purple', label: '' },
+    ];
+    const items1 = [
+        { icon: <FaBookmark />, color: 'green', label: '' },
+    ];
+
     return (
         <div className='w-[81%] h-screen mx-4 mt-1 rounded-2xl shadow-lg'>
 
@@ -121,6 +132,66 @@ const Dashboard = () => {
                 </div>
 
             </section>
+
+            {/* Today's Bookings */}
+            <section className="mt-3 flex gap-8">
+                <div className="relative w-[30%] h-auto rounded-xl p-5 overflow-hidden shadow-md group transition-all duration-500 hover:scale-[1.02]">
+
+                    {/* Animated Background Layer */}
+                    <div className="absolute inset-0 z-0 before:content-[''] before:absolute before:inset-0 before:rounded-xl before:bg-[length:200%_200%] before:bg-gradient-to-br before:from-[#2c2c2c] before:via-[#1a1a1a] before:to-[#121212] before:transition-all before:duration-[1500ms] before:ease-in-out group-hover:before:bg-[position:100%_100%]" />
+
+                    {/* Content Layer */}
+                    <div className="relative z-10 text-white flex flex-col justify-between h-full">
+
+                        {/* Top Section */}
+                        <div>
+                            <div className="flex items-start justify-between">
+                                <h1 className="text-lg font-semibold text-gray-200">Today's Bookings</h1>
+                                <GlassIcons items={items} className="!gap-2" />
+                            </div>
+
+                            <h2 className="text-7xl mt-[-10px]  mb-2 font-bold font-mono text-white transition-transform duration-500 group-hover:text-gray-100">
+                                5
+                            </h2>
+                        </div>
+
+                        {/* Bottom Section */}
+                        <p className="text-sm font-medium text-gray-400">Slot Booked</p>
+                    </div>
+                </div>
+
+
+                {/* Today's Revenue */}
+                <div className="relative w-[30%] h-auto rounded-xl p-5 overflow-hidden shadow-md group transition-all duration-500 hover:scale-[1.02] flex flex-col justify-between">
+
+                    {/* Animated Background */}
+                    <div className="absolute inset-0 z-0 before:content-[''] before:absolute before:inset-0 before:rounded-xl before:bg-[length:200%_200%] before:bg-gradient-to-br before:from-[#2c2c2c] before:via-[#1a1a1a] before:to-[#121212] before:transition-all before:duration-[1500ms] before:ease-in-out group-hover:before:bg-[position:100%_100%]" />
+
+                    {/* Content */}
+                    <div className="relative z-10 text-white flex flex-col justify-between h-full">
+
+                        {/* Top section */}
+                        <div>
+                            <div className="flex items-start justify-between">
+                                <h1 className="text-lg font-semibold text-gray-200">Today's Revenue</h1>
+                                <GlassIcons items={items1} className="!gap-2" />
+                            </div>
+
+                            <h2 className="text-5xl -mt-2 font-bold font-mono text-white transition-transform duration-500 group-hover:text-gray-100">
+                                ₹1,550 /-
+                            </h2>
+                        </div>
+
+                        {/* Bottom-aligned */}
+                        <p className="text-sm font-medium text-gray-400">Payment Received</p>
+                    </div>
+                </div>
+
+            </section>
+
+
+
+
         </div>
     );
 };
