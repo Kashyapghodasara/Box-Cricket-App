@@ -1,199 +1,225 @@
-import React from 'react';
-import Avatar from 'react-avatar';
-import { RiVisaLine } from "react-icons/ri";
+import React, { useState, useEffect } from 'react';
 import { FcSimCardChip } from "react-icons/fc";
+import { SiVisa } from "react-icons/si";
 import { BsCreditCard2Back } from "react-icons/bs";
-import { FaRegCircleCheck } from "react-icons/fa6";
-import GlassIcons from '../Animation/GlassIcons.jsx'
-import { FaBookmark } from "react-icons/fa6";
+import {
+    LayoutDashboard,
+    BarChart3,
+    ScanText,
+    BadgeDollarSign,
+    LogOut,
+    CreditCard,
+    Cpu,
+    Bookmark,
+    CheckCircle2,
+    ChevronRight
+} from 'lucide-react';
 
-const Dashboard = () => {
+// A small, reusable component for the glass-like icons on the cards
+const GlassIcon = ({ icon: Icon, color }) => (
+    <div className={`w-8 h-8 rounded-lg bg-${color}-500/20 backdrop-blur-sm border border-white/10 flex items-center justify-center`}>
+        <Icon className={`text-${color}-400`} size={18} />
+    </div>
+);
 
-    // update with your own icons and colors
-    const items = [
-        { icon: <FaBookmark />, color: 'purple', label: '' },
-    ];
-    const items1 = [
-        { icon: <FaBookmark />, color: 'green', label: '' },
+// Helper function to get the correct ordinal suffix for dates (1st, 2nd, 3rd, 4th)
+const getOrdinalSuffix = (day) => {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+};
+
+// The Sidebar Component, re-themed to match the dashboard
+const Sidebar = () => {
+    const menuItems = [
+        { icon: LayoutDashboard, label: 'Overview' },
+        { icon: BadgeDollarSign, label: 'Revenue' },
+        { icon: ScanText, label: 'Transactions' },
+        { icon: BarChart3, label: 'Statistics' },
     ];
 
     return (
-        <div className='w-[81%] h-screen mx-4 mt-1 rounded-2xl shadow-lg'>
+        <aside className='w-64 h-screen bg-[#0c0c0c] backdrop-blur-lg border-r border-white/10 p-6 flex flex-col justify-between'>
+            {/* Top Section: Title + Menu */}
+            <div>
+                <div className='flex items-center gap-3 mb-12'>
+                    <LayoutDashboard className='text-purple-400' size={32} />
+                    <h1 className='text-2xl font-bold text-white'>Admin</h1>
+                </div>
 
-            {/* Header Section: Avatar + Card Section */}
-            <section className='mt-6 flex justify-between gap-8'>
+                <nav>
+                    <ul className='space-y-3'>
+                        {menuItems.map((item, index) => (
+                            <li key={index}>
+                                <a href="#" className='flex items-center gap-4 text-gray-300 hover:text-white hover:bg-white/5 p-3 rounded-lg cursor-pointer transition-all duration-300 group'>
+                                    <item.icon size={22} className="group-hover:scale-110 transition-transform" />
+                                    <span className='font-medium'>{item.label}</span>
+                                    {item.label === 'Overview' && <ChevronRight size={16} className='ml-auto' />}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+            </div>
 
-                {/* Card Section */}
-                <div className='relative w-[75%] group overflow-hidden rounded-xl'>
+            {/* Bottom Section: Logout */}
+            <div>
+                <button className="w-full flex items-center justify-center gap-3 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 group">
+                    <LogOut size={22} className="group-hover:scale-110 transition-transform" />
+                    <span className="font-semibold">Logout</span>
+                </button>
+            </div>
+        </aside>
+    );
+};
 
-                    {/* Animated Gradient Background */}
-                    <div className="absolute inset-0 z-0 before:content-[''] before:absolute before:inset-[-100px] before:bg-gradient-to-br before:from-[#111] before:via-[#444] before:to-[#eee] before:opacity-70 before:rounded-[inherit] before:blur-2xl before:transition-transform before:duration-700 before:ease-out group-hover:before:scale-125 group-hover:before:translate-x-20 group-hover:before:translate-y-20" />
+// The main Dashboard Component, resized and enhanced
+const Dashboard = () => {
+    const [time, setTime] = useState(new Date());
 
-                    {/* Card & Balance Section */}
-                    <section className='relative z-10 border border-[#2e2f2f] bg-black/40 backdrop-blur-lg rounded-xl p-4 shadow-lg hover:shadow-white/20 transition-all duration-500 cursor-pointer'>
+    // Effect to update the time every second for the live clock
+    useEffect(() => {
+        const timerId = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(timerId); // Cleanup on unmount
+    }, []);
 
-                        {/* Title */}
-                        <div className='flex justify-between items-center mb-4 px-2'>
-                            <h1 className='text-white text-2xl font-semibold'>My Card</h1>
-                        </div>
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.toLocaleString('en-US', { month: 'long' });
+    const year = today.getFullYear();
+    const weekday = today.toLocaleString('en-US', { weekday: 'long' });
 
-                        {/* Card Body */}
-                        <div className='flex gap-4'>
+    return (
+        <div className='w-full h-full p-4 md:p-6 overflow-y-auto bg-[#0c0c0c]'>
+            {/* ====== Header Section ====== */}
+            <header className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6'>
+                {/* User Info */}
+                <div className='flex items-center gap-4'>
+                    <img
+                        src="../public/batman.png"
+                        alt="User Avatar"
+                        onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/48x48/7e22ce/ffffff?text=K'; }}
+                        className='w-12 h-12 rounded-full border-2 border-purple-500 object-cover'
+                    />
+                    <div>
+                        <h1 className='text-xl font-bold text-white'>Kashyap Patel</h1>
+                        <p className='text-sm text-gray-400'>kashyappatel816@gmail.com</p>
+                    </div>
+                </div>
+                {/* Date & Time Widget */}
+                <div className="text-right">
+                    <div className="text-lg font-semibold text-white tracking-wide">
+                        {`${weekday}, ${day}`}<sup className="text-xs font-medium">{getOrdinalSuffix(day)}</sup> {`${month} ${year}`}
+                    </div>
+                    <div className="text-md font-mono text-gray-300 mt-1">
+                        {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
+                    </div>
+                </div>
+            </header>
 
-                            {/* Credit Card */}
-                            <div className='w-[60%] rounded-xl p-4 bg-black/30 backdrop-blur-sm'>
-                                <div className='flex justify-between items-center mb-3'>
-                                    <div className='flex items-center gap-3'>
-                                        <BsCreditCard2Back className='text-2xl text-white' />
-                                        <h2 className='text-white font-mono'>Credit Card</h2>
+            {/* ====== Main Content Grid ====== */}
+            <main className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+
+                {/* Left Column: Main Card */}
+                <div className='lg:col-span-2'>
+                    {/* My Card Section */}
+                    <div className='relative group overflow-hidden rounded-2xl'>
+                        <div className="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" />
+                        <div className="absolute -inset-full top-0 z-0 block h-full w-1/2 -skew-x-12 transform bg-gradient-to-r from-transparent to-white/20 opacity-40 group-hover:animate-shine" />
+
+                        <section className='relative z-10 border border-white/10 bg-black/40 backdrop-blur-lg rounded-2xl p-4 md:p-6 shadow-lg'>
+                            <div className='flex justify-between items-center mb-4'>
+                                <h2 className='text-white text-xl font-semibold'>My Card</h2>
+                            </div>
+
+                            <div className='flex flex-col md:flex-row gap-4 md:gap-6'>
+                                {/* Credit Card Visual */}
+                                <div className='w-full md:w-3/5 rounded-xl p-4 bg-black/50 backdrop-blur-sm border border-white/10 flex flex-col justify-between bg-gradient-to-br from-purple-900/50 to-indigo-900/50'>
+                                    <div className='flex justify-between items-center mb-3 '>
+                                        <BsCreditCard2Back className='text-gray-100 h-7 w-7 flex items-center'/>
+                                        <SiVisa className='text-gray-100 h-12 w-12' />
                                     </div>
-                                    <RiVisaLine className='text-6xl text-white' />
-                                </div>
-                                <div className='flex justify-between items-center mb-6'>
-                                    <h3 className='text-white text-xl font-medium tracking-widest font-[DuneRiseFont]'>
-                                        1234 5678 9101 1121
-                                    </h3>
-                                    <FcSimCardChip className='text-5xl' />
-                                </div>
-                                <div className='flex justify-between text-white text-sm px-1'>
-                                    <span className='font-semibold'>Kashyap Patel</span>
-                                    <span className='font-semibold'>07/24</span>
-                                </div>
-                            </div>
-
-                            {/* Balance Info */}
-                            <div className='w-[40%] p-4 pr-0 flex flex-col justify-center rounded-xl'>
-                                <h2 className='text-white/80 text-md font-semibold pb-2'>Balance Info</h2>
-                                <p className='text-4xl font-bold tracking-wider text-white font-mono'>
-                                    ₹53,555 /-
-                                </p>
-                                <span className='text-sm text-white/60 pt-2'>Available Balance</span>
-                            </div>
-
-                            <div className='w-[18%] p-4 flex flex-col justify-between items-center bg-black/30 backdrop-blur-sm rounded-xl relative'>
-                                {/* Top Heading */}
-                                <h2 className="relative text-white/80 text-md font-semibold after:absolute after:left-1/2 after:bottom-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:after:left-0">
-                                    Received
-                                </h2>
-
-
-                                {/* Bottom Icon */}
-                                <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2">
-                                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
-                                        <FaRegCircleCheck className="text-black text-lg" />
+                                    <div>
+                                        <h3 className='text-white text-xl md:text-2xl font-mono tracking-widest mb-4'>
+                                            1234 5678 9101 1121
+                                        </h3>
+                                        <div className='flex justify-between items-center text-white text-sm'>
+                                            <span className='font-semibold'>Kashyap Patel</span>
+                                            <div className='flex items-center gap-2'>
+                                                <span className='font-semibold'>07/28</span>
+                                                <FcSimCardChip  className='' size={34} />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
+                                {/* Balance Info */}
+                                <div className='w-full md:w-2/5 p-4 flex flex-col justify-center'>
+                                    <h3 className='text-gray-400 text-sm font-semibold pb-1'>Available Balance</h3>
+                                    <p className='text-4xl font-bold tracking-wider text-white font-mono'>
+                                        ₹53,555
+                                    </p>
+                                    <div className='flex items-center gap-2 mt-2 text-sm text-green-400'>
+                                        <CheckCircle2 size={16} />
+                                        <span>Payment Received</span>
+                                    </div>
+                                </div>
                             </div>
-
-                        </div>
-                    </section>
-                </div>
-
-                {/* Avatar + DateTime (Right side) */}
-                <div className='flex flex-col items-end gap-3'>
-
-                    {/* Avatar Block */}
-                    <div className='border border-[#2e2f2f] bg-[#1a1b1b] rounded-xl p-3 shadow-sm cursor-pointer hover:shadow-md hover:bg-[#2e2f2f] transition-all duration-300 w-fit'>
-                        <div className='flex items-center gap-3'>
-                            <Avatar
-                                name='Kashyap'
-                                src='../public/batman.png'
-                                size='40'
-                                round='10px'
-                                className='shadow-md'
-                            />
-                            <div className='flex flex-col justify-center'>
-                                <h1 className='text-[#d7fff4] text-md font-medium tracking-wide'>Kashyap</h1>
-                                <p className='text-[#9db3ac] text-sm font-light'>kashyappatel816@gmail.com</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Date & Time Widget */}
-                    <div className="w-fit h-fit px-4 py-2 text-white text-right">
-                        <div className="uppercase text-sm text-gray-400 tracking-wider mb-1">
-                            Today &ndash; {new Date().toLocaleString('en-US', { weekday: 'long' })}
-                        </div>
-                        <div className="text-2xl sm:text-3xl font-bold tracking-wide leading-snug">
-                            {new Date().getDate()}<sup className="text-base font-medium">th</sup> &nbsp;
-                            {new Date().toLocaleDateString('en-US', { month: 'long' })}&nbsp;
-                            {new Date().getFullYear()}
-                        </div>
-                        <div className="text-xl sm:text-2xl font-semibold tracking-widest mt-1 text-gray-300">
-                            {new Date().toLocaleTimeString('en-US', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                hour12: true,
-                            }).replace(':', ' : ')}
-                        </div>
-                    </div>
-
-                </div>
-
-            </section>
-
-            {/* Today's Bookings */}
-            <section className="mt-3 flex gap-8">
-                <div className="relative w-[30%] h-auto rounded-xl p-5 overflow-hidden shadow-md group transition-all duration-500 hover:scale-[1.02]">
-
-                    {/* Animated Background Layer */}
-                    <div className="absolute inset-0 z-0 before:content-[''] before:absolute before:inset-0 before:rounded-xl before:bg-[length:200%_200%] before:bg-gradient-to-br before:from-[#2c2c2c] before:via-[#1a1a1a] before:to-[#121212] before:transition-all before:duration-[1500ms] before:ease-in-out group-hover:before:bg-[position:100%_100%]" />
-
-                    {/* Content Layer */}
-                    <div className="relative z-10 text-white flex flex-col justify-between h-full">
-
-                        {/* Top Section */}
-                        <div>
-                            <div className="flex items-start justify-between">
-                                <h1 className="text-lg font-semibold text-gray-200">Today's Bookings</h1>
-                                <GlassIcons items={items} className="!gap-2" />
-                            </div>
-
-                            <h2 className="text-7xl mt-[-10px]  mb-2 font-bold font-mono text-white transition-transform duration-500 group-hover:text-gray-100">
-                                5
-                            </h2>
-                        </div>
-
-                        {/* Bottom Section */}
-                        <p className="text-sm font-medium text-gray-400">Slot Booked</p>
+                        </section>
                     </div>
                 </div>
 
-
-                {/* Today's Revenue */}
-                <div className="relative w-[30%] h-auto rounded-xl p-5 overflow-hidden shadow-md group transition-all duration-500 hover:scale-[1.02] flex flex-col justify-between">
-
-                    {/* Animated Background */}
-                    <div className="absolute inset-0 z-0 before:content-[''] before:absolute before:inset-0 before:rounded-xl before:bg-[length:200%_200%] before:bg-gradient-to-br before:from-[#2c2c2c] before:via-[#1a1a1a] before:to-[#121212] before:transition-all before:duration-[1500ms] before:ease-in-out group-hover:before:bg-[position:100%_100%]" />
-
-                    {/* Content */}
-                    <div className="relative z-10 text-white flex flex-col justify-between h-full">
-
-                        {/* Top section */}
-                        <div>
-                            <div className="flex items-start justify-between">
-                                <h1 className="text-lg font-semibold text-gray-200">Today's Revenue</h1>
-                                <GlassIcons items={items1} className="!gap-2" />
+                {/* Right Column: Stats Cards */}
+                <div className='lg:col-span-1 flex flex-col gap-6'>
+                    {/* Today's Bookings */}
+                    <div className="relative w-full h-full rounded-2xl p-5 overflow-hidden shadow-md group transition-all duration-500 hover:scale-[1.03] bg-gray-900/60 border border-white/10 backdrop-blur-sm">
+                        <div className="relative z-10 text-white flex flex-col justify-between h-full">
+                            <div>
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-md font-semibold text-gray-300">Today's Bookings</h3>
+                                    <GlassIcon icon={Bookmark} color="purple" />
+                                </div>
+                                <h4 className="text-5xl mt-2 font-bold font-mono text-white transition-transform duration-500 group-hover:text-purple-300">
+                                    5
+                                </h4>
                             </div>
-
-                            <h2 className="text-5xl -mt-2 font-bold font-mono text-white transition-transform duration-500 group-hover:text-gray-100">
-                                ₹1,550 /-
-                            </h2>
+                            <p className="text-sm font-medium text-gray-500 mt-2">Slots Booked</p>
                         </div>
-
-                        {/* Bottom-aligned */}
-                        <p className="text-sm font-medium text-gray-400">Payment Received</p>
+                    </div>
+                    {/* Today's Revenue */}
+                    <div className="relative w-full h-full rounded-2xl p-5 overflow-hidden shadow-md group transition-all duration-500 hover:scale-[1.03] bg-gray-900/60 border border-white/10 backdrop-blur-sm">
+                        <div className="relative z-10 text-white flex flex-col justify-between h-full">
+                            <div>
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-md font-semibold text-gray-300">Today's Revenue</h3>
+                                    <GlassIcon icon={BadgeDollarSign} color="green" />
+                                </div>
+                                <h4 className="text-4xl mt-3 font-bold font-mono text-white transition-transform duration-500 group-hover:text-green-300">
+                                    ₹1,550
+                                </h4>
+                            </div>
+                            <p className="text-sm font-medium text-gray-500 mt-2">Payment Received</p>
+                        </div>
                     </div>
                 </div>
-
-            </section>
-
-
-
-
+            </main>
         </div>
     );
 };
 
-export default Dashboard;
+// The main App component that lays out the entire page
+export default function App() {
+    return (
+        // Main container with a subtle grid background
+        <div className="flex min-h-screen w-full bg-black font-sans bg-grid-white/[0.05]">
+            <Sidebar />
+            <main className="flex-1">
+                <Dashboard />
+            </main>
+        </div>
+    );
+}

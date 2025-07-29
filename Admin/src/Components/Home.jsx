@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <>
     <div className='w-full h-screen flex overflow-hidden bg-[#191a1a]'>
-      <Sidebar />
+     
       <Outlet />
     </div>
     </>
