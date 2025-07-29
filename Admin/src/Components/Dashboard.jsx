@@ -2,17 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { FcSimCardChip } from "react-icons/fc";
 import { SiVisa } from "react-icons/si";
 import { BsCreditCard2Back } from "react-icons/bs";
+
 import {
-    LayoutDashboard,
-    BarChart3,
-    ScanText,
-    BadgeDollarSign,
-    LogOut,
-    CreditCard,
-    Cpu,
     Bookmark,
+    BadgeDollarSign,
     CheckCircle2,
-    ChevronRight
 } from 'lucide-react';
 
 // A small, reusable component for the glass-like icons on the cards
@@ -31,50 +25,6 @@ const getOrdinalSuffix = (day) => {
         case 3: return 'rd';
         default: return 'th';
     }
-};
-
-// The Sidebar Component, re-themed to match the dashboard
-const Sidebar = () => {
-    const menuItems = [
-        { icon: LayoutDashboard, label: 'Overview' },
-        { icon: BadgeDollarSign, label: 'Revenue' },
-        { icon: ScanText, label: 'Transactions' },
-        { icon: BarChart3, label: 'Statistics' },
-    ];
-
-    return (
-        <aside className='w-64 h-screen bg-[#0c0c0c] backdrop-blur-lg border-r border-white/10 p-6 flex flex-col justify-between'>
-            {/* Top Section: Title + Menu */}
-            <div>
-                <div className='flex items-center gap-3 mb-12'>
-                    <LayoutDashboard className='text-purple-400' size={32} />
-                    <h1 className='text-2xl font-bold text-white'>Admin</h1>
-                </div>
-
-                <nav>
-                    <ul className='space-y-3'>
-                        {menuItems.map((item, index) => (
-                            <li key={index}>
-                                <a href="#" className='flex items-center gap-4 text-gray-300 hover:text-white hover:bg-white/5 p-3 rounded-lg cursor-pointer transition-all duration-300 group'>
-                                    <item.icon size={22} className="group-hover:scale-110 transition-transform" />
-                                    <span className='font-medium'>{item.label}</span>
-                                    {item.label === 'Overview' && <ChevronRight size={16} className='ml-auto' />}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-            </div>
-
-            {/* Bottom Section: Logout */}
-            <div>
-                <button className="w-full flex items-center justify-center gap-3 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 group">
-                    <LogOut size={22} className="group-hover:scale-110 transition-transform" />
-                    <span className="font-semibold">Logout</span>
-                </button>
-            </div>
-        </aside>
-    );
 };
 
 // The main Dashboard Component, resized and enhanced
@@ -113,7 +63,7 @@ const Dashboard = () => {
                 {/* Date & Time Widget */}
                 <div className="text-right">
                     <div className="text-lg font-semibold text-white tracking-wide">
-                        {`${weekday}, ${day}`}<sup className="text-xs font-medium">{getOrdinalSuffix(day)}</sup> {`${month} ${year}`}
+                        {`${weekday}, ${day}`}<sup className="text-xs font-medium">{getOrdinalSuffix(day)}</sup>{` ${month} ${year}`}
                     </div>
                     <div className="text-md font-mono text-gray-300 mt-1">
                         {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
@@ -206,20 +156,13 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+                
             </main>
+
+            {/* ====== Month wise booking Charts ====== */}
+
         </div>
     );
 };
 
-// The main App component that lays out the entire page
-export default function App() {
-    return (
-        // Main container with a subtle grid background
-        <div className="flex min-h-screen w-full bg-black font-sans bg-grid-white/[0.05]">
-            <Sidebar />
-            <main className="flex-1">
-                <Dashboard />
-            </main>
-        </div>
-    );
-}
+export default Dashboard;
