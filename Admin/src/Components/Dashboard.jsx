@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FcSimCardChip } from "react-icons/fc";
 import { SiVisa } from "react-icons/si";
 import { BsCreditCard2Back } from "react-icons/bs";
+import MonthChart from './MonthChart.jsx';
 
 import {
     Bookmark,
@@ -75,7 +76,7 @@ const Dashboard = () => {
             <main className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
 
                 {/* Left Column: Main Card */}
-                <div className='lg:col-span-2'>
+                <div className='lg:col-span-2' >
                     {/* My Card Section */}
                     <div className='relative group overflow-hidden rounded-2xl'>
                         <div className="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" />
@@ -90,7 +91,7 @@ const Dashboard = () => {
                                 {/* Credit Card Visual */}
                                 <div className='w-full md:w-3/5 rounded-xl p-4 bg-black/50 backdrop-blur-sm border border-white/10 flex flex-col justify-between bg-gradient-to-br from-purple-900/50 to-indigo-900/50'>
                                     <div className='flex justify-between items-center mb-3 '>
-                                        <BsCreditCard2Back className='text-gray-100 h-7 w-7 flex items-center'/>
+                                        <BsCreditCard2Back className='text-gray-100 h-7 w-7 flex items-center' />
                                         <SiVisa className='text-gray-100 h-12 w-12' />
                                     </div>
                                     <div>
@@ -101,7 +102,7 @@ const Dashboard = () => {
                                             <span className='font-semibold'>Kashyap Patel</span>
                                             <div className='flex items-center gap-2'>
                                                 <span className='font-semibold'>07/28</span>
-                                                <FcSimCardChip  className='' size={34} />
+                                                <FcSimCardChip className='' size={34} />
                                             </div>
                                         </div>
                                     </div>
@@ -156,10 +157,16 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-                
+
             </main>
 
-            {/* ====== Month wise booking Charts ====== */}
+            <div className="w-full mt-[-30px] mb-6 flex justify-start sm:w-full md:w-[80%] lg:w-[83%]">
+                <MonthChart />
+            </div>
+
+
+
+
 
         </div>
     );

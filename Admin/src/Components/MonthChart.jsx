@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { TrendingUp } from "lucide-react";
@@ -19,10 +19,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-// Description
-export const description = "A bar chart with a label";
+export const description = "A bar chart with monthly labels";
 
-// Chart data
 const chartData = [
   { month: "January", desktop: 186 },
   { month: "February", desktop: 305 },
@@ -30,9 +28,14 @@ const chartData = [
   { month: "April", desktop: 73 },
   { month: "May", desktop: 209 },
   { month: "June", desktop: 214 },
+  { month: "July", desktop: 289 },
+  { month: "August", desktop: 331 },
+  { month: "September", desktop: 178 },
+  { month: "October", desktop: 250 },
+  { month: "November", desktop: 192 },
+  { month: "December", desktop: 310 },
 ];
 
-// Chart config
 const chartConfig = {
   desktop: {
     label: "Desktop",
@@ -40,49 +43,56 @@ const chartConfig = {
   },
 };
 
-export function ChartBarLabel() {
+const MonthChart = () => {
   return (
-    <Card>
+    <Card className="w-full sm:w-full md:w-[80%]  bg-[#0c0c0c] text-white">
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Monthly Visitors</CardTitle>
+        <CardDescription>January - December 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            data={chartData}
-            margin={{ top: 20 }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
+        <div className="w-[85%] mx-auto pl-4 mt-0">
+          <ChartContainer config={chartConfig}>
+            <BarChart
+              data={chartData}
+              margin={{ top: 5 }}
+              width={800}
+              height={10} // Reduced height
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(value) => value.slice(0, 3)}
+                stroke="var(--foreground)"
               />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={6}>
+                <LabelList
+                  position="bottom"
+                  offset={8}
+                  className="fill-foreground text-sm"
+                />
+              </Bar>
+            </BarChart>
+          </ChartContainer>
+        </div>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Trending up by 12.4% this year <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
+          Total visitors from January to December 2024
         </div>
       </CardFooter>
     </Card>
   );
-}
+};
+
+export default MonthChart;
