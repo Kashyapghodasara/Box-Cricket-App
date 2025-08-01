@@ -268,5 +268,6 @@
 
 #### Day 52 -- Friday -- 01-08-2025
     - Setup Shadcn/ui 
-    - Month wise Chart is integrated through shadcn/ui
-    - Fix issues
+    - Month wise shart is integrated through shadcn/ui
+    - Box size graph - Payment methode graph added
+    - UI Fixing
