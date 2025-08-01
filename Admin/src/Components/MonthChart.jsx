@@ -19,7 +19,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export const description = "A bar chart with monthly labels";
+/* export const description = "A bar chart with monthly labels"; */
 
 const chartData = [
   { month: "January", desktop: 186 },
@@ -45,19 +45,22 @@ const chartConfig = {
 
 const MonthChart = () => {
   return (
-    <Card className="w-full sm:w-full md:w-[80%]  bg-[#0c0c0c] text-white">
-      <CardHeader>
-        <CardTitle>Monthly Visitors</CardTitle>
-        <CardDescription>January - December 2024</CardDescription>
-      </CardHeader>
+    <Card className="w-full sm:w-full   bg-[#0c0c0c] text-white">
+      <div className="">
+        <CardHeader>
+          <CardTitle>Monthly Bookings</CardTitle>
+          <CardDescription>January - December 2024</CardDescription>
+        </CardHeader>
+      </div>
       <CardContent>
-        <div className="w-[85%] mx-auto pl-4 mt-0">
+        <div className="w-[89%] mx-auto pl-4 mt-0">
           <ChartContainer config={chartConfig}>
             <BarChart
               data={chartData}
-              margin={{ top: 5 }}
+              margin={{ top: 15 }}
+              padding={{ top: 20, right: 30, left: 20, bottom: 5 }}
               width={800}
-              height={10} // Reduced height
+              height={500} // Reduced height
             >
               <CartesianGrid vertical={false} />
               <XAxis
@@ -66,17 +69,17 @@ const MonthChart = () => {
                 tickMargin={10}
                 axisLine={false}
                 tickFormatter={(value) => value.slice(0, 3)}
-                stroke="var(--foreground)"
+                stroke="#345679"
               />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={6}>
+              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
                 <LabelList
-                  position="bottom"
-                  offset={8}
-                  className="fill-foreground text-sm"
+                  position="top"
+                  offset={10}
+                  className="fill-[#ffffff] text-md font-semibold"
                 />
               </Bar>
             </BarChart>
@@ -84,9 +87,9 @@ const MonthChart = () => {
         </div>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
+        {/* <div className="flex gap-2 leading-none font-medium">
           Trending up by 12.4% this year <TrendingUp className="h-4 w-4" />
-        </div>
+        </div> */}
         <div className="text-muted-foreground leading-none">
           Total visitors from January to December 2024
         </div>
