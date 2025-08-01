@@ -266,3 +266,7 @@
     - Neccessary changes will apply from tomorrow onwards
     - Fix issues
 
+#### Day 52 -- Friday -- 01-08-2025
+    - Setup Shadcn/ui 
+    - Month wise Chart is integrated through shadcn/ui
+    - Fix issues
