@@ -271,3 +271,6 @@
     - Month wise chart is integrated through shadcn/ui
     - Box size graph - Payment methode graph added
     - UI Fixing
+
+#### Day 53 -- Saturday -- 02-08-2025
+    - UI Fixed and Update
