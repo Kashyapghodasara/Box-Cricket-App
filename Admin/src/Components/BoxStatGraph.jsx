@@ -37,7 +37,7 @@ const CenterLabel = ({ viewBox }) => {
         <tspan
           x={viewBox.cx}
           y={(viewBox.cy || 0) - 16}
-          className="fill-foreground text-2xl font-bold"
+          className="fill-[#dbfff5] text-2xl font-bold tracking-wider"
         >
           {(
             chartData[0].desktop + chartData[0].mobile
@@ -58,9 +58,9 @@ const CenterLabel = ({ viewBox }) => {
 
 const BoxStatGraph = () => {
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col bg-transparent">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Radial Chart - Stacked</CardTitle>
+        {/* <CardTitle>Radial Chart - Stacked</CardTitle> */}
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
@@ -98,14 +98,14 @@ const BoxStatGraph = () => {
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
+     {/*  <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
           Showing total visitors for the last 6 months
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   )
 }

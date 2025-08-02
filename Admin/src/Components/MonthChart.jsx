@@ -79,7 +79,7 @@ const MonthChart = () => {
                 <LabelList
                   position="top"
                   offset={10}
-                  className="fill-[#ffffff] text-md font-semibold"
+                  className="fill-[#e1e0e0] text-md font-semibold tracking-widest"
                 />
               </Bar>
             </BarChart>

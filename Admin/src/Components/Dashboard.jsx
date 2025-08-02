@@ -47,7 +47,7 @@ const Dashboard = () => {
       {/* ====== Header Section ====== */}
       <header className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6'>
         {/* User Info */}
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-4 p-2 rounded-lg hover:bg-zinc-900 transition-colors duration-200 cursor-pointer'>
           <img
             src="../public/batman.png"
             alt="User Avatar"
@@ -59,6 +59,7 @@ const Dashboard = () => {
             <p className='text-sm text-gray-400'>kashyappatel816@gmail.com</p>
           </div>
         </div>
+
         {/* Date & Time */}
         <div className="text-right">
           <div className="text-lg font-semibold text-white tracking-wide">
@@ -161,12 +162,12 @@ const Dashboard = () => {
           </div>
 
           {/* Box Stat Graph */}
-          <div className="relative w-full rounded-2xl p-5 overflow-hidden shadow-md group transition-all duration-500 hover:scale-[1.03] border border-white/10 backdrop-blur-sm">
+          <div className="relative w-full rounded-2xl px-5 overflow-hidden  group transition-all duration-500 hover:scale-[1.02] ">
             <BoxStatGraph />
           </div>
 
           {/* Payment Stat Graph */}
-          <div className="relative w-full rounded-2xl p-5 overflow-hidden shadow-md group transition-all duration-500 hover:scale-[1.03] border border-white/10 backdrop-blur-sm">
+          <div className="relative w-full rounded-2xl px-5 overflow-hidden  group transition-all duration-500 hover:scale-[1.02]">
             <PaymentStatGraph />
           </div>
         </div>
