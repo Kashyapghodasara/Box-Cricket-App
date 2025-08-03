@@ -5,6 +5,10 @@ import { BsCreditCard2Back } from "react-icons/bs";
 import MonthChart from './MonthChart.jsx';
 import BoxStatGraph from './BoxStatGraph.jsx';
 import PaymentStatGraph from './PaymentStatGraph.jsx';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { ADMIN_BACKEND_URL } from '@/Constant.jsx';
+
 
 import {
   Bookmark,
@@ -30,17 +34,38 @@ const getOrdinalSuffix = (day) => {
 
 const Dashboard = () => {
   const [time, setTime] = useState(new Date());
+  const [totalBalance, setTotalBalance] = useState(0);
 
   useEffect(() => {
     const timerId = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timerId);
   }, []);
 
+  useEffect(() => {
+    const totalBalance = async () => {
+      try {
+        const config = { headers: { "Content-Type": "application/json" }, withCredentials: true }
+
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/totalBalance`, config);
+        if (res.data.success === true) {
+          setTotalBalance(res.data.totalBalance);
+        }
+
+      } catch (error) {
+        console.error("Error fetching total balance:", error);
+        toast.error("Failed to fetch total balance");
+      }
+    }
+
+    totalBalance();
+  }, [])
+
   const today = new Date();
   const day = today.getDate();
   const month = today.toLocaleString('en-US', { month: 'long' });
   const year = today.getFullYear();
   const weekday = today.toLocaleString('en-US', { weekday: 'long' });
+
 
   return (
     <div className='w-full h-full p-4 md:p-6 overflow-y-auto bg-[#0c0c0c]'>
@@ -110,7 +135,7 @@ const Dashboard = () => {
                 <div className='w-full md:w-2/5 p-4 flex flex-col justify-center'>
                   <h3 className='text-gray-400 text-sm font-semibold pb-1'>Available Balance</h3>
                   <p className='text-4xl font-bold tracking-wider text-white font-mono'>
-                    ₹53,555
+                    ₹{totalBalance}
                   </p>
                   <div className='flex items-center gap-2 mt-2 text-sm text-green-400'>
                     <CheckCircle2 size={16} />
