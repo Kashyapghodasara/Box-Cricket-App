@@ -22,10 +22,21 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public'))) // This is dosen't directly work in ES module
 
+
+// CORS not supporting (,) seperated origins
 app.use(cors({
     origin: 'http://localhost:5173' || 'http://localhost:5174',
+
+    origin: (origin, callback) => {
+        if (!origin || origin === 'http://localhost:5173' || origin === 'http://localhost:5174') {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
-}))
+}));
+
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/user", bookingRoute)

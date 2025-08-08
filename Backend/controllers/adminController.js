@@ -1,4 +1,6 @@
 import Admin from "../models/adminSchema.js"
+import Booking from "../models/bookingSchema.js"
+import User from "../models/userSchema.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv, { decrypt } from "dotenv"
@@ -90,6 +92,37 @@ export const adminLogin = async (req, res) => {
             admin: findAdminWithToken,
             success: true
         })
+
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
+export const totalBalance = async (req, res) => {
+    try {
+        const findBookings = await Booking.find({}).populate("paymentInfo");
+
+        if (!findBookings || findBookings.length === 0) {
+            return res.status(404).json({
+                message: "No bookings found",
+                success: false
+            });
+        }
+        
+        let totalAmount = findBookings.reduce((total, booking) => {
+            return total + booking.price;
+        }, 0);
+
+        console.log(totalAmount);
+
+        return res.status(200).json({
+            message: "Total balance fetched successfully",
+            totalBalance: totalAmount,
+            success: true
+        });
 
     } catch (error) {
         return res.status(400).json({
