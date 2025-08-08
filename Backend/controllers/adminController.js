@@ -1,6 +1,6 @@
 import Admin from "../models/adminSchema.js"
-import Booking from "../models/bookingSchema.js"
 import User from "../models/userSchema.js"
+import Booking from "../models/bookingSchema.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv, { decrypt } from "dotenv"
@@ -116,7 +116,7 @@ export const totalBalance = async (req, res) => {
             return total + booking.price;
         }, 0);
 
-        console.log(totalAmount);
+        /* console.log(totalAmount); */
 
         return res.status(200).json({
             message: "Total balance fetched successfully",
