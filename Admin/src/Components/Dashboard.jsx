@@ -35,6 +35,8 @@ const getOrdinalSuffix = (day) => {
 const Dashboard = () => {
   const [time, setTime] = useState(new Date());
   const [totalBalance, setTotalBalance] = useState(0);
+  const [bookedSlots, setBookedSlots] = useState(0);
+  const [todayRevenue, setTodayRevenue] = useState(0);
 
   useEffect(() => {
     const timerId = setInterval(() => setTime(new Date()), 1000);
@@ -42,6 +44,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+
     const totalBalance = async () => {
       try {
         const config = { headers: { "Content-Type": "application/json" }, withCredentials: true }
@@ -57,7 +60,42 @@ const Dashboard = () => {
       }
     }
 
+    const todayBookedSlots = async () => { 
+      try {
+          const config = {
+            headers: { "Content-Type": "application/json"},
+            withCredentials: true   // for cookies
+          }
+          const res = await axios.get(`${ADMIN_BACKEND_URL}/bookedSlotNumber`, config)
+          if(res.data.success === true) {
+            setBookedSlots(res.data.bookedSlotes)
+          }
+      } catch (error) {
+        console.error("Error fetching today's booked slots:", error);
+        toast.error("Failed to fetch today's booked slots");
+      }
+    }
+
+    const todayRevenue = async () => {
+      try {
+        const config = {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true   // for cookies
+        }
+
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/todayRevenue`, config);
+        if(res.data.success === true) {
+          setTodayRevenue(res.data.todayRevenue)
+        }
+      } catch (error) {
+        console.error("Error fetching today's revenue:", error);
+        toast.error("Failed to fetch today's revenue");
+      }
+    }
+
     totalBalance();
+    todayBookedSlots();
+    todayRevenue();
   }, [])
 
   const today = new Date();
@@ -163,7 +201,7 @@ const Dashboard = () => {
                   <GlassIcon icon={Bookmark} color="purple" />
                 </div>
                 <h4 className="text-5xl mt-2 font-bold font-mono text-white group-hover:text-purple-300">
-                  5
+                  {bookedSlots}
                 </h4>
               </div>
               <p className="text-sm font-medium text-gray-500 mt-2">Slots Booked</p>
@@ -179,7 +217,7 @@ const Dashboard = () => {
                   <GlassIcon icon={BadgeDollarSign} color="green" />
                 </div>
                 <h4 className="text-4xl mt-3 font-bold font-mono text-white group-hover:text-green-300">
-                  ₹1,550
+                  ₹{todayRevenue}
                 </h4>
               </div>
               <p className="text-sm font-medium text-gray-500 mt-2">Payment Received</p>

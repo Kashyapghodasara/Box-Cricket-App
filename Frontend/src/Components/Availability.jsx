@@ -143,7 +143,6 @@ const Availability = () => {
 
       if (res.data.success === true) {
         console.log(res.data)
-        console.log(formattedDate)
         setSloteDetails(res.data.bookedSloteData)
         toast.success(res.data.message, SuccessToastStyle);
       }

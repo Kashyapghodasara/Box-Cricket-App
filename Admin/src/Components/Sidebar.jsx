@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import { ADMIN_BACKEND_URL } from '@/Constant';
+import toast from 'react-hot-toast';
 import {
     LayoutDashboard,
     BarChart3,
@@ -16,6 +19,58 @@ const Sidebar = () => {
         { icon: ScanText, label: 'Transactions' },
         { icon: BarChart3, label: 'Statistics' },
     ];
+
+    const SuccessToastStyle = {
+        style: {
+            background: "#212121", // dark mode black background
+            color: "#fff",
+            fontSize: "17px",     // white text
+            padding: "12px 20px",
+            borderRadius: "10px",
+            width: "100%",
+            fontWeight: "300",
+            textAlign: "center",
+        },
+        iconTheme: {
+            primary: "#39bf04", // red-400 (error icon color)
+            secondary: "#1f2937", // gray-800
+        },
+        duration: 2000, // Optional: auto-close duration
+    }
+    const ErrorToastStyle = {
+        style: {
+            background: "#212121", // dark mode black background
+            color: "#fff",
+            fontSize: "17px",     // white text
+            padding: "12px 20px",
+            borderRadius: "10px",
+            width: "100%",
+            fontWeight: "300",
+            textAlign: "center",
+        },
+        iconTheme: {
+            primary: "#eb1410", // red-400 (error icon color)
+            secondary: "#1f2937", // gray-800
+        },
+        duration: 2000, // Optional: auto-close duration
+    }
+
+    const logoutHandler = async () => {
+        try {
+            const config = {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true
+            }
+            const res = await axios.get(`${ADMIN_BACKEND_URL}/adminLogout`, config);
+            if (res.data.success === true) {
+                toast.success(res.data.message, SuccessToastStyle)
+                window.location.href = 'http://localhost:5173/registration'
+            }
+        } catch (error) {
+            toast.error("Error during logout", ErrorToastStyle);
+            console.log("Error during logout:", error);
+        }
+    }
 
     return (
         <aside className='w-64 h-screen bg-[#0c0c0c] backdrop-blur-lg border-r border-white/10 p-6 flex-col justify-between hidden lg:flex'>
@@ -43,7 +98,9 @@ const Sidebar = () => {
 
             {/* Bottom Section: Logout */}
             <div>
-                <button className="w-full flex items-center justify-center gap-3 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 group">
+                <button
+                    onClick={logoutHandler}
+                    className="w-full cursor-pointer flex items-center justify-center gap-3 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 group">
                     <LogOut size={22} className="group-hover:scale-110 transition-transform" />
                     <span className="font-semibold">Logout</span>
                 </button>

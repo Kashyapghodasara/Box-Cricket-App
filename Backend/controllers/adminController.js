@@ -5,7 +5,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv, { decrypt } from "dotenv"
 import crypto from "crypto"
-import { Error } from "mongoose"
+import { Error, set } from "mongoose"
 dotenv.config({ path: "../.env" })
 
 function decryptText(encrypted) {
@@ -111,7 +111,7 @@ export const totalBalance = async (req, res) => {
                 success: false
             });
         }
-        
+
         let totalAmount = findBookings.reduce((total, booking) => {
             return total + booking.price;
         }, 0);
@@ -126,6 +126,80 @@ export const totalBalance = async (req, res) => {
 
     } catch (error) {
         return res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
+export const adminLogout = async (req, res) => {
+    try {
+        res.cookie("adminToken", " ", { expires: new Date(0), httpOnly: true }).status(200).json({
+            message: "Admin Logged out successfully",
+            success: true
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
+export const todayBookedSlots = async (req, res) => {
+    try {
+        const formattedDate = new Date().toLocaleDateString('en-CA');
+        /* console.log(formattedDate); */
+
+        const findBookedSlote = await Booking.countDocuments({ date: formattedDate })
+        /* console.log(findBookedSlote) */
+
+        if (findBookedSlote === 0) {
+            return res.status(302).json({
+                message: "No bookings found for today",
+                success: false,
+                bookedSlotes: 0
+            });
+        }
+
+        return res.status(200).json({
+            message: "Today's booked slots fetched successfully",
+            success: true,
+            bookedSlotes: findBookedSlote
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
+export const todayRevenue = async (req, res) => {
+    try {
+        const formattedDate = new Date().toLocaleDateString('en-CA');
+
+        const findBookings = await Booking.find({ date: formattedDate }).populate("paymentInfo");
+
+        if (!findBookings || findBookings.length === 0) {
+            return res.status(404).json({
+                message: "No bookings found for today",
+                success: false
+            });
+        }
+
+       const todayRevenue = findBookings.reduce((total, booking) => {
+            return total + booking.price;
+        }, 0);
+
+        return res.status(200).json({
+            message: "Today's revenue fetched successfully",
+            success: true,
+            todayRevenue
+        });
+    } catch (error) {
+        res.status(400).json({
             message: error.message,
             success: false
         })
