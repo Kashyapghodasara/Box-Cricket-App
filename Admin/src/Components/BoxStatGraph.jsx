@@ -2,6 +2,12 @@
 
 import { TrendingUp } from "lucide-react"
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
+import React from "react"
+import { toast } from "react-hot-toast"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { ADMIN_BACKEND_URL } from "@/Constant.jsx"
+
 
 import {
   Card,
@@ -17,16 +23,21 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-const chartData = [{ month: "january", desktop: 1260, mobile: 570 }]
+
+const chartData = [{ Small: 1260, Medium: 570, Large: 756 }]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  Small: {
+    label: "Small",
     color: "var(--chart-1)",
   },
-  mobile: {
-    label: "Mobile",
+  Medium: {
+    label: "Medium",
     color: "var(--chart-2)",
+  },
+  Large: {
+    label: "Large",
+    color: "#9876FF",
   },
 }
 
@@ -40,7 +51,7 @@ const CenterLabel = ({ viewBox }) => {
           className="fill-[#dbfff5] text-2xl font-bold tracking-wider"
         >
           {(
-            chartData[0].desktop + chartData[0].mobile
+            chartData[0].Small + chartData[0].Medium + chartData[0].Large
           ).toLocaleString()}
         </tspan>
         <tspan
@@ -48,7 +59,7 @@ const CenterLabel = ({ viewBox }) => {
           y={(viewBox.cy || 0) + 4}
           className="fill-muted-foreground"
         >
-          Visitors
+          Box Booked
         </tspan>
       </text>
     )
@@ -57,6 +68,35 @@ const CenterLabel = ({ viewBox }) => {
 }
 
 const BoxStatGraph = () => {
+
+  useEffect(() => {
+    const boxStategraphData = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/getBookedBoxStat`, config)
+        /* console.log(res.data) */
+        if (res.data.success === true) {
+          chartData[0].Small = res.data.boxCount.Small
+          chartData[0].Medium = res.data.boxCount.Medium
+          chartData[0].Large = res.data.boxCount.Large
+        }
+      } catch (error) {
+        console.error("Error fetching box statistics:", error)
+        toast.error("Failed to fetch box statistics")
+      }
+    }
+
+     boxStategraphData(); 
+  }, [])  
+
+
+
   return (
     <Card className="flex flex-col bg-transparent">
       <CardHeader className="items-center pb-0">
@@ -72,7 +112,7 @@ const BoxStatGraph = () => {
             data={chartData}
             endAngle={180}
             innerRadius={80}
-            outerRadius={130}
+            outerRadius={200}
           >
             <ChartTooltip
               cursor={false}
@@ -82,23 +122,30 @@ const BoxStatGraph = () => {
               <Label content={<CenterLabel />} />
             </PolarRadiusAxis>
             <RadialBar
-              dataKey="desktop"
+              dataKey="Small"
               stackId="a"
               cornerRadius={5}
-              fill="var(--color-desktop)"
+              fill="var(--color-Small)"
               className="stroke-transparent stroke-2"
             />
             <RadialBar
-              dataKey="mobile"
-              fill="var(--color-mobile)"
-              stackId="a"
+              dataKey="Medium"
+              fill="var(--color-Medium)"
+              stackId="b"
+              cornerRadius={5}
+              className="stroke-transparent stroke-2"
+            />
+            <RadialBar
+              dataKey="Large"
+              fill="var(--color-Large)"
+              stackId="c"
               cornerRadius={5}
               className="stroke-transparent stroke-2"
             />
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-     {/*  <CardFooter className="flex-col gap-2 text-sm">
+      {/*  <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>

@@ -3,7 +3,9 @@
 import * as React from "react"
 import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
-
+import { toast } from "react-hot-toast"
+import axios from "axios"
+import { ADMIN_BACKEND_URL } from "@/Constant.jsx"
 import {
   Card,
   CardContent,
@@ -17,31 +19,32 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { hex } from "motion"
 
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  { Method: "UPI", count: 0, fill: "var(--color-UPI)" },
+  { Method: "Bank Transfer", count: 0, fill: "var(--color-BankTransfer)" },
   /*  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
    { browser: "other", visitors: 190, fill: "var(--color-other)" }, */
 ]
 
 const chartConfig = {
-  visitors: {
+  count: {
     label: "Visitors",
   },
-  chrome: {
-    label: "Chrome",
+  UPI: {
+    label: "UPI",
     color: "var(--chart-1)",
   },
-  safari: {
-    label: "Safari",
+  BankTransfer: {
+    label: "Bank Transfer",
     color: "var(--chart-2)",
   }
 }
 
 const CenterLabel = ({ viewBox }) => {
-  const total = chartData.reduce((acc, curr) => acc + curr.visitors, 0)
+  const total = chartData.reduce((acc, curr) => acc + curr.count, 0)
 
   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
     return (
@@ -60,10 +63,10 @@ const CenterLabel = ({ viewBox }) => {
         </tspan>
         <tspan
           x={viewBox.cx}
-          y={(viewBox.cy || 0) + 24}
+          y={(viewBox.cy || 0) + 25}
           className="fill-muted-foreground"
         >
-          Visitors
+          Payment Method
         </tspan>
       </text>
     )
@@ -72,6 +75,31 @@ const CenterLabel = ({ viewBox }) => {
 }
 
 const PaymentStatGraph = () => {
+
+  React.useEffect(() => {
+    const fetchPaymentMethodStat = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/getPaymentMethodStat`, config)
+        /* console.log(res) */
+        if(res.data.success) {
+          chartData[0].count = res.data.paymentMethodCount.UPI
+          chartData[1].count = res.data.paymentMethodCount.BankTransfer
+        }
+      } catch (error) {
+        console.error("Error in PaymentStatGraph:", error);
+        toast.error("Failed to load payment statistics");
+      }
+    }
+
+    fetchPaymentMethodStat();
+  }, [])
+
   return (
     <Card className="flex flex-col bg-transparent">
       <CardHeader className="items-center pb-0 text-md">
@@ -93,9 +121,9 @@ const PaymentStatGraph = () => {
 
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
-              innerRadius={60}
+              dataKey="count"
+              nameKey="Method"
+              innerRadius={65}
               strokeWidth={4}
             >
               <Label content={<CenterLabel />} />

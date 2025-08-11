@@ -1,6 +1,7 @@
 import Admin from "../models/adminSchema.js"
 import User from "../models/userSchema.js"
 import Booking from "../models/bookingSchema.js"
+import Payment from "../models/paymentSchema.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv, { decrypt } from "dotenv"
@@ -155,7 +156,7 @@ export const todayBookedSlots = async (req, res) => {
         /* console.log(findBookedSlote) */
 
         if (findBookedSlote === 0) {
-            return res.status(302).json({
+            return res.status(200).json({
                 message: "No bookings found for today",
                 success: false,
                 bookedSlotes: 0
@@ -183,13 +184,13 @@ export const todayRevenue = async (req, res) => {
         const findBookings = await Booking.find({ date: formattedDate }).populate("paymentInfo");
 
         if (!findBookings || findBookings.length === 0) {
-            return res.status(404).json({
-                message: "No bookings found for today",
+            return res.status(200).json({
+                message: "No bookings found for Today",
                 success: false
             });
         }
 
-       const todayRevenue = findBookings.reduce((total, booking) => {
+        const todayRevenue = findBookings.reduce((total, booking) => {
             return total + booking.price;
         }, 0);
 
@@ -198,6 +199,75 @@ export const todayRevenue = async (req, res) => {
             success: true,
             todayRevenue
         });
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
+export const getBookedBoxStat = async (req, res) => {
+    try {
+        const smallCount = await Booking.countDocuments({ size: "Small" })
+        const mediumCount = await Booking.countDocuments({ size: "Medium" })
+        const largeCount = await Booking.countDocuments({ size: "Large" })
+
+        if (smallCount === 0 && mediumCount === 0 && largeCount === 0) {
+            return res.status(200).json({
+                message: "No bookings found for the specified sizes",
+                success: true,
+                boxCount: {
+                    Small: smallCount,
+                    Medium: mediumCount,
+                    Large: largeCount
+                }
+            });
+        }
+
+        return res.status(200).json({
+            message: "Box Booking Statistics fetched successfully",
+            success: true,
+            boxCount: {
+                Small: smallCount,
+                Medium: mediumCount,
+                Large: largeCount
+            }
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
+export const getPaymentMethodStat = async (req, res) => {
+    try {
+        const UPI_Count = await Payment.countDocuments({ paymentMethode: "UPI" });
+        const BankTransfer_Count = await Payment.countDocuments({ paymentMethode: "Bank Transfer" });
+
+        if (UPI_Count === 0 && BankTransfer_Count === 0) {
+            return res.status(200).json({
+                message: "No payments found for the specified methods",
+                success: true,
+                paymentMethodCount: {
+                    UPI: UPI_Count,
+                    BankTransfer: BankTransfer_Count
+                }
+            });
+        }
+
+        return res.status(200).json({
+            message: "Payment Method Statistics fetched successfully",
+            success: true,
+            paymentMethodCount: {
+                UPI: UPI_Count,
+                BankTransfer: BankTransfer_Count
+            }
+        })
+
     } catch (error) {
         res.status(400).json({
             message: error.message,

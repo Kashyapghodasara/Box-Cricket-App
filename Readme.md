@@ -285,3 +285,9 @@
     - Admin logout implemented
     - Tested on Postman
     - Fix bug
+
+#### Day 56 -- Monday -- 11-08-2025
+    - Total booked box Size statistics and payment method count statistics logic implemented
+    - Both are integrated with minor UI fixing
+    - API Tested on Postman
+    - Bug fixing
