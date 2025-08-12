@@ -275,3 +275,66 @@ export const getPaymentMethodStat = async (req, res) => {
         })
     }
 }
+
+export const monthlyBookingStat = async (req, res) => {
+    try {
+        const givenYear = 2025;
+
+        const monthlyBookings = await Booking.aggregate([
+            {
+                $match: {
+                    date: {
+                        $gte: new Date(`${givenYear}-01-01`),
+                        $lt: new Date(`${givenYear + 1}-01-01`)
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: { $month: "$date" }, // Use "date" from schema
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    month: {
+                        $arrayElemAt: [
+                            [
+                                "January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"
+                            ],
+                            { $subtract: ["$_id", 1] }
+                        ]
+                    },
+                    count: 1
+                }
+            },
+            {
+                $sort: { month: 1 }
+            }
+        ]);
+
+        console.log(monthlyBookings);
+
+        if (monthlyBookings.length === 0) {
+            return res.status(200).json({
+                message: "No bookings found for the specified months",
+                success: true,
+                monthlyBookings: []
+            });
+        }
+
+        return res.status(200).json({
+            message: "Monthly Booking Statistics fetched successfully",
+            success: true,
+            monthlyBookings
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}

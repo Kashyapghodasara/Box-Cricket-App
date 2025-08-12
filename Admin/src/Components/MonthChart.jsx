@@ -3,6 +3,9 @@
 import React from "react";
 import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { ADMIN_BACKEND_URL } from "@/Constant.jsx";
 
 import {
   Card,
@@ -22,34 +25,58 @@ import {
 /* export const description = "A bar chart with monthly labels"; */
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-  { month: "July", desktop: 289 },
-  { month: "August", desktop: 331 },
-  { month: "September", desktop: 178 },
-  { month: "October", desktop: 250 },
-  { month: "November", desktop: 192 },
-  { month: "December", desktop: 310 },
+  { month: "January", count: 0 },
+  { month: "February", count: 0 },
+  { month: "March", count: 0 },
+  { month: "April", count: 0 },
+  { month: "May", count: 0 },
+  { month: "June", count: 0 },
+  { month: "July", count: 0 },
+  { month: "August", count: 0 },
+  { month: "September", count: 0 },
+  { month: "October", count: 0 },
+  { month: "November", count: 0 },
+  { month: "December", count: 0 },
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  count: {
+    label: "count",
     color: "var(--chart-1)",
   },
 };
 
 const MonthChart = () => {
+
+  React.useEffect(() => {
+    const monthlyBookingStat = async () => {
+      try {
+        const config = { headers: { "Content-Type": "application/json" }, withCredentials: true };
+
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/monthlyBookingStat`, config);
+        console.log("Monthly Booking Stats:", res.data);
+        if (res.data.success) {
+          res.data.monthlyBookings.forEach(item => {
+            const idx = chartData.findIndex(m => m.month === item.month);
+            if (idx !== -1) {
+              chartData[idx].count = item.count;
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching monthly booking stats:", error);
+      }
+    }
+
+    monthlyBookingStat();
+  }, [])
+
   return (
     <Card className="w-full sm:w-full   bg-[#0c0c0c] text-white">
       <div className="">
         <CardHeader>
           <CardTitle>Monthly Bookings</CardTitle>
-          <CardDescription>January - December 2024</CardDescription>
+          <CardDescription>January - December 2025</CardDescription>
         </CardHeader>
       </div>
       <CardContent>
@@ -75,7 +102,7 @@ const MonthChart = () => {
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+              <Bar dataKey="count" fill="var(--color-count)" radius={8}>
                 <LabelList
                   position="top"
                   offset={10}

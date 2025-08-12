@@ -291,3 +291,8 @@
     - Both are integrated with minor UI fixing
     - API Tested on Postman
     - Bug fixing
+
+#### Day 57 -- Tuesday -- 12-08-2025
+    - Monthly Booked Data ploted on chart
+    - API tested on postman
+    - Bug fixing
