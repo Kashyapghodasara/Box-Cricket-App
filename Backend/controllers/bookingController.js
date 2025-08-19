@@ -102,7 +102,7 @@ export const getBookingDetails = async (req, res) => {
 
 export const bookedSloteChecking = async (req, res) => {
     try {
-        console.log(req.body)
+        /* console.log(req.body) */
         const userId = req.params.userId;
         const { getDate } = req.body
 

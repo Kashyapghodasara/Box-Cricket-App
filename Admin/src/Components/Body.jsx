@@ -2,22 +2,27 @@ import React from "react";
 import Home from "./Home";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Dashboard from "./Dashboard";
+import RevenuePage from "./Revenue/RevenuePage";
 
 const Body = () => {
 
     const appRouter = createBrowserRouter([
         {
-            path: "/",
+            path: "/Overview",
             element: <Home />,
             children: [{
-                path: "/",
+                path: "/Overview",
                 element: <Dashboard />
             }]
+        },
+        {
+            path: '/Revenue',
+            element: <RevenuePage />
         }
     ])
 
     return (
-       <RouterProvider router={appRouter} />
+        <RouterProvider router={appRouter} />
     );
 }
 

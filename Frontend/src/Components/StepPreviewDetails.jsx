@@ -106,7 +106,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
       };
 
       const res = await axios.post(`${USER_BACKEND_URL}/createpayment/${bookedSloteID}`, paymentDetails, config)
-      console.log(res)
+      /* console.log(res) */
       if (res.data.success === true) {
         setPaymentId(res.data.paymentId)
       }

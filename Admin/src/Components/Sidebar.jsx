@@ -85,7 +85,7 @@ const Sidebar = () => {
                     <ul className='space-y-3'>
                         {menuItems.map((item, index) => (
                             <li key={index}>
-                                <a href="#" className='flex items-center gap-4 text-gray-300 hover:text-white hover:bg-white/5 p-3 rounded-lg cursor-pointer transition-all duration-300 group'>
+                                <a href={`${item.label}`} className='flex items-center gap-4 text-gray-300 hover:text-white hover:bg-white/5 p-3 rounded-lg cursor-pointer transition-all duration-300 group'>
                                     <item.icon size={22} className="group-hover:scale-110 transition-transform" />
                                     <span className='font-medium'>{item.label}</span>
                                     {item.label === 'Overview' && <ChevronRight size={16} className='ml-auto' />}

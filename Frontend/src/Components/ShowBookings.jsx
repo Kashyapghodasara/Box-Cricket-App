@@ -78,7 +78,7 @@ const ShowBookings = () => {
             const config = { headers: { "Content-Type": "application/json", }, withCredentials: true }
 
             const res = await axios.get(`${USER_BACKEND_URL}/getBookingsDetails/${loggedInUserId}`, config)
-            console.log(res)
+            /* console.log(res) */
             setResData(res.data.bookingData)
             if (res.data.success === true) {
                 toast.success(res.data.message, SuccessToastStyle);

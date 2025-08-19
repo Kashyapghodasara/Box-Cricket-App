@@ -296,3 +296,7 @@
     - Monthly Booked Data ploted on chart
     - API tested on postman
     - Bug fixing
+
+#### Day 58 -- Tuesday -- 19-08-2025
+    - Revenue Page Started
+    - Bug fixing
