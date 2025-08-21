@@ -16,13 +16,13 @@ const GlassIcon = ({ icon: Icon, color }) => (
 );
 
 const getOrdinalSuffix = (day) => {
-  if (day > 3 && day < 21) return 'th';
-  switch (day % 10) {
-    case 1: return 'st';
-    case 2: return 'nd';
-    case 3: return 'rd';
-    default: return 'th';
-  }
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
 };
 
 // Reusable Stat Box
@@ -52,7 +52,7 @@ const StatBox = ({ title, value, subtitle, icon, color, prefix = "" }) => {
 const RevenuePage = () => {
     const [stats, setStats] = useState({
         today: { bookings: 0, revenue: 0 },
-        yesterday: { bookings: 12, revenue: 0 },
+        yesterday: { bookings: 0, revenue: 0 },
         lastWeek: { bookings: 0, revenue: 465 },
         lastMonth: { bookings: 36, revenue: 0 },
         last6Months: { bookings: 4, revenue: 15 },
@@ -60,9 +60,9 @@ const RevenuePage = () => {
     });
 
     const [time, setTime] = useState(new Date());
-    const [totalBalance, setTotalBalance] = useState(0);
+    /* const [totalBalance, setTotalBalance] = useState(0);
     const [bookedSlots, setBookedSlots] = useState(0);
-    const [todayRevenue, setTodayRevenue] = useState(0);
+    const [todayRevenue, setTodayRevenue] = useState(0); */
 
     const today = new Date();
     const day = today.getDate();
@@ -77,21 +77,6 @@ const RevenuePage = () => {
 
     useEffect(() => {
 
-        const totalBalance = async () => {
-            try {
-                const config = { headers: { "Content-Type": "application/json" }, withCredentials: true }
-
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/totalBalance`, config);
-                if (res.data.success === true) {
-                    setTotalBalance(res.data.totalBalance);
-                }
-
-            } catch (error) {
-                console.error("Error fetching total balance:", error);
-                toast.error("Failed to fetch total balance");
-            }
-        }
-
         const todayBookedSlots = async () => {
             try {
                 const config = {
@@ -99,8 +84,15 @@ const RevenuePage = () => {
                     withCredentials: true   // for cookies
                 }
                 const res = await axios.get(`${ADMIN_BACKEND_URL}/bookedSlotNumber`, config)
+
                 if (res.data.success === true) {
-                    setBookedSlots(res.data.bookedSlotes)
+                    setStats(prevstate => ({
+                        ...prevstate,
+                        today: {
+                            ...prevstate.today,   // keep existing today values
+                            bookings: res.data.bookedSlotes  // update only bookings
+                        }
+                    }));
                 }
             } catch (error) {
                 console.error("Error fetching today's booked slots:", error);
@@ -117,7 +109,14 @@ const RevenuePage = () => {
 
                 const res = await axios.get(`${ADMIN_BACKEND_URL}/todayRevenue`, config);
                 if (res.data.success === true) {
-                    setTodayRevenue(res.data.todayRevenue)
+                    setStats(prevstate => ({
+                        ...prevstate,
+                        today: {
+                            ...prevstate.today,   // keep existing today values
+                            revenue: res.data.todayRevenue  // update only revenue
+                        }
+                    }));
+
                 }
             } catch (error) {
                 console.error("Error fetching today's revenue:", error);
@@ -125,34 +124,35 @@ const RevenuePage = () => {
             }
         }
 
-        totalBalance();
+        const yesterdayBookingDetails = async () => { 
+            try {
+                const config = {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true   // for cookies
+                }
+                const res = await axios.get(`${ADMIN_BACKEND_URL}/yesterdayBookingDetails`, config);
+                console.log(res.data);
+                if(res.data.success === true) {
+                    setStats(prev => ({
+                        ...prev,
+                        yesterday: {
+                            ...prev.yesterday,
+                            bookings: res.data.yesterDayBookings,
+                            revenue: res.data.yesterDayRevenue
+                        }
+                    }))
+                }
+            } catch (error) {
+                console.error("Error fetching yesterday's booking details:", error);
+                toast.error("Failed to fetch yesterday's booking details");
+            }
+        }
+
         todayBookedSlots();
         todayRevenue();
+        yesterdayBookingDetails();
     }, [])
 
-
-
-    /* useEffect(() => {
-      const fetchStats = async () => {
-        try {
-          const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          };
-  
-          const res = await axios.get(`${ADMIN_BACKEND_URL}/dashboardStats`, config);
-  
-          if (res.data.success) {
-            setStats(res.data.stats);
-          }
-        } catch (error) {
-          console.error("Error fetching dashboard stats:", error);
-          toast.error("Failed to fetch stats");
-        }
-      };
-  
-      fetchStats();
-    }, []); */
 
     return (
         <div className="flex h-screen">

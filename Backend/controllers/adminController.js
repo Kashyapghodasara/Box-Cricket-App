@@ -338,3 +338,41 @@ export const monthlyBookingStat = async (req, res) => {
         })
     }
 }
+
+export const yesterdayBookingDetails = async (req, res) => {
+    try {
+        const today = new Date();
+        const yesterday = new Date(today).setDate(today.getDate() - 1);
+        const formattedDate = new Date(yesterday).toLocaleDateString('en-CA')
+        /* console.log(formattedDate); */
+
+        const findYesterDayBookings = await Booking.countDocuments({date : formattedDate})
+        const findYesterDayRevenue = await Booking.find({date : formattedDate}).populate("paymentInfo");
+
+        if (findYesterDayBookings === 0 && findYesterDayRevenue === 0) {
+            return res.status(200).json({
+                message: "No bookings found for yesterday",
+                success: true,
+                yesterDayBookings: findYesterDayBookings,
+                yesterDayRevenue: findYesterDayRevenue
+            });
+        }
+
+        const yesterDayRevenue = findYesterDayRevenue.reduce((total, booking) => {
+            return total + booking.price;
+        }, 0)
+
+        return res.status(200).json({
+            message: "Yesterday's Booking Details fetched successfully",
+            success: true,
+            yesterDayBookings: findYesterDayBookings,
+            yesterDayRevenue: yesterDayRevenue
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
