@@ -53,9 +53,9 @@ const RevenuePage = () => {
     const [stats, setStats] = useState({
         today: { bookings: 0, revenue: 0 },
         yesterday: { bookings: 0, revenue: 0 },
-        lastWeek: { bookings: 0, revenue: 465 },
-        lastMonth: { bookings: 36, revenue: 0 },
-        last6Months: { bookings: 4, revenue: 15 },
+        lastWeek: { bookings: 0, revenue: 0 },
+        lastMonth: { bookings: 0, revenue: 0 },
+        last6Months: { bookings: 0, revenue: 0 },
         lastYear: { bookings: 0, revenue: 0 },
     });
 
@@ -148,9 +148,82 @@ const RevenuePage = () => {
             }
         }
 
+        const lastWeekBookingDetails = async () => {
+            try {   
+                const config = { headers: { "Content-Type": "application/json" },
+                    withCredentials: true   // for cookies
+                }
+
+                const res = await axios.get(`${ADMIN_BACKEND_URL}/lastWeekBookingDetails`, config);
+
+                if(res.data.success === true) {
+                    setStats(prev => ({
+                        ...prev,
+                        lastWeek: {
+                            ...prev.lastWeek,
+                            bookings: res.data.lastWeekBookings,
+                            revenue: res.data.lastWeekRevenue
+                        }
+                    }))
+                }
+            } catch (error) {
+                console.error("Error fetching last week's booking details:", error);
+                toast.error("Failed to fetch last week's booking details");
+            }
+        }
+
+        const lastMonthBookingDetails = async () => {
+            try {
+                const config = { headers: { "Content-Type": "application/json" },
+                    withCredentials: true   // for cookies
+                }
+
+                const res = await axios.get(`${ADMIN_BACKEND_URL}/lastMonthBookingDetails`, config);
+                if(res.data.success === true) {
+                    setStats(prev => ({
+                        ...prev,
+                        lastMonth: {
+                            ...prev.lastMonth,
+                            bookings: res.data.lastMonthBookings,
+                            revenue: res.data.lastMonthRevenue
+                        }
+                    }))
+                }
+            } catch (error) {
+                console.error("Error fetching last month's booking details:", error);
+                toast.error("Failed to fetch last month's booking details");
+            }
+        }
+
+        const lastYearBookingDetails = async () => {
+            try {
+                const config = { headers: { "Content-Type": "application/json" },
+                    withCredentials: true   // for cookies
+                }
+
+                const res = await axios.get(`${ADMIN_BACKEND_URL}/lastYearBookingDetails`, config);
+                if(res.data.success === true) {
+                    setStats(prev => ({
+                        ...prev,
+                        lastYear: {
+                            ...prev.lastYear,
+                            bookings: res.data.lastYearBookings,
+                            revenue: res.data.lastYearRevenue
+                        }
+                    }))
+                }
+            } catch (error) {
+                console.error("Error fetching last year's booking details:", error);
+                toast.error("Failed to fetch last year's booking details");
+            }
+        }
+
         todayBookedSlots();
         todayRevenue();
         yesterdayBookingDetails();
+        lastWeekBookingDetails();
+        lastMonthBookingDetails();
+        lastYearBookingDetails();
     }, [])
 
 

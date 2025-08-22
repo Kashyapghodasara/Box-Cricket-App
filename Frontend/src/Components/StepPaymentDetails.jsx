@@ -172,9 +172,7 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
     }
 
     setPaymentDetails(finalPaymentDetails);
-
-    console.log("Saved Payment Details: ", finalPaymentDetails);
-
+    /* console.log("Saved Payment Details: ", finalPaymentDetails); */
     onNext();
   };
 

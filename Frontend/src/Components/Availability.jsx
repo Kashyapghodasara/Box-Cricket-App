@@ -133,6 +133,7 @@ const Availability = () => {
   const fetchBookedSlots = async (date) => {
     try {
       const formattedDate = new Date(date).toISOString();
+      console.log("Date", formattedDate)
       const config = { headers: { "Content-Type": "application/json" }, withCredentials: true };
 
       const res = await axios.post(
@@ -144,7 +145,7 @@ const Availability = () => {
       if (res.data.success === true) {
         /* console.log(res.data) */
         setSloteDetails(res.data.bookedSloteData)
-        toast.success(res.data.message, SuccessToastStyle);
+        /* toast.success(res.data.message, SuccessToastStyle); */
       }
 
     } catch (err) {
@@ -260,7 +261,7 @@ const Availability = () => {
 
           {/* Tomorrow */}
           <button
-            onClick={() => fetchBookedSlots(tomorrowDate)}
+            onClick={() => fetchBookedSlots(new Date().setDate(new Date().getDate() + 1))}
             className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
             <h2 className="text-sm font-semibold text-[#173b1c] text-center">{tomorrowDay}</h2>
             <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{tomorrowDate}</h1>
@@ -269,7 +270,7 @@ const Availability = () => {
 
           {/* Overmorrow */}
           <button
-            onClick={() => fetchBookedSlots(overmoroDate)}
+            onClick={() => fetchBookedSlots(new Date().setDate(new Date().getDate() + 2))}
             className="border-2 border-[#1e1f1f] hover:bg-[#f9f9f9] cursor-pointer rounded-xl shadow-sm transition-all duration-300 hover:shadow-md px-4 py-2">
             <h2 className="text-sm font-semibold text-[#173b1c] text-center">{overmoroDay}</h2>
             <h1 className="text-4xl font-semibold text-[#0d2a11] text-center drop-shadow-[0_0_2px_#0d2a11]">{overmoroDate}</h1>

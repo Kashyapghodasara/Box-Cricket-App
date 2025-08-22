@@ -315,7 +315,7 @@ export const monthlyBookingStat = async (req, res) => {
             }
         ]);
 
-        console.log(monthlyBookings);
+        /* console.log(monthlyBookings); */
 
         if (monthlyBookings.length === 0) {
             return res.status(200).json({
@@ -346,8 +346,8 @@ export const yesterdayBookingDetails = async (req, res) => {
         const formattedDate = new Date(yesterday).toLocaleDateString('en-CA')
         /* console.log(formattedDate); */
 
-        const findYesterDayBookings = await Booking.countDocuments({date : formattedDate})
-        const findYesterDayRevenue = await Booking.find({date : formattedDate}).populate("paymentInfo");
+        const findYesterDayBookings = await Booking.countDocuments({ date: formattedDate })
+        const findYesterDayRevenue = await Booking.find({ date: formattedDate }).select("-paymentInfo")
 
         if (findYesterDayBookings === 0 && findYesterDayRevenue === 0) {
             return res.status(200).json({
@@ -373,6 +373,167 @@ export const yesterdayBookingDetails = async (req, res) => {
         res.status(400).json({
             message: error.message,
             success: false
+        })
+    }
+}
+
+export const lastWeekBookingDetails = async (req, res) => {
+    try {
+        const today = new Date();
+        const todayDate = new Date(today).toLocaleDateString('en-CA');
+        /* console.log(todayDate); */
+        const lastWeekDate = new Date(today).setDate(today.getDate() - 7);
+        /* console.log(new Date(lastWeekDate).toLocaleDateString('en-CA')); */
+
+        const findLastWeekBookings = await Booking.countDocuments({
+            date: {
+                $gte: lastWeekDate,
+                $lt: todayDate
+            }
+        }).select("-paymentInfo")
+
+        const findLastWeekRevenue = await Booking.find({
+            date: {
+                $gte: lastWeekDate,
+                $lt: todayDate
+            }
+        }).select("-paymentInfo")
+
+        /* console.log(findLastWeekRevenue); */
+
+        const lastWeekRevenue = findLastWeekRevenue.reduce((total, item) => {
+            return total + item.price;
+        }, 0)
+
+        /* console.log(lastWeekRevenue); */
+
+
+        if (!findLastWeekBookings === 0 && findLastWeekRevenue.length === 0) {
+            return res.status(200).json({
+                message: "No bookings found for last week",
+                success: true,
+                lastWeekBookings: 0
+            })
+        }
+
+        return res.status(200).json({
+            message: "Last Week's Booking Details fetched successfully",
+            success: true,
+            lastWeekBookings: findLastWeekBookings,
+            lastWeekRevenue: lastWeekRevenue
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+export const lastMonthBookingDetails = async (req, res) => {
+    try {
+        const today = new Date();
+        const todayDate = new Date(today).toLocaleDateString('en-CA');
+        const givenYear = today.getFullYear();
+        const givenMonth = today.getMonth(); // 0-11
+
+
+        const lastMonthBookings = await Booking.countDocuments({
+            date: {
+                $gte: new Date(`${givenYear}-${givenMonth}-01`),
+                $lt: new Date(`${givenYear}-${givenMonth + 1}-01`)
+            }
+        })
+
+        const lastMonthRevenueDetails = await Booking.find({
+            date: {
+                $gte: new Date(`${givenYear}-${givenMonth}-01`),
+                $lt: new Date(`${givenYear}-${givenMonth + 1}-01`)
+            }
+        }).select("-paymentInfo")
+
+
+        const lastMonthRevenue = lastMonthRevenueDetails.reduce((total, item) => {
+            return total + item.price;
+        }, 0)
+
+        /* console.log(lastMonthRevenueAmount); */
+
+        if (lastMonthBookings === 0 && lastMonthRevenue.length === 0) {
+            return res.status(200).json({
+                message: "No bookings found for last month",
+                success: true,
+                lastMonthBookings,
+                lastMonthRevenue
+            })
+        }
+
+        console.log(lastMonthRevenue)
+
+        return res.status(200).json({
+            message: "Last Month's Booking Details fetched successfully",
+            success: true,
+            lastMonthBookings,
+            lastMonthRevenue
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+export const lastYearBookingDetails = async (req, res) => {
+    try {
+        const today = new Date().toLocaleDateString('en-CA');
+        const givenYear = new Date(today).getFullYear();
+        const pastYear = new Date(today);
+        pastYear.setFullYear(pastYear.getFullYear() - 1);
+        console.log(pastYear.getFullYear());
+
+        const lastYearBookingDetails = await Booking.countDocuments({
+            date: {
+                $gte: new Date(`${pastYear.getFullYear()}-01-01`),
+                $lt: new Date(`${givenYear}-01-01`),
+            }
+        })
+
+        const lastYearRevenueDetails = await Booking.find({
+            date: {
+                $gte: new Date(`${pastYear.getFullYear()}-01-01`),
+                $lt: new Date(`${givenYear}-01-01`),
+            }
+        })
+
+        console.log(lastYearBookingDetails)
+        console.log(lastYearRevenueDetails)
+
+        if(lastYearBookingDetails === 0 && lastYearRevenueDetails.length === 0) {
+            return res.status(200).json({
+                message: "No bookings found for last year",
+                success: true,
+                lastYearBookings: lastYearBookingDetails,
+                lastYearRevenue: 0
+            })
+        }
+
+        const lastYearRevenue = lastYearRevenueDetails.reduce((total, item) => {
+            return total + item.price;
+        }, 0)
+
+        return res.status(200).json({
+            message: "Last Year's Booking Details fetched successfully",
+            success: true,
+            lastYearBookings: lastYearBookingDetails,
+            lastYearRevenue
+        })
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
         })
     }
 }

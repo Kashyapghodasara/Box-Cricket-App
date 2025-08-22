@@ -78,7 +78,7 @@ const StepPreviewDetails = ({ onNext, onPrev }) => {
         withCredentials: true
       };
       const res = await axios.post(`${USER_BACKEND_URL}/bookings`, boxDetails, config)
-      console.log(res)
+      /* console.log(res) */
       if (res.data.success === true) {
         toast.success(res.data.message, SuccessToastStyle);
       }
