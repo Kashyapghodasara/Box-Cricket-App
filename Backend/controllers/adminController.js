@@ -276,6 +276,78 @@ export const getPaymentMethodStat = async (req, res) => {
     }
 }
 
+export const tomorrowBookingDetails = async (req, res) => { 
+    try {
+        const today = new Date().toLocaleDateString('en-CA');
+        const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-CA');
+
+        const findTomorrowBookings = await Booking.countDocuments({ date: tomorrow })
+        const findTomorrowRevenue = await Booking.find({ date: tomorrow }).select("-paymentInfo")
+
+        if (findTomorrowBookings === 0 && findTomorrowRevenue.length === 0) {
+            return res.status(200).json({
+                message: "No bookings found for tomorrow",
+                success: true,
+                tomorrowBookings: findTomorrowBookings,
+                tomorrowRevenue: findTomorrowRevenue
+            });
+        }
+
+        const tomorrowRevenue = findTomorrowRevenue.reduce((total, booking) => {
+            return total + booking.price;
+        }, 0)
+
+        return res.status(200).json({
+            message: "Tomorrow's Booking Details fetched successfully",
+            success: true,
+            tomorrowBookings: findTomorrowBookings,
+            tomorrowRevenue
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
+export const overmorrowBookingDetails = async (req, res) => { 
+    try {
+        const today = new Date().toLocaleDateString('en-CA');
+        const overmorrow = new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleDateString('en-CA');
+
+        const findovermorrowBookings = await Booking.countDocuments({ date: overmorrow })
+        const findovermorrowRevenue = await Booking.find({ date: overmorrow }).select("-paymentInfo")
+
+        if (findovermorrowBookings === 0 && findovermorrowRevenue.length === 0) {
+            return res.status(200).json({
+                message: "No bookings found for tomorrow",
+                success: true,
+                tomorrowBookings: findovermorrowBookings,
+                tomorrowRevenue: findovermorrowRevenue
+            });
+        }
+
+        const overmorrowRevenue = findovermorrowRevenue.reduce((total, booking) => {
+            return total + booking.price;
+        }, 0)
+
+        return res.status(200).json({
+            message: "Tomorrow's Booking Details fetched successfully",
+            success: true,
+            overmorrowBookings: findovermorrowBookings,
+            overmorrowRevenue
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
 export const monthlyBookingStat = async (req, res) => {
     try {
         const givenYear = 2025;
@@ -485,6 +557,7 @@ export const lastMonthBookingDetails = async (req, res) => {
         })
     }
 }
+
 
 export const lastYearBookingDetails = async (req, res) => {
     try {

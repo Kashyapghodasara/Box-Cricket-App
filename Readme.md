@@ -303,8 +303,15 @@
 
 #### Day 59 -- Thursday -- 21-08-2025
     - Today and Yesterday booking details done
+    - Tested on Postman
     - Bug fixing
 
 #### Day 60 -- Friday -- 22-08-2025
     - Last week, Last month, last Year booking detail integration done
+    - Tested on Postman
+    - Bug fixing
+
+#### Day 61 -- Saturday -- 23-08-2025
+    - Tomorrow and Overmorrow booking detail integration done
+    - Tested on Postman
     - Bug fixing

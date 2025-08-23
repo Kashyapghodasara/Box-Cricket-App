@@ -15,17 +15,26 @@ export const bookingBox = async (req, res) => {
         // Fix Later
         const randomTicketNumber = Math.floor(Math.random() * 1000000000000);
 
-        const findBooking = await Booking.findOne({
-            box_id: Boxid,
-            date: Date,
-            start_time: Start_time,
-            end_time: End_time
-        });
-        if (findBooking) {
-            return res.status(400).json({
-                message: "Slot is already booked!",
-                success: false
-            });
+        function timeToMinutes(timeStr) {
+            const [hours, minutes] = timeStr.split(":").map(Number);
+            return hours * 60 + minutes;
+        }
+
+        const startMinutes = timeToMinutes(Start_time);
+        const endMinutes = timeToMinutes(End_time);
+
+        const bookings = await Booking.find({ box_id: Boxid, date: Date });
+
+        for (let b of bookings) {
+            const bStart = timeToMinutes(b.start_time);
+            const bEnd = timeToMinutes(b.end_time);
+
+            if (startMinutes < bEnd && endMinutes > bStart) {
+                return res.status(400).json({
+                    message: "Slot is already booked!",
+                    success: false
+                });
+            }
         }
 
         const newBooking = await Booking.create({
@@ -102,11 +111,11 @@ export const getBookingDetails = async (req, res) => {
 
 export const bookedSloteChecking = async (req, res) => {
     try {
-        /*  console.log(req.body) */ 
+        /*  console.log(req.body) */
         const userId = req.params.userId;
         const { getDate } = req.body
 
-        if(!getDate){
+        if (!getDate) {
             return res.status(404).json({
                 message: "Date Not Found",
                 success: false

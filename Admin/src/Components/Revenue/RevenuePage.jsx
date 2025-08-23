@@ -53,16 +53,15 @@ const RevenuePage = () => {
     const [stats, setStats] = useState({
         today: { bookings: 0, revenue: 0 },
         yesterday: { bookings: 0, revenue: 0 },
+        Tomorrow: { bookings: 0, revenue: 0 },
+        Overmorrow: { bookings: 0, revenue: 0 },
         lastWeek: { bookings: 0, revenue: 0 },
         lastMonth: { bookings: 0, revenue: 0 },
-        last6Months: { bookings: 0, revenue: 0 },
         lastYear: { bookings: 0, revenue: 0 },
     });
 
     const [time, setTime] = useState(new Date());
-    /* const [totalBalance, setTotalBalance] = useState(0);
-    const [bookedSlots, setBookedSlots] = useState(0);
-    const [todayRevenue, setTodayRevenue] = useState(0); */
+
 
     const today = new Date();
     const day = today.getDate();
@@ -124,7 +123,7 @@ const RevenuePage = () => {
             }
         }
 
-        const yesterdayBookingDetails = async () => { 
+        const yesterdayBookingDetails = async () => {
             try {
                 const config = {
                     headers: { "Content-Type": "application/json" },
@@ -132,7 +131,7 @@ const RevenuePage = () => {
                 }
                 const res = await axios.get(`${ADMIN_BACKEND_URL}/yesterdayBookingDetails`, config);
                 console.log(res.data);
-                if(res.data.success === true) {
+                if (res.data.success === true) {
                     setStats(prev => ({
                         ...prev,
                         yesterday: {
@@ -148,15 +147,64 @@ const RevenuePage = () => {
             }
         }
 
+        const tomorrowBookingDetails = async () => {
+            try {
+                const config = {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true   // for cookies
+                }
+                const res = await axios.get(`${ADMIN_BACKEND_URL}/tomorrowBookingDetails`, config);
+                console.log(res.data);
+                if (res.data.success === true) {
+                    setStats(prev => ({
+                        ...prev,
+                        Tomorrow: {
+                            ...prev.Tomorrow,
+                            bookings: res.data.tomorrowBookings,
+                            revenue: res.data.tomorrowRevenue
+                        }
+                    }))
+                }
+            } catch (error) {
+                console.error("Error fetching yesterday's booking details:", error);
+                toast.error("Failed to fetch yesterday's booking details");
+            }
+        }
+
+        const overmorrowBookingDetails = async () => {
+            try {
+                const config = {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true   // for cookies
+                }
+                const res = await axios.get(`${ADMIN_BACKEND_URL}/overmorrowBookingDetails`, config);
+                console.log(res.data);
+                if (res.data.success === true) {
+                    setStats(prev => ({
+                        ...prev,
+                        Overmorrow: {
+                            ...prev.Overmorrow,
+                            bookings: res.data.overmorrowBookings,
+                            revenue: res.data.overmorrowRevenue
+                        }
+                    }))
+                }
+            } catch (error) {
+                console.error("Error fetching yesterday's booking details:", error);
+                toast.error("Failed to fetch yesterday's booking details");
+            }
+        }
+
         const lastWeekBookingDetails = async () => {
-            try {   
-                const config = { headers: { "Content-Type": "application/json" },
+            try {
+                const config = {
+                    headers: { "Content-Type": "application/json" },
                     withCredentials: true   // for cookies
                 }
 
                 const res = await axios.get(`${ADMIN_BACKEND_URL}/lastWeekBookingDetails`, config);
 
-                if(res.data.success === true) {
+                if (res.data.success === true) {
                     setStats(prev => ({
                         ...prev,
                         lastWeek: {
@@ -174,12 +222,13 @@ const RevenuePage = () => {
 
         const lastMonthBookingDetails = async () => {
             try {
-                const config = { headers: { "Content-Type": "application/json" },
+                const config = {
+                    headers: { "Content-Type": "application/json" },
                     withCredentials: true   // for cookies
                 }
 
                 const res = await axios.get(`${ADMIN_BACKEND_URL}/lastMonthBookingDetails`, config);
-                if(res.data.success === true) {
+                if (res.data.success === true) {
                     setStats(prev => ({
                         ...prev,
                         lastMonth: {
@@ -197,12 +246,13 @@ const RevenuePage = () => {
 
         const lastYearBookingDetails = async () => {
             try {
-                const config = { headers: { "Content-Type": "application/json" },
+                const config = {
+                    headers: { "Content-Type": "application/json" },
                     withCredentials: true   // for cookies
                 }
 
                 const res = await axios.get(`${ADMIN_BACKEND_URL}/lastYearBookingDetails`, config);
-                if(res.data.success === true) {
+                if (res.data.success === true) {
                     setStats(prev => ({
                         ...prev,
                         lastYear: {
@@ -221,6 +271,8 @@ const RevenuePage = () => {
         todayBookedSlots();
         todayRevenue();
         yesterdayBookingDetails();
+        tomorrowBookingDetails();
+        overmorrowBookingDetails();
         lastWeekBookingDetails();
         lastMonthBookingDetails();
         lastYearBookingDetails();
@@ -298,6 +350,40 @@ const RevenuePage = () => {
                         prefix="₹"
                     />
 
+                    {/* Tomorrow */}
+                    <StatBox
+                        title="Tomorrow's Bookings"
+                        value={stats.Tomorrow.bookings}
+                        subtitle="Slots Booked"
+                        icon={Bookmark}
+                        color="purple"
+                    />
+                    <StatBox
+                        title="Tomorrow's Revenue"
+                        value={stats.Tomorrow.revenue}
+                        subtitle="Payment Received"
+                        icon={BadgeDollarSign}
+                        color="green"
+                        prefix="₹"
+                    />
+
+                    {/* Overmorrow */}
+                    <StatBox
+                        title="Overmorrow's Bookings"
+                        value={stats.Overmorrow.bookings}
+                        subtitle="Slots Booked"
+                        icon={Bookmark}
+                        color="purple"
+                    />
+                    <StatBox
+                        title="Overmorrow's Revenue"
+                        value={stats.Overmorrow.revenue}
+                        subtitle="Payment Received"
+                        icon={BadgeDollarSign}
+                        color="green"
+                        prefix="₹"
+                    />
+
                     {/* Last Week */}
                     <StatBox
                         title="Last Week Bookings"
@@ -326,23 +412,6 @@ const RevenuePage = () => {
                     <StatBox
                         title="Last Month Revenue"
                         value={stats.lastMonth.revenue}
-                        subtitle="Payment Received"
-                        icon={BadgeDollarSign}
-                        color="green"
-                        prefix="₹"
-                    />
-
-                    {/* Last 6 Months */}
-                    <StatBox
-                        title="Last 6 Months Bookings"
-                        value={stats.last6Months.bookings}
-                        subtitle="Slots Booked"
-                        icon={Bookmark}
-                        color="purple"
-                    />
-                    <StatBox
-                        title="Last 6 Months Revenue"
-                        value={stats.last6Months.revenue}
                         subtitle="Payment Received"
                         icon={BadgeDollarSign}
                         color="green"

@@ -35,14 +35,14 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
 
 
   useEffect(() => {
-      if (isLoggedIn === false) {
-        toast.error("Please Login First", {
-          style: toastStyle,
-          iconTheme: toastIconTheme,
-          duration: 4000,
-        });
-       navigate('/')
-      }
+    if (isLoggedIn === false) {
+      toast.error("Please Login First", {
+        style: toastStyle,
+        iconTheme: toastIconTheme,
+        duration: 4000,
+      });
+      navigate('/')
+    }
   }, [isLoggedIn])
 
 
@@ -176,17 +176,17 @@ const StepPaymentDetails = ({ onNext, onPrev }) => {
     onNext();
   };
 
-// Comman Details
-// finalPaymentDetails
+  // Comman Details
+  // finalPaymentDetails
 
   return (
     <>
       <div className='w-[100%]' style={{ overflow: 'hidden' }} >
 
-
         <div className='flex justify-center h-auto w-full overflow-x-hidden m-5 pt-5'>
           <div className='border-2 border-[#003828] h-auto m-6 rounded-xl w-full max-w-3xl p-8 shadow-lg bg-[#F4F1E1]'>
-            <h1 className='text-4xl text-center font-bold text-[#0C3B2E] mb-10'>Payment Details</h1>
+            <h1 className='text-4xl text-center font-bold text-[#0C3B2E] mb-2 '>Payment Details</h1>
+            <h1 className='text-md text-center text-[#041913] mb-10'>Prototype Product - Please enter fake details</h1>
 
             <form onSubmit={handleEmptyFieldLogic}>
 
