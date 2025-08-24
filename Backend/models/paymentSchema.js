@@ -35,6 +35,7 @@ const paymentSchema = new mongoose.Schema({
     },
     bookedBoxInfo : [{
         type: mongoose.Schema.Types.ObjectId,
+        ref: "booking",
         required: true
     }],
     user: {

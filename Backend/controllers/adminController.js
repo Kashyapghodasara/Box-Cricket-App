@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken"
 import dotenv, { decrypt } from "dotenv"
 import crypto from "crypto"
 import { Error, set } from "mongoose"
+
 dotenv.config({ path: "../.env" })
 
 function decryptText(encrypted) {
@@ -42,7 +43,6 @@ function decryptText(encrypted) {
     decrypted = Buffer.concat([decrypted, decipher.final()]);
 
     return decrypted.toString();
-
 }
 
 
@@ -558,14 +558,13 @@ export const lastMonthBookingDetails = async (req, res) => {
     }
 }
 
-
 export const lastYearBookingDetails = async (req, res) => {
     try {
         const today = new Date().toLocaleDateString('en-CA');
         const givenYear = new Date(today).getFullYear();
         const pastYear = new Date(today);
         pastYear.setFullYear(pastYear.getFullYear() - 1);
-        console.log(pastYear.getFullYear());
+        /* console.log(pastYear.getFullYear()); */
 
         const lastYearBookingDetails = await Booking.countDocuments({
             date: {
@@ -581,8 +580,8 @@ export const lastYearBookingDetails = async (req, res) => {
             }
         })
 
-        console.log(lastYearBookingDetails)
-        console.log(lastYearRevenueDetails)
+       /*  console.log(lastYearBookingDetails)
+        console.log(lastYearRevenueDetails) */
 
         if(lastYearBookingDetails === 0 && lastYearRevenueDetails.length === 0) {
             return res.status(200).json({
@@ -607,6 +606,30 @@ export const lastYearBookingDetails = async (req, res) => {
         res.status(400).json({
             success: false,
             message: error.message
+        })
+    }
+}
+
+export const fetchTransactionDetails = async (req, res) => {
+    try {
+        const findAllTransactions = await Payment.find({}).populate("bookedBoxInfo").select("-createdAt -updatedAt -__v -paymentDetails").sort({ createdAt: -1 });  // Newest document first
+
+        if (!findAllTransactions || findAllTransactions.length === 0) {
+            return res.status(400).json({
+                message: "No transactions found",
+                success: false,
+                transactions: []
+            })
+        }
+        return res.status(200).json({
+            message: "All Transactions fetched successfully",
+            success: true,
+            transactions: findAllTransactions
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false
         })
     }
 }

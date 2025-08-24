@@ -3,6 +3,8 @@ import Home from "./Home";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Dashboard from "./Dashboard";
 import RevenuePage from "./Revenue/RevenuePage";
+import TransDetails from "./Transaction/TransDetails";
+import Sidebar from "./Sidebar.jsx";
 
 const Body = () => {
 
@@ -18,6 +20,10 @@ const Body = () => {
         {
             path: '/Revenue',
             element: <RevenuePage />
+        }, 
+        {
+            path: '/Transaction',
+            element: <TransDetails />,
         }
     ])
 

@@ -16,7 +16,7 @@ const Sidebar = () => {
     const menuItems = [
         { icon: LayoutDashboard, label: 'Overview' },
         { icon: BadgeDollarSign, label: 'Revenue' },
-        { icon: ScanText, label: 'Transactions' },
+        { icon: ScanText, label: 'Transaction' },
         { icon: BarChart3, label: 'Statistics' },
     ];
 

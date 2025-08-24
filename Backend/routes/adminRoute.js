@@ -15,6 +15,7 @@ import {
     lastWeekBookingDetails, 
     lastMonthBookingDetails,
     lastYearBookingDetails,
+    fetchTransactionDetails
 } from "../controllers/adminController.js"
 
 const router = express.Router()
@@ -33,6 +34,8 @@ router.route('/overmorrowBookingDetails').get(isAdminAuthenticated, overmorrowBo
 router.route('/lastWeekBookingDetails').get(isAdminAuthenticated, lastWeekBookingDetails)
 router.route('/lastMonthBookingDetails').get(isAdminAuthenticated, lastMonthBookingDetails)
 router.route('/lastYearBookingDetails').get(isAdminAuthenticated, lastYearBookingDetails)
+router.route('/fetchTransactionDetails').get(isAdminAuthenticated, fetchTransactionDetails)
+
 
 
 
