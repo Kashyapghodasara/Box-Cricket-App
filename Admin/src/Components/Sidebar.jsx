@@ -17,7 +17,7 @@ const Sidebar = () => {
         { icon: LayoutDashboard, label: 'Overview' },
         { icon: BadgeDollarSign, label: 'Revenue' },
         { icon: ScanText, label: 'Transaction' },
-        { icon: BarChart3, label: 'Statistics' },
+        /* { icon: BarChart3, label: 'Statistics' }, */
     ];
 
     const SuccessToastStyle = {

@@ -27,6 +27,8 @@ const TransDetails = () => {
 
     const [time, setTime] = useState(new Date());
     const [tranInfo, setTranInfo] = useState();
+    const [isPopUp, setIsPopUp] = useState(false);
+    const [user, setUser] = useState({});
 
     const today = new Date();
     const day = today.getDate();
@@ -49,7 +51,6 @@ const TransDetails = () => {
                 if (res.data.success) {
                     setTranInfo(res.data.transactions)
                 }
-
             } catch (error) {
                 toast.error(error.response.data.message)
                 console.log("Error fetching transaction details:", error);
@@ -58,8 +59,6 @@ const TransDetails = () => {
 
         fetchTransactionsDetails();
     }, [])
-
-    /*  console.log("Transaction Details:", tranInfo); */
 
     return (
         <div className="flex h-screen bg-[#0c0c0c] text-white">
@@ -126,7 +125,7 @@ const TransDetails = () => {
                                 {/* Used (... ) instead of { ... } inside .map() → ensures the JSX is returned. */}
                                 {tranInfo?.map((item, index) => (
                                     <TableBody key={item._id}>
-                                        <TableRow className="text-[14.5px]">
+                                        <TableRow className="text-[14.5px]" onClick={() => { setIsPopUp(true); setUser(item) }}>
                                             <TableCell className="text-center tracking-wide font-medium" >{index + 1}</TableCell>
                                             <TableCell className="text-center tracking-wide">{item.fullname}</TableCell>
                                             <TableCell className="text-center tracking-wide">{item.email}</TableCell>
@@ -145,12 +144,112 @@ const TransDetails = () => {
                                     </TableRow>
                                 </TableBody>
                             </>)}
-
-
-
-
-
                     </Table>
+
+                    {isPopUp && (
+                        <>
+                            <div>
+                                <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
+                                    <div className="bg-zinc-900 p-8 rounded-2xl shadow-2xl w-[820px] h-[580px] relative text-gray-200 overflow-y-auto 
+                                    ">
+
+                                        {/* Title */}
+                                        <h2 className="text-3xl font-bold mb-8 text-center text-white tracking-wide">
+                                            User Details
+                                        </h2>
+
+                                        {/* Details Grid */}
+                                        <div className="grid grid-cols-2 gap-6 font-sans text-[15px]">
+
+                                            {/* Personal Info */}
+                                            <div className="bg-zinc-800 p-4 rounded-xl shadow-sm border border-gray-700">
+                                                <h3 className="text-base font-semibold text-blue-400 border-b border-gray-700 pb-2 mb-4 flex items-center gap-2">
+                                                    👤 Personal Info
+                                                </h3>
+                                                <div className="space-y-3">
+                                                    <div className="flex justify-between items-center hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Name</span>
+                                                        <span className="text-gray-300">{user.fullname}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Email</span>
+                                                        <span className="text-gray-300">{user.email}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Payment Info */}
+                                            <div className="bg-zinc-800 p-4 rounded-xl shadow-sm border border-gray-700">
+                                                <h3 className="text-base font-semibold text-purple-400 border-b border-gray-700 pb-2 mb-4 flex items-center gap-2">
+                                                    💳 Payment Info
+                                                </h3>
+                                                <div className="space-y-3">
+                                                    <div className="flex justify-between hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Amount</span>
+                                                        <span className="text-gray-300">₹{user.amount}</span>
+                                                    </div>
+                                                    <div className="flex justify-between hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Method</span>
+                                                        <span className="text-gray-300">{user.paymentMethode}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Booking Info */}
+                                            <div className="col-span-2 bg-zinc-800 p-4 rounded-xl shadow-sm border border-gray-700">
+                                                <h3 className="text-base font-semibold text-green-400 border-b border-gray-700 pb-2 mb-4 flex items-center gap-2">
+                                                    🎟️ Booking Info
+                                                </h3>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="flex justify-between hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Box ID</span>
+                                                        <span className="text-gray-300">{user?.bookedBoxInfo[0]?.box_id}</span>
+                                                    </div>
+                                                    <div className="flex justify-between hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Size</span>
+                                                        <span className="text-gray-300">{user?.bookedBoxInfo[0]?.size}</span>
+                                                    </div>
+                                                    <div className="flex justify-between hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Date</span>
+                                                        <span className="text-gray-300">{user?.bookedBoxInfo[0]?.date}</span>
+                                                    </div>
+                                                    <div className="flex justify-between hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Duration</span>
+                                                        <span className="text-gray-300">{user?.bookedBoxInfo[0]?.duration}</span>
+                                                    </div>
+                                                    <div className="flex justify-between hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Start</span>
+                                                        <span className="text-gray-300">{user?.bookedBoxInfo[0]?.start_time}</span>
+                                                    </div>
+                                                    <div className="flex justify-between hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">End</span>
+                                                        <span className="text-gray-300">{user?.bookedBoxInfo[0]?.end_time}</span>
+                                                    </div>
+                                                    <div className="flex justify-between col-span-2 hover:bg-zinc-700/40 px-2 py-1 rounded-lg">
+                                                        <span className="font-medium">Ticket No</span>
+                                                        <span className="text-gray-300">{user?.bookedBoxInfo[0]?.ticket_no}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Close Button */}
+                                        <div className="mt-8 flex justify-center">
+                                            <button
+                                                onClick={() => setIsPopUp(false)}
+                                                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 
+                         text-white px-8 py-2.5 rounded-lg shadow-lg transition-all duration-200 hover:scale-105"
+                                            >
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+
                 </section>
             </main>
         </div>

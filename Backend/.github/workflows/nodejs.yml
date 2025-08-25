@@ -1,13 +1,26 @@
-##  GitHub Actions is cloud-based CI/CD
-
 name: Box-Cricket-Backend CI
 
 on:
-    push:
-        branches: ['main']
-    pull_request:
-        branches: ['main']
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
-    build-and-test:  ## Job name
-        runs-on: ubuntu-latest ## This is the Github's own service
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20   # or your project version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
