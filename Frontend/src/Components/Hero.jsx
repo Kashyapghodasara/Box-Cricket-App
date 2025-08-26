@@ -50,16 +50,20 @@ const Hero = () => {
     const logoutHandler = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${USER_BACKEND_URL}/logout`);
+            const response = await axios.post(
+                `${USER_BACKEND_URL}/logout`,
+                {},
+                { withCredentials: true }  // For cookies
+            );
+
             if (response.data.success) {
-                logout()
+                logout();
                 toast.success(response.data.message, SuccessToastStyle);
             }
         } catch (error) {
-            toast.error(error.response.data.message, ErrorToastStyle);
+            toast.error(error.response?.data?.message || "Logout failed", ErrorToastStyle);
         }
-
-    }
+    };
 
     const scrollToSection = (id) => {
         const section = document.getElementById(id);

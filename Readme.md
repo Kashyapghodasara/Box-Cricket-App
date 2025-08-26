@@ -10,6 +10,7 @@
 - ✅ Check availability of booked slots
 - 📊 Admin dashboard for managing bookings
 - 📈 Admin can analyze and audit bookings
+- ⛓ Http security headers are integrated
 <br>
 <br>
 
