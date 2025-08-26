@@ -1,14 +1,15 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import cookieParser from 'cookie-parser'
-import cors from 'cors'
+import express from 'express';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import helmet from "helmet";
+import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import DBConnection from './config/database.js';
-import userRouter from './routes/userRoute.js'
-import bookingRoute from './routes/bookingRoute.js'
-import paymentRoute from './routes/paymentRoute.js'
-import adminRouter from './routes/adminRoute.js'
+import userRouter from './routes/userRoute.js';
+import bookingRoute from './routes/bookingRoute.js';
+import paymentRoute from './routes/paymentRoute.js';
+import adminRouter from './routes/adminRoute.js';
 
 export const app = express()
 DBConnection()
@@ -18,6 +19,7 @@ const __filename = fileURLToPath(import.meta.url);  // You have to import this f
 const __dirname = path.dirname(__filename);
 
 app.use(express.json())
+app.use(helmet())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public'))) // This is dosen't directly work in ES module

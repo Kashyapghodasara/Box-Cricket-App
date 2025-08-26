@@ -7,7 +7,7 @@ const router = express.Router();
 router.route('/bookings').post(isAuthenticated, bookingBox)
 router.route('/getBookingsDetails/:userId').get(isAuthenticated, getBookingDetails)
 router.route('/getBookingsDetails/:userId').get(isAuthenticated, getBookingDetails)
-router.route('/availableSlote/:userId').post(isAuthenticated, bookedSloteChecking)
+router.route('/availableSlote/:userId').post(bookedSloteChecking)
 
 
 export default router

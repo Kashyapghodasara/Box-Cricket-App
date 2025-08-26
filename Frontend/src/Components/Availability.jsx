@@ -133,7 +133,7 @@ const Availability = () => {
   const fetchBookedSlots = async (date) => {
     try {
       const formattedDate = new Date(date).toISOString();
-      console.log("Date", formattedDate)
+      /* console.log("Date", formattedDate) */
       const config = { headers: { "Content-Type": "application/json" }, withCredentials: true };
 
       const res = await axios.post(
