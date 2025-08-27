@@ -88,15 +88,15 @@ export const login = async (req, res) => {
         return res.cookie("token", token, {
             maxAge: 3 * 60 * 60 * 1000,  // 3 hours
             httpOnly: true,
-            sameSite: "Lax",
-            secure: false
+            sameSite: "none",   // allow cross-site
+            secure: true        // must be true on HTTPS
         }).status(200).json({
             message: "User logged in successfully",
             username: `Welcome ${findUserWithToken.username}`,
             success: true,
             token,
             findUserWithToken
-        })
+        });
     }
     catch (error) {
         return res.status(400).json({
