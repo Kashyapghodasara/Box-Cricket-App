@@ -89,9 +89,9 @@ export const adminLogin = async (req, res) => {
 
         return res.cookie("adminToken", token, {
             httpOnly: true,
-            secure: true,        // required on HTTPS (Vercel + Render are HTTPS)
-            sameSite: "None",    // allow cross-site cookie
-            maxAge: 24 * 60 * 60 * 1000  // 1 day in ms
+            secure: true,
+            sameSite: "None",
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
         }).status(200).json({
             message: "Admin logged in successfully",
             username: `Welcome ${findAdminWithToken.username}`,
