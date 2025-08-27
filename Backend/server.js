@@ -46,7 +46,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public'))) // This is dosen't directly work in ES module
 
 
-const allowedOrigins = ["https://box-cricket-app.vercel.app/", "http://localhost:5174"];
+const allowedOrigins = ["https://box-cricket-app.vercel.app/", "https://admin-box-cricket-app.vercel.app/"];
 
 app.use(cors({
   origin: (origin, callback) => {
