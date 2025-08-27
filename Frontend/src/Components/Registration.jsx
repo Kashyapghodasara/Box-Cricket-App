@@ -184,7 +184,10 @@ const Registration = () => {
             if (res.data.success === true) {
                 toast.success(res.data.message, SuccessToastStyle);
                 setAdminData({ name: "", username: "", email: "", password: "", secret_string: "" })
-                window.location.href = 'https://admin-box-cricket-app.vercel.app/'
+                
+                setTimeout(() => {
+                    window.location.href = 'https://admin-box-cricket-app.vercel.app/';
+                }, 900);  // give browser time to save cookie
                 // navigate() only detour within the same page and port
             }
         } catch (error) {
