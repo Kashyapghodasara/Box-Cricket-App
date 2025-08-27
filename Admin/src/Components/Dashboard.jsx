@@ -112,7 +112,7 @@ const Dashboard = () => {
         {/* User Info */}
         <div className='flex items-center gap-4 p-2 rounded-lg hover:bg-zinc-900 transition-colors duration-200 cursor-pointer'>
           <img
-            src="../public/batman.png"
+            src="../batman.png"
             alt="User Avatar"
             onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/48x48/7e22ce/ffffff?text=K'; }}
             className='w-12 h-12 rounded-full border-2 border-purple-500 object-cover'

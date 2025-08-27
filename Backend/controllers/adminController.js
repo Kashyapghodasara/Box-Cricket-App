@@ -87,12 +87,18 @@ export const adminLogin = async (req, res) => {
         const token = jwt.sign(tokenData, process.env.ADMIN_JWT_SECRET, { expiresIn: "1d" })
         const findAdminWithToken = await Admin.findOne({ email, username }).select('-password -secret_string')
 
-        return res.cookie("adminToken", token, { expiresIn: "1d", httpOnly: true }).status(200).json({
+        return res.cookie("adminToken", token, {
+            httpOnly: true,
+            secure: true,        // required on HTTPS (Vercel + Render are HTTPS)
+            sameSite: "None",    // allow cross-site cookie
+            maxAge: 24 * 60 * 60 * 1000  // 1 day in ms
+        }).status(200).json({
             message: "Admin logged in successfully",
             username: `Welcome ${findAdminWithToken.username}`,
             admin: findAdminWithToken,
             success: true
-        })
+        });
+
 
     } catch (error) {
         return res.status(400).json({
@@ -276,7 +282,7 @@ export const getPaymentMethodStat = async (req, res) => {
     }
 }
 
-export const tomorrowBookingDetails = async (req, res) => { 
+export const tomorrowBookingDetails = async (req, res) => {
     try {
         const today = new Date().toLocaleDateString('en-CA');
         const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-CA');
@@ -312,7 +318,7 @@ export const tomorrowBookingDetails = async (req, res) => {
     }
 }
 
-export const overmorrowBookingDetails = async (req, res) => { 
+export const overmorrowBookingDetails = async (req, res) => {
     try {
         const today = new Date().toLocaleDateString('en-CA');
         const overmorrow = new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleDateString('en-CA');
@@ -580,10 +586,10 @@ export const lastYearBookingDetails = async (req, res) => {
             }
         })
 
-       /*  console.log(lastYearBookingDetails)
-        console.log(lastYearRevenueDetails) */
+        /*  console.log(lastYearBookingDetails)
+         console.log(lastYearRevenueDetails) */
 
-        if(lastYearBookingDetails === 0 && lastYearRevenueDetails.length === 0) {
+        if (lastYearBookingDetails === 0 && lastYearRevenueDetails.length === 0) {
             return res.status(200).json({
                 message: "No bookings found for last year",
                 success: true,
