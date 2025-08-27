@@ -16,12 +16,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/Components/ui/card"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/Components/ui/chart"
 
 
 const chartData = [{ Small: 1260, Medium: 570, Large: 756 }]
