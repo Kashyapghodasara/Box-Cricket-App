@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import helmet from "helmet";
 import { rateLimit } from 'express-rate-limit';
+import axios from 'axios';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -15,6 +16,7 @@ import adminRouter from './routes/adminRoute.js';
 export const app = express()
 DBConnection()
 dotenv.config({ path: ".env" })
+axios.defaults.withCredentials = true;
 
 const __filename = fileURLToPath(import.meta.url);  // You have to import this first
 const __dirname = path.dirname(__filename);
