@@ -64,7 +64,7 @@ const Sidebar = () => {
             const res = await axios.get(`${ADMIN_BACKEND_URL}/adminLogout`, config);
             if (res.data.success === true) {
                 toast.success(res.data.message, SuccessToastStyle)
-                window.location.href = 'http://localhost:5173/registration'
+                window.location.href = 'https://box-cricket-app.vercel.app/registration'
             }
         } catch (error) {
             toast.error("Error during logout", ErrorToastStyle);
