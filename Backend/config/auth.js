@@ -46,6 +46,10 @@ export const isAuthenticated = async (req, res, next) => {
 
 export const isAdminAuthenticated = async (req, res, next) => {
     try {
+        console.log("---- AUTH DEBUG ----");
+        console.log("req.headers.origin:", req.headers.origin);
+        console.log("req.headers.cookie:", req.headers.cookie); // raw cookie header
+        console.log("req.cookies:", req.cookies);
         let adminToken;
 
         // ✅ Support token from cookie OR Authorization header

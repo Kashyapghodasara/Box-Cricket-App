@@ -54,6 +54,20 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "https://admin-box-cricket-app.vercel.app"],
+    styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+    imgSrc: ["'self'", "data:", "https:"],
+    fontSrc: ["'self'", "https:", "data:"],
+    connectSrc: ["'self'", "https://backend-box-cricket.onrender.com", "https://admin-box-cricket-app.vercel.app"],
+    formAction: ["'self'", "https://admin-box-cricket-app.vercel.app"],
+    frameAncestors: ["'self'"],
+  },
+}));
+
+
 const allowedOrigins = [
   "https://box-cricket-app.vercel.app",
   "https://admin-box-cricket-app.vercel.app"
