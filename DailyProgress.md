@@ -298,3 +298,8 @@
     - Add http security header package
     - Enable Express-rate-limiting
     - Bug fixing
+
+#### Day 65 -- Saturday -- 26-08-2025
+    - Problem occure on deployment
+    - Try to solve the error
+    - Bug fixing

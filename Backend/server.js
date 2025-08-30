@@ -42,11 +42,16 @@ const adminLimiter = rateLimit({
 
 
 app.use(express.json())
-app.use(helmet())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public'))) // This is dosen't directly work in ES module
 
+// Loosen headers that block cross-site cookies
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
 
 const allowedOrigins = [
   "https://box-cricket-app.vercel.app",
