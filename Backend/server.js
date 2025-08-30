@@ -13,41 +13,42 @@ import bookingRoute from './routes/bookingRoute.js';
 import paymentRoute from './routes/paymentRoute.js';
 import adminRouter from './routes/adminRoute.js';
 
-export const app = express()
-DBConnection()
-dotenv.config({ path: ".env" })
+dotenv.config({ path: ".env" });
+
+export const app = express();
+DBConnection();
 axios.defaults.withCredentials = true;
 
-const __filename = fileURLToPath(import.meta.url);  // You have to import this first
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 1. General API rate limit
+// ================= Rate Limiters =================
 export const userLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,                 // Each IP can make 100 requests per window
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: {
     success: false,
     message: "Too many requests from this IP, please try again after 15 minutes."
   },
-  standardHeaders: true,    // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false,     // Disable `X-RateLimit-*` headers (deprecated)
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 const adminLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 50, // stricter for admin
+  max: 50,
   message: { success: false, message: "Too many requests for admin routes" }
 });
 
+// ================= Proxy & Parsers =================
+app.set("trust proxy", 1); // Required for secure cookies on Render
 
-app.set("trust proxy", 1);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public'))) // This is dosen't directly work in ES module
-
-// Loosen headers that block cross-site cookies
+// ================= Helmet =================
 app.use(helmet({
   crossOriginResourcePolicy: false,
   crossOriginOpenerPolicy: false,
@@ -61,13 +62,22 @@ app.use(helmet.contentSecurityPolicy({
     styleSrc: ["'self'", "https:", "'unsafe-inline'"],
     imgSrc: ["'self'", "data:", "https:"],
     fontSrc: ["'self'", "https:", "data:"],
-    connectSrc: ["'self'", "https://backend-box-cricket.onrender.com", "https://admin-box-cricket-app.vercel.app"],
-    formAction: ["'self'", "https://admin-box-cricket-app.vercel.app"],
+    connectSrc: [
+      "'self'",
+      "https://backend-box-cricket.onrender.com",
+      "https://admin-box-cricket-app.vercel.app",
+      "https://box-cricket-app.vercel.app"
+    ],
+    formAction: [
+      "'self'",
+      "https://admin-box-cricket-app.vercel.app",
+      "https://box-cricket-app.vercel.app"
+    ],
     frameAncestors: ["'self'"],
   },
 }));
 
-
+// ================= CORS =================
 const allowedOrigins = [
   "https://box-cricket-app.vercel.app",
   "https://admin-box-cricket-app.vercel.app"
@@ -78,18 +88,14 @@ app.use(cors({
   credentials: true
 }));
 
-/* app.use("/api/v1/", apiLimiter) */
-app.use("/api/v1/user", userRouter)
+// ================= Routes =================
+app.use("/api/v1/user", userRouter);
 app.use("/api/v1/user", userLimiter, bookingRoute);
 app.use("/api/v1/user", userLimiter, paymentRoute);
-
 app.use("/api/v1/admin", adminLimiter, adminRouter);
 
-
-if (process.env.NODE_ENV === 'development') {
-    dotenv.config();
-    app.listen(process.env.PORT, () => {
-        console.log(`Server is running on port ${process.env.PORT} ⚙`)
-    })
-}
-
+// ================= Server Start =================
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
