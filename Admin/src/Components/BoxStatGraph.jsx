@@ -121,7 +121,7 @@ const BoxStatGraph = () => {
           } catch (refreshError) {
             console.error("Refresh token failed:", refreshError);
             toast.error("Session expired, please login again");
-            window.location.href = "/admin-login";
+            window.location.href = "https://box-cricket-app.vercel.app/registration";
           }
         } else {
           console.error("Error fetching box statistics:", error);
