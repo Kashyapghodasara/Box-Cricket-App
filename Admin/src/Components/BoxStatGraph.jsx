@@ -120,6 +120,7 @@ const BoxStatGraph = () => {
             }
           } catch (refreshError) {
             console.error("Refresh token failed:", refreshError);
+            localStorage.removeItem("adminAccessToken"); // clear bad token
             toast.error("Session expired, please login again");
             /* window.location.href = "https://box-cricket-app.vercel.app/registration"; */
           }
@@ -132,7 +133,7 @@ const BoxStatGraph = () => {
 
 
     boxStategraphData();
-  }, [])
+  }, [localStorage.getItem("adminAccessToken")])
 
 
 

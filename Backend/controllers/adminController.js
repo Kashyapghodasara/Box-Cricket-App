@@ -127,12 +127,13 @@ const generateRefreshToken = (admin) => {
 //     }
 // }
 
+// Login
 export const adminLogin = async (req, res) => {
     try {
         const { name, username, email, password, secret_string } = req.body;
 
         if (!username || !name || !email || !password || !secret_string) {
-            return res.status(401).json("Please fill all the fields");
+            return res.status(401).json({ message: "Please fill all the fields" });
         }
 
         const findAdmin = await Admin.findOne({ email, username });
@@ -142,24 +143,17 @@ export const adminLogin = async (req, res) => {
 
         const decryptString = await decryptText(findAdmin.secret_string);
         if (decryptString !== secret_string) {
-            return res.status(400).json({
-                message: "Admin Credentials doesn't match",
-                success: false,
-            });
+            return res.status(400).json({ message: "Admin credentials don't match", success: false });
         }
 
-        const hashPW = findAdmin.password;
-        const comparePW = await bcrypt.compare(password, hashPW);
+        const comparePW = await bcrypt.compare(password, findAdmin.password);
         if (!comparePW) {
-            return res.status(401).json({
-                message: "Password doesn't match in Admin Login Process",
-                success: false,
-            });
+            return res.status(401).json({ message: "Password doesn't match", success: false });
         }
 
         // ✅ Generate both tokens
-        const accessToken = generateAccessToken(findAdmin);
-        const refreshToken = generateRefreshToken(findAdmin);
+        const accessToken = generateAccessToken({ id: findAdmin._id });
+        const refreshToken = generateRefreshToken({ id: findAdmin._id });
 
         const findAdminWithToken = await Admin.findOne({ email, username })
             .select("-password -secret_string");
@@ -187,30 +181,26 @@ export const adminLogin = async (req, res) => {
         });
 
     } catch (error) {
-        return res.status(400).json({
-            message: error.message,
-            success: false,
-        });
+        return res.status(400).json({ message: error.message, success: false });
     }
 };
 
+// Refresh
 export const refreshAdminToken = async (req, res) => {
     try {
         const refreshToken = req.cookies?.adminRefreshToken;
-
         if (!refreshToken) {
             return res.status(401).json({ message: "No refresh token provided", success: false });
         }
 
-        // Verify refresh token
         jwt.verify(refreshToken, process.env.ADMIN_REFRESH_SECRET, (err, decoded) => {
             if (err) {
                 return res.status(403).json({ message: "Invalid or expired refresh token", success: false });
             }
 
+            // decoded = { id: "...", iat: ..., exp: ... }
             const newAccessToken = generateAccessToken({ _id: decoded.id });
 
-            // Set new access token cookie
             res.cookie("adminAccessToken", newAccessToken, {
                 httpOnly: true,
                 secure: true,
@@ -218,19 +208,14 @@ export const refreshAdminToken = async (req, res) => {
                 maxAge: 15 * 60 * 1000, // 15 min
             });
 
-            return res.status(200).json({
-                message: "Access token refreshed",
-                success: true,
-            });
+            return res.status(200).json({ message: "Access token refreshed", success: true });
         });
-
+        
     } catch (error) {
-        return res.status(500).json({
-            message: error.message,
-            success: false,
-        });
+        return res.status(500).json({ message: error.message, success: false });
     }
 };
+
 
 export const adminLogout = async (req, res) => {
     try {
