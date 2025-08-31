@@ -45,53 +45,66 @@ const Dashboard = () => {
 
   useEffect(() => {
 
-    const totalBalance = async () => {
+    // ✅ Helper: Try refreshing token if 401 Unauthorized
+    const handleApiCall = async (apiFunc) => {
       try {
-        const config = { headers: { "Content-Type": "application/json" }, withCredentials: true }
+        return await apiFunc();
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          try {
+            // Refresh access token
+            await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+            // Retry original API call
+            return await apiFunc();
+          } catch (refreshError) {
+            console.error("Token refresh failed:", refreshError);
+            toast.error("Session expired. Please login again.");
+          }
+        } else {
+          throw error; // rethrow if not 401
+        }
+      }
+    };
 
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/totalBalance`, config);
+    // ✅ Get Total Balance
+    const totalBalance = async () => {
+      await handleApiCall(async () => {
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/totalBalance`, { withCredentials: true });
         if (res.data.success === true) {
           setTotalBalance(res.data.totalBalance);
         }
-
-      } catch (error) {
+      }).catch((error) => {
         console.error("Error fetching total balance:", error);
         toast.error("Failed to fetch total balance");
-      }
-    }
+      });
+    };
 
-    const todayBookedSlots = async () => { 
-      try {
-          const config = {
-            headers: { "Content-Type": "application/json"},
-            withCredentials: true   // for cookies
-          }
-          const res = await axios.get(`${ADMIN_BACKEND_URL}/bookedSlotNumber`, config)
-          if(res.data.success === true) {
-            setBookedSlots(res.data.bookedSlotes)
-          }
-      } catch (error) {
+    // ✅ Get Today's Booked Slots
+    const todayBookedSlots = async () => {
+      await handleApiCall(async () => {
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/bookedSlotNumber`, { withCredentials: true });
+        if (res.data.success === true) {
+          setBookedSlots(res.data.bookedSlotes);
+        }
+      }).catch((error) => {
         console.error("Error fetching today's booked slots:", error);
         toast.error("Failed to fetch today's booked slots");
-      }
-    }
+      });
+    };
 
+    // ✅ Get Today's Revenue
     const todayRevenue = async () => {
-      try {
-        const config = {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true   // for cookies
+      await handleApiCall(async () => {
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/todayRevenue`, { withCredentials: true });
+        if (res.data.success === true) {
+          setTodayRevenue(res.data.todayRevenue);
         }
-
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/todayRevenue`, config);
-        if(res.data.success === true) {
-          setTodayRevenue(res.data.todayRevenue)
-        }
-      } catch (error) {
+      }).catch((error) => {
         console.error("Error fetching today's revenue:", error);
         toast.error("Failed to fetch today's revenue");
-      }
-    }
+      });
+    };
+
 
     totalBalance();
     todayBookedSlots();

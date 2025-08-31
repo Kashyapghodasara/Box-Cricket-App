@@ -303,3 +303,8 @@
     - Problem occure on deployment
     - Try to solve the error
     - Bug fixing
+
+#### Day 66 -- Sunday -- 27-08-2025
+    - After realizing that cookies can’t be shared across domains:
+    - Integrating access–refresh token authentication is the only way to solve the admin login problem.
+    - Therefore, I updated the Auth. integration with the help of ChatGPT to streamline the flow

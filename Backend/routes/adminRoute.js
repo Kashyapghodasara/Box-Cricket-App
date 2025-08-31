@@ -1,51 +1,46 @@
-import express from 'express'
-import { isAdminAuthenticated } from '../config/auth.js'
+import express from "express";
+import { isAdminAuthenticated } from "../config/auth.js";
 import {
-    adminLogin, 
-    totalBalance, 
-    adminLogout, 
-    todayBookedSlots,
-    todayRevenue, 
-    getBookedBoxStat, 
-    getPaymentMethodStat, 
-    tomorrowBookingDetails,
-    overmorrowBookingDetails,
-    monthlyBookingStat,
-    yesterdayBookingDetails,
-    lastWeekBookingDetails, 
-    lastMonthBookingDetails,
-    lastYearBookingDetails,
-    fetchTransactionDetails
-} from "../controllers/adminController.js"
+  adminLogin,
+  adminLogout,
+  refreshAdminToken,
+  totalBalance,
+  todayBookedSlots,
+  todayRevenue,
+  getBookedBoxStat,
+  getPaymentMethodStat,
+  tomorrowBookingDetails,
+  overmorrowBookingDetails,
+  monthlyBookingStat,
+  yesterdayBookingDetails,
+  lastWeekBookingDetails,
+  lastMonthBookingDetails,
+  lastYearBookingDetails,
+  fetchTransactionDetails,
+} from "../controllers/adminController.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.route('/adminLogin').post(adminLogin)
-router.route('/adminLogout').get(adminLogout)
-router.route('/totalBalance').get(isAdminAuthenticated, totalBalance)
-router.route('/bookedSlotNumber').get(isAdminAuthenticated, todayBookedSlots)
-router.route('/todayRevenue').get(isAdminAuthenticated, todayRevenue)
-router.route('/getBookedBoxStat').get(isAdminAuthenticated, getBookedBoxStat)
-router.route('/getPaymentMethodStat').get(isAdminAuthenticated, getPaymentMethodStat)
-router.route('/monthlyBookingStat').get(isAdminAuthenticated, monthlyBookingStat)
-router.route('/yesterdayBookingDetails').get(isAdminAuthenticated, yesterdayBookingDetails)
-router.route('/tomorrowBookingDetails').get(isAdminAuthenticated, tomorrowBookingDetails)
-router.route('/overmorrowBookingDetails').get(isAdminAuthenticated, overmorrowBookingDetails)
-router.route('/lastWeekBookingDetails').get(isAdminAuthenticated, lastWeekBookingDetails)
-router.route('/lastMonthBookingDetails').get(isAdminAuthenticated, lastMonthBookingDetails)
-router.route('/lastYearBookingDetails').get(isAdminAuthenticated, lastYearBookingDetails)
-router.route('/fetchTransactionDetails').get(isAdminAuthenticated, fetchTransactionDetails)
+// ================= Auth Routes =================
+router.post("/adminLogin", adminLogin);
+router.get("/adminLogout", adminLogout);
 
+// 👉 New Refresh Token endpoint
+router.post("/rrefresh-token", refreshAdminToken);
 
+// ================= Protected Routes =================
+router.get("/totalBalance", isAdminAuthenticated, totalBalance);
+router.get("/bookedSlotNumber", isAdminAuthenticated, todayBookedSlots);
+router.get("/todayRevenue", isAdminAuthenticated, todayRevenue);
+router.get("/getBookedBoxStat", isAdminAuthenticated, getBookedBoxStat);
+router.get("/getPaymentMethodStat", isAdminAuthenticated, getPaymentMethodStat);
+router.get("/monthlyBookingStat", isAdminAuthenticated, monthlyBookingStat);
+router.get("/yesterdayBookingDetails", isAdminAuthenticated, yesterdayBookingDetails);
+router.get("/tomorrowBookingDetails", isAdminAuthenticated, tomorrowBookingDetails);
+router.get("/overmorrowBookingDetails", isAdminAuthenticated, overmorrowBookingDetails);
+router.get("/lastWeekBookingDetails", isAdminAuthenticated, lastWeekBookingDetails);
+router.get("/lastMonthBookingDetails", isAdminAuthenticated, lastMonthBookingDetails);
+router.get("/lastYearBookingDetails", isAdminAuthenticated, lastYearBookingDetails);
+router.get("/fetchTransactionDetails", isAdminAuthenticated, fetchTransactionDetails);
 
-
-
-
-
-
-
-
-
-
-
-export default router
+export default router;

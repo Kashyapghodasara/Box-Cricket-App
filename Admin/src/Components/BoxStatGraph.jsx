@@ -72,28 +72,67 @@ const BoxStatGraph = () => {
   useEffect(() => {
     const boxStategraphData = async () => {
       try {
-        const config = {
+        let accessToken = localStorage.getItem("adminAccessToken");
+
+        let config = {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`   // ✅ send access token
           },
-          withCredentials: true,
-        }
+          withCredentials: true,  // so refresh cookie works if needed
+        };
 
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/getBookedBoxStat`, config)
-        /* console.log(res.data) */
+        let res = await axios.get(`${ADMIN_BACKEND_URL}/getBookedBoxStat`, config);
+
+        // ✅ If success
         if (res.data.success === true) {
-          chartData[0].Small = res.data.boxCount.Small
-          chartData[0].Medium = res.data.boxCount.Medium
-          chartData[0].Large = res.data.boxCount.Large
+          chartData[0].Small = res.data.boxCount.Small;
+          chartData[0].Medium = res.data.boxCount.Medium;
+          chartData[0].Large = res.data.boxCount.Large;
         }
       } catch (error) {
-        console.error("Error fetching box statistics:", error)
-        toast.error("Failed to fetch box statistics")
-      }
-    }
+        // ✅ If access token expired
+        if (error.response && error.response.status === 401) {
+          try {
+            // call refresh API (it uses httpOnly cookie automatically)
+            const refreshRes = await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
 
-     boxStategraphData(); 
-  }, [])  
+            if (refreshRes.data.success === true) {
+              // save new access token
+              localStorage.setItem("adminAccessToken", refreshRes.data.accessToken);
+
+              // retry original request with new token
+              const retryConfig = {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${refreshRes.data.accessToken}`,
+                },
+                withCredentials: true,
+              };
+
+              const retryRes = await axios.get(`${ADMIN_BACKEND_URL}/getBookedBoxStat`, retryConfig);
+
+              if (retryRes.data.success === true) {
+                chartData[0].Small = retryRes.data.boxCount.Small;
+                chartData[0].Medium = retryRes.data.boxCount.Medium;
+                chartData[0].Large = retryRes.data.boxCount.Large;
+              }
+            }
+          } catch (refreshError) {
+            console.error("Refresh token failed:", refreshError);
+            toast.error("Session expired, please login again");
+            window.location.href = "/admin-login";
+          }
+        } else {
+          console.error("Error fetching box statistics:", error);
+          toast.error("Failed to fetch box statistics");
+        }
+      }
+    };
+
+
+    boxStategraphData();
+  }, [])
 
 
 

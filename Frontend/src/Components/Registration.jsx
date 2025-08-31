@@ -164,37 +164,47 @@ const Registration = () => {
     }
 
     const adminLoginHandler = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         if (!adminData.name || !adminData.username || !adminData.email || !adminData.password || !adminData.secret_string) {
             return toast.error("Please fill all the fields", ErrorToastStyle);
         }
         if (adminData.password.length < 4) {
             return toast.error("Password Doesn't Match It's credential", ErrorToastStyle);
         }
+
         try {
-            const config = { headers: { "Content-Type": "application/json" }, withCredentials: true }
+            const config = {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true   // ✅ allows cookies (refresh token) to be set
+            };
+
             const Data = {
                 name: adminData.name,
                 username: adminData.username,
                 email: adminData.email,
                 password: adminData.password,
                 secret_string: adminData.secret_string
-            }
-            const res = await axios.post(`${ADMIN_BACKEND_URL}/adminLogin`, Data, config)
+            };
+
+            const res = await axios.post(`${ADMIN_BACKEND_URL}/adminLogin`, Data, config);
+
             if (res.data.success === true) {
                 toast.success(res.data.message, SuccessToastStyle);
-                setAdminData({ name: "", username: "", email: "", password: "", secret_string: "" })
-                
+
+                // ✅ Reset input fields
+                setAdminData({ name: "", username: "", email: "", password: "", secret_string: "" });
+
+                // ✅ Redirect after login
                 setTimeout(() => {
-                    window.location.href = 'https://admin-box-cricket-app.vercel.app/';
-                }, 900);  // give browser time to save cookie
-                // navigate() only detour within the same page and port
+                    window.location.href = "https://admin-box-cricket-app.vercel.app/";
+                }, 900);
             }
         } catch (error) {
-            toast.error("Error occured in admin login", ErrorToastStyle);
-            console.log(error)
+            toast.error(error.response?.data?.message || "Error occurred in admin login", ErrorToastStyle);
+            console.error(error);
         }
-    }
+    };
+
 
     return (
         <>

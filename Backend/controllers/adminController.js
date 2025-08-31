@@ -45,69 +45,224 @@ function decryptText(encrypted) {
     return decrypted.toString();
 }
 
+// ================= Helper Functions =================
+const generateAccessToken = (admin) => {
+    return jwt.sign(
+        { id: admin._id },
+        process.env.ADMIN_JWT_SECRET,
+        { expiresIn: "15m" } // short-lived
+    );
+};
+
+const generateRefreshToken = (admin) => {
+    return jwt.sign(
+        { id: admin._id },
+        process.env.ADMIN_REFRESH_SECRET, // ⚡ new secret just for refresh
+        { expiresIn: "7d" } // longer-lived
+    );
+};
+
+
+// Old Login
+// export const adminLogin = async (req, res) => {
+//     try {
+//         const { name, username, email, password, secret_string } = req.body
+
+
+//         if (!username || !name || !email || !password || !secret_string) {
+//             return res.status(401).json("Please fill all the fields")
+//         }
+
+//         const findAdmin = await Admin.findOne({ email, username })
+//         if (!findAdmin) {
+//             return res.status(400).json({ message: "Admin not found", success: false })
+//         }
+
+//         const decryptString = await decryptText(findAdmin.secret_string)
+
+//         if (decryptString !== secret_string) {
+//             return res.status(400).json({
+//                 message: "Admin Credentials doesn't match",
+//                 success: false
+//             })
+//         }
+
+//         const hashPW = findAdmin.password
+//         const comparePW = await bcrypt.compare(password, hashPW)
+//         /* console.log(comparePW)   */// return TRUE
+
+//         if (!comparePW) {
+//             return res.status(401).json({
+//                 message: "Password doesn't match in Admin Login Process",
+//                 success: false
+//             })
+//         }
+
+//         const tokenData = {
+//             id: findAdmin._id
+//         }
+
+//         const token = jwt.sign(tokenData, process.env.ADMIN_JWT_SECRET, { expiresIn: "1d" })
+//         const findAdminWithToken = await Admin.findOne({ email, username }).select('-password -secret_string')
+
+//         return res.cookie("adminToken", token, {
+//             httpOnly: true,
+//             secure: true,           // must be HTTPS
+//             sameSite: "none",       // allow cross-site
+//             domain: "backend-box-cricket.onrender.com", // 👈 only hostname
+//             path: "/",
+//             maxAge: 24 * 60 * 60 * 1000
+//         }).status(200).json({
+//             message: "Admin logged in successfully",
+//             username: `Welcome ${findAdminWithToken.username}`,
+//             admin: findAdminWithToken,
+//             success: true
+//         });
+
+//     } catch (error) {
+//         return res.status(400).json({
+//             message: error.message,
+//             success: false
+//         })
+//     }
+// }
 
 export const adminLogin = async (req, res) => {
     try {
-        const { name, username, email, password, secret_string } = req.body
-
+        const { name, username, email, password, secret_string } = req.body;
 
         if (!username || !name || !email || !password || !secret_string) {
-            return res.status(401).json("Please fill all the fields")
+            return res.status(401).json("Please fill all the fields");
         }
 
-        const findAdmin = await Admin.findOne({ email, username })
+        const findAdmin = await Admin.findOne({ email, username });
         if (!findAdmin) {
-            return res.status(400).json({ message: "Admin not found", success: false })
+            return res.status(400).json({ message: "Admin not found", success: false });
         }
 
-        const decryptString = await decryptText(findAdmin.secret_string)
-
+        const decryptString = await decryptText(findAdmin.secret_string);
         if (decryptString !== secret_string) {
             return res.status(400).json({
                 message: "Admin Credentials doesn't match",
-                success: false
-            })
+                success: false,
+            });
         }
 
-        const hashPW = findAdmin.password
-        const comparePW = await bcrypt.compare(password, hashPW)
-        /* console.log(comparePW)   */// return TRUE
-
+        const hashPW = findAdmin.password;
+        const comparePW = await bcrypt.compare(password, hashPW);
         if (!comparePW) {
             return res.status(401).json({
                 message: "Password doesn't match in Admin Login Process",
-                success: false
-            })
+                success: false,
+            });
         }
 
-        const tokenData = {
-            id: findAdmin._id
-        }
+        // ✅ Generate both tokens
+        const accessToken = generateAccessToken(findAdmin);
+        const refreshToken = generateRefreshToken(findAdmin);
 
-        const token = jwt.sign(tokenData, process.env.ADMIN_JWT_SECRET, { expiresIn: "1d" })
-        const findAdminWithToken = await Admin.findOne({ email, username }).select('-password -secret_string')
-        
-        return res.cookie("token", token, {
+        const findAdminWithToken = await Admin.findOne({ email, username })
+            .select("-password -secret_string");
+
+        // ✅ Send both as cookies
+        res.cookie("adminAccessToken", accessToken, {
             httpOnly: true,
-            secure: true,           // must be HTTPS
-            sameSite: "none",       // allow cross-site
-            domain: "backend-box-cricket.onrender.com", // 👈 only hostname
-            path: "/",
-            maxAge: 24 * 60 * 60 * 1000
-        }).status(200).json({
+            secure: true,
+            sameSite: "none",
+            maxAge: 15 * 60 * 1000, // 15 min
+        });
+
+        res.cookie("adminRefreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+        return res.status(200).json({
             message: "Admin logged in successfully",
             username: `Welcome ${findAdminWithToken.username}`,
             admin: findAdminWithToken,
-            success: true
+            success: true,
         });
 
     } catch (error) {
         return res.status(400).json({
             message: error.message,
-            success: false
-        })
+            success: false,
+        });
     }
-}
+};
+
+export const refreshAdminToken = async (req, res) => {
+    try {
+        const refreshToken = req.cookies?.adminRefreshToken;
+
+        if (!refreshToken) {
+            return res.status(401).json({ message: "No refresh token provided", success: false });
+        }
+
+        // Verify refresh token
+        jwt.verify(refreshToken, process.env.ADMIN_REFRESH_SECRET, (err, decoded) => {
+            if (err) {
+                return res.status(403).json({ message: "Invalid or expired refresh token", success: false });
+            }
+
+            const newAccessToken = generateAccessToken({ _id: decoded.id });
+
+            // Set new access token cookie
+            res.cookie("adminAccessToken", newAccessToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
+                maxAge: 15 * 60 * 1000, // 15 min
+            });
+
+            return res.status(200).json({
+                message: "Access token refreshed",
+                success: true,
+            });
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            success: false,
+        });
+    }
+};
+
+export const adminLogout = async (req, res) => {
+    try {
+        res.clearCookie("adminAccessToken", { httpOnly: true, sameSite: "none", secure: true });
+        res.clearCookie("adminRefreshToken", { httpOnly: true, sameSite: "none", secure: true });
+
+        return res.status(200).json({
+            message: "Admin Logged out successfully",
+            success: true,
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+            success: false,
+        });
+    }
+};
+// Old Logout
+// export const adminLogout = async (req, res) => {
+//     try {
+//         res.cookie("adminToken", " ", { expires: new Date(0), httpOnly: true }).status(200).json({
+//             message: "Admin Logged out successfully",
+//             success: true
+//         })
+//     } catch (error) {
+//         res.status(400).json({
+//             message: error.message,
+//             success: false
+//         })
+//     }
+// }
 
 export const totalBalance = async (req, res) => {
     try {
@@ -134,20 +289,6 @@ export const totalBalance = async (req, res) => {
 
     } catch (error) {
         return res.status(400).json({
-            message: error.message,
-            success: false
-        })
-    }
-}
-
-export const adminLogout = async (req, res) => {
-    try {
-        res.cookie("adminToken", " ", { expires: new Date(0), httpOnly: true }).status(200).json({
-            message: "Admin Logged out successfully",
-            success: true
-        })
-    } catch (error) {
-        res.status(400).json({
             message: error.message,
             success: false
         })

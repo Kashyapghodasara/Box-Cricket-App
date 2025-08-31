@@ -49,27 +49,55 @@ const chartConfig = {
 const MonthChart = () => {
 
   React.useEffect(() => {
-    const monthlyBookingStat = async () => {
+    // ✅ Helper: Try refreshing token if 401 Unauthorized
+    const handleApiCall = async (apiFunc) => {
       try {
-        const config = { headers: { "Content-Type": "application/json" }, withCredentials: true };
+        return await apiFunc();
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          try {
+            // Refresh access token
+            await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+            // Retry original API call
+            return await apiFunc();
+          } catch (refreshError) {
+            console.error("Token refresh failed:", refreshError);
+            toast.error("Session expired. Please login again.");
+          }
+        } else {
+          throw error; // rethrow if not 401
+        }
+      }
+    };
 
+    // ✅ Monthly Booking Stat
+    const monthlyBookingStat = async () => {
+      await handleApiCall(async () => {
+        const config = { headers: { "Content-Type": "application/json" }, withCredentials: true };
         const res = await axios.get(`${ADMIN_BACKEND_URL}/monthlyBookingStat`, config);
+
         console.log("Monthly Booking Stats:", res.data);
+
         if (res.data.success) {
+          const updatedChart = [...chartData];
           res.data.monthlyBookings.forEach(item => {
-            const idx = chartData.findIndex(m => m.month === item.month);
+            const idx = updatedChart.findIndex(m => m.month === item.month);
             if (idx !== -1) {
-              chartData[idx].count = item.count;
+              updatedChart[idx].count = item.count;
             }
           });
+          setChartData(updatedChart); // ✅ don’t mutate state directly
         }
-      } catch (error) {
+      }).catch((error) => {
         console.error("Error fetching monthly booking stats:", error);
-      }
-    }
+        toast.error("Failed to fetch monthly booking stats");
+      });
+    };
 
+    // ✅ Call it
     monthlyBookingStat();
-  }, [])
+  }, []);
+
 
   return (
     <Card className="w-full sm:w-full   bg-[#0c0c0c] text-white">

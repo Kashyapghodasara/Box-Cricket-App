@@ -44,17 +44,17 @@ export const isAuthenticated = async (req, res, next) => {
 };
 
 
+/**
+ * ================= Admin Authentication =================
+ * Uses only **Access Token**
+ * Refresh token is only used at /refreshToken endpoint, NOT here.
+ */
 export const isAdminAuthenticated = async (req, res, next) => {
     try {
-        console.log("---- AUTH DEBUG ----");
-        console.log("req.headers.origin:", req.headers.origin);
-        console.log("req.headers.cookie:", req.headers.cookie); // raw cookie header
-        console.log("req.cookies:", req.cookies);
         let adminToken;
 
-        // ✅ Support token from cookie OR Authorization header
-        if (req.cookies && req.cookies.adminToken) {
-            adminToken = req.cookies.adminToken;
+        if (req.cookies && req.cookies.adminAccessToken) {
+            adminToken = req.cookies.adminAccessToken;
         } else if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
             adminToken = req.headers.authorization.split(" ")[1];
         }
@@ -62,28 +62,38 @@ export const isAdminAuthenticated = async (req, res, next) => {
         if (!adminToken) {
             return res.status(401).json({
                 message: "Please login as admin to access this resource",
-                success: false
+                success: false,
             });
         }
 
-        const decode = jwt.verify(adminToken, process.env.ADMIN_JWT_SECRET)
-        const adminData = await Admin.findById(decode.id);
+        // ✅ Verify only the Access Token here
+        const decoded = jwt.verify(adminToken, process.env.ADMIN_JWT_SECRET);
 
+        const adminData = await Admin.findById(decoded.id);
         if (!adminData) {
             return res.status(404).json({
                 message: "Admin not found",
-                success: false
+                success: false,
             });
         }
 
-        req.admin = adminData
-        next()
-
+        req.admin = adminData;
+        next();
     } catch (error) {
         console.log("Error in Admin Authentication:", error.message);
+
+        // 👉 If access token is expired, tell frontend to call refresh API
+        if (error.name === "TokenExpiredError") {
+            return res.status(403).json({
+                message: "Access token expired, please refresh",
+                expired: true,
+                success: false,
+            });
+        }
+
         return res.status(401).json({
             message: "Admin authentication failed",
-            success: false
+            success: false,
         });
     }
-}
+};

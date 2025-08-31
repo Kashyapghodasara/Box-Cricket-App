@@ -56,21 +56,47 @@ const Sidebar = () => {
     }
 
     const logoutHandler = async () => {
+        const handleApiCall = async (apiFunc) => {
+            try {
+                return await apiFunc();
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    try {
+                        // Refresh token
+                        await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+                        // Retry logout
+                        return await apiFunc();
+                    } catch (refreshError) {
+                        console.error("Token refresh failed during logout:", refreshError);
+                        toast.error("Session expired. Please login again.", ErrorToastStyle);
+                        window.location.href = "https://box-cricket-app.vercel.app/registration";
+                    }
+                } else {
+                    throw error;
+                }
+            }
+        };
+
         try {
             const config = {
                 headers: { "Content-Type": "application/json" },
-                withCredentials: true
-            }
-            const res = await axios.get(`${ADMIN_BACKEND_URL}/adminLogout`, config);
-            if (res.data.success === true) {
-                toast.success(res.data.message, SuccessToastStyle)
-                window.location.href = 'https://box-cricket-app.vercel.app/registration'
+                withCredentials: true,
+            };
+
+            const res = await handleApiCall(() =>
+                axios.get(`${ADMIN_BACKEND_URL}/adminLogout`, config)
+            );
+
+            if (res?.data?.success) {
+                toast.success(res.data.message, SuccessToastStyle);
+                window.location.href = "https://box-cricket-app.vercel.app/registration";
             }
         } catch (error) {
             toast.error("Error during logout", ErrorToastStyle);
-            console.log("Error during logout:", error);
+            console.error("Error during logout:", error);
         }
-    }
+    };
+
 
     return (
         <aside className='w-64 h-screen bg-[#0c0c0c] backdrop-blur-lg border-r border-white/10 p-6 flex-col justify-between hidden lg:flex'>

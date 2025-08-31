@@ -77,28 +77,52 @@ const CenterLabel = ({ viewBox }) => {
 const PaymentStatGraph = () => {
 
   React.useEffect(() => {
-    const fetchPaymentMethodStat = async () => {
+    const handleApiCall = async (apiFunc) => {
       try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/getPaymentMethodStat`, config)
-        /* console.log(res) */
-        if(res.data.success) {
-          chartData[0].count = res.data.paymentMethodCount.UPI
-          chartData[1].count = res.data.paymentMethodCount.BankTransfer
-        }
+        return await apiFunc();
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          try {
+            // Refresh token
+            await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+            // Retry the original call
+            return await apiFunc();
+          } catch (refreshError) {
+            console.error("Token refresh failed:", refreshError);
+            toast.error("Session expired. Please login again.");
+          }
+        } else {
+          throw error;
+        }
+      }
+    };
+
+    const fetchPaymentMethodStat = async () => {
+      await handleApiCall(async () => {
+        const config = {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        };
+
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/getPaymentMethodStat`, config);
+
+        if (res.data.success) {
+          // ✅ create a copy instead of mutating
+          const updatedChart = [...chartData];
+          updatedChart[0].count = res.data.paymentMethodCount.UPI || 0;
+          updatedChart[1].count = res.data.paymentMethodCount.BankTransfer || 0;
+
+          setChartData(updatedChart);
+        }
+      }).catch((error) => {
         console.error("Error in PaymentStatGraph:", error);
         toast.error("Failed to load payment statistics");
-      }
-    }
+      });
+    };
 
     fetchPaymentMethodStat();
-  }, [])
+  }, []);
+
 
   return (
     <Card className="flex flex-col bg-transparent">

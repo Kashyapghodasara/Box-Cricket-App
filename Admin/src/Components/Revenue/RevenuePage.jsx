@@ -75,199 +75,187 @@ const RevenuePage = () => {
     }, []);
 
     useEffect(() => {
+        const handleApiCall = async (apiFunc) => {
+            try {
+                return await apiFunc();
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    try {
+                        // 🔄 Try refreshing token
+                        await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+                        return await apiFunc(); // retry
+                    } catch (refreshError) {
+                        console.error("Token refresh failed:", refreshError);
+                        toast.error("Session expired. Please login again.", ErrorToastStyle);
+                        window.location.href = "https://box-cricket-app.vercel.app/registration";
+                    }
+                } else {
+                    throw error;
+                }
+            }
+        };
 
         const todayBookedSlots = async () => {
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true   // for cookies
-                }
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/bookedSlotNumber`, config)
-
-                if (res.data.success === true) {
-                    setStats(prevstate => ({
-                        ...prevstate,
-                        today: {
-                            ...prevstate.today,   // keep existing today values
-                            bookings: res.data.bookedSlotes  // update only bookings
-                        }
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/bookedSlotNumber`, { withCredentials: true })
+                );
+                if (res?.data?.success) {
+                    setStats(prev => ({
+                        ...prev,
+                        today: { ...prev.today, bookings: res.data.bookedSlotes },
                     }));
                 }
             } catch (error) {
                 console.error("Error fetching today's booked slots:", error);
                 toast.error("Failed to fetch today's booked slots");
             }
-        }
+        };
 
         const todayRevenue = async () => {
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true   // for cookies
-                }
-
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/todayRevenue`, config);
-                if (res.data.success === true) {
-                    setStats(prevstate => ({
-                        ...prevstate,
-                        today: {
-                            ...prevstate.today,   // keep existing today values
-                            revenue: res.data.todayRevenue  // update only revenue
-                        }
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/todayRevenue`, { withCredentials: true })
+                );
+                if (res?.data?.success) {
+                    setStats(prev => ({
+                        ...prev,
+                        today: { ...prev.today, revenue: res.data.todayRevenue },
                     }));
-
                 }
             } catch (error) {
                 console.error("Error fetching today's revenue:", error);
                 toast.error("Failed to fetch today's revenue");
             }
-        }
+        };
 
         const yesterdayBookingDetails = async () => {
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true   // for cookies
-                }
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/yesterdayBookingDetails`, config);
-                console.log(res.data);
-                if (res.data.success === true) {
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/yesterdayBookingDetails`, { withCredentials: true })
+                );
+                if (res?.data?.success) {
                     setStats(prev => ({
                         ...prev,
                         yesterday: {
                             ...prev.yesterday,
                             bookings: res.data.yesterDayBookings,
-                            revenue: res.data.yesterDayRevenue
-                        }
-                    }))
+                            revenue: res.data.yesterDayRevenue,
+                        },
+                    }));
                 }
             } catch (error) {
                 console.error("Error fetching yesterday's booking details:", error);
                 toast.error("Failed to fetch yesterday's booking details");
             }
-        }
+        };
 
         const tomorrowBookingDetails = async () => {
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true   // for cookies
-                }
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/tomorrowBookingDetails`, config);
-                console.log(res.data);
-                if (res.data.success === true) {
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/tomorrowBookingDetails`, { withCredentials: true })
+                );
+                if (res?.data?.success) {
                     setStats(prev => ({
                         ...prev,
                         Tomorrow: {
                             ...prev.Tomorrow,
                             bookings: res.data.tomorrowBookings,
-                            revenue: res.data.tomorrowRevenue
-                        }
-                    }))
+                            revenue: res.data.tomorrowRevenue,
+                        },
+                    }));
                 }
             } catch (error) {
-                console.error("Error fetching yesterday's booking details:", error);
-                toast.error("Failed to fetch yesterday's booking details");
+                console.error("Error fetching tomorrow's booking details:", error);
+                toast.error("Failed to fetch tomorrow's booking details");
             }
-        }
+        };
 
         const overmorrowBookingDetails = async () => {
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true   // for cookies
-                }
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/overmorrowBookingDetails`, config);
-                console.log(res.data);
-                if (res.data.success === true) {
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/overmorrowBookingDetails`, { withCredentials: true })
+                );
+                if (res?.data?.success) {
                     setStats(prev => ({
                         ...prev,
                         Overmorrow: {
                             ...prev.Overmorrow,
                             bookings: res.data.overmorrowBookings,
-                            revenue: res.data.overmorrowRevenue
-                        }
-                    }))
+                            revenue: res.data.overmorrowRevenue,
+                        },
+                    }));
                 }
             } catch (error) {
-                console.error("Error fetching yesterday's booking details:", error);
-                toast.error("Failed to fetch yesterday's booking details");
+                console.error("Error fetching overmorrow booking details:", error);
+                toast.error("Failed to fetch overmorrow booking details");
             }
-        }
+        };
 
         const lastWeekBookingDetails = async () => {
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true   // for cookies
-                }
-
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/lastWeekBookingDetails`, config);
-
-                if (res.data.success === true) {
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/lastWeekBookingDetails`, { withCredentials: true })
+                );
+                if (res?.data?.success) {
                     setStats(prev => ({
                         ...prev,
                         lastWeek: {
                             ...prev.lastWeek,
                             bookings: res.data.lastWeekBookings,
-                            revenue: res.data.lastWeekRevenue
-                        }
-                    }))
+                            revenue: res.data.lastWeekRevenue,
+                        },
+                    }));
                 }
             } catch (error) {
                 console.error("Error fetching last week's booking details:", error);
                 toast.error("Failed to fetch last week's booking details");
             }
-        }
+        };
 
         const lastMonthBookingDetails = async () => {
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true   // for cookies
-                }
-
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/lastMonthBookingDetails`, config);
-                if (res.data.success === true) {
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/lastMonthBookingDetails`, { withCredentials: true })
+                );
+                if (res?.data?.success) {
                     setStats(prev => ({
                         ...prev,
                         lastMonth: {
                             ...prev.lastMonth,
                             bookings: res.data.lastMonthBookings,
-                            revenue: res.data.lastMonthRevenue
-                        }
-                    }))
+                            revenue: res.data.lastMonthRevenue,
+                        },
+                    }));
                 }
             } catch (error) {
                 console.error("Error fetching last month's booking details:", error);
                 toast.error("Failed to fetch last month's booking details");
             }
-        }
+        };
 
         const lastYearBookingDetails = async () => {
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true   // for cookies
-                }
-
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/lastYearBookingDetails`, config);
-                if (res.data.success === true) {
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/lastYearBookingDetails`, { withCredentials: true })
+                );
+                if (res?.data?.success) {
                     setStats(prev => ({
                         ...prev,
                         lastYear: {
                             ...prev.lastYear,
                             bookings: res.data.lastYearBookings,
-                            revenue: res.data.lastYearRevenue
-                        }
-                    }))
+                            revenue: res.data.lastYearRevenue,
+                        },
+                    }));
                 }
             } catch (error) {
                 console.error("Error fetching last year's booking details:", error);
                 toast.error("Failed to fetch last year's booking details");
             }
-        }
+        };
 
+        // ✅ Call all API functions
         todayBookedSlots();
         todayRevenue();
         yesterdayBookingDetails();
@@ -276,7 +264,8 @@ const RevenuePage = () => {
         lastWeekBookingDetails();
         lastMonthBookingDetails();
         lastYearBookingDetails();
-    }, [])
+    }, []);
+
 
 
     return (

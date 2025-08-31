@@ -43,22 +43,52 @@ const TransDetails = () => {
 
     useEffect(() => {
         const fetchTransactionsDetails = async () => {
-            try {
-                const config = { headers: { 'Content-Type': 'application/json' }, withCredentials: true };
+            const handleApiCall = async (apiFunc) => {
+                try {
+                    return await apiFunc();
+                } catch (error) {
+                    if (error.response && error.response.status === 401) {
+                        try {
+                            // Refresh token
+                            await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+                            // Retry API call
+                            return await apiFunc();
+                        } catch (refreshError) {
+                            console.error("Token refresh failed while fetching transactions:", refreshError);
+                            toast.error("Session expired. Please login again.", ErrorToastStyle);
+                            window.location.href = "https://box-cricket-app.vercel.app/registration";
+                        }
+                    } else {
+                        throw error;
+                    }
+                }
+            };
 
-                const res = await axios.get(`${ADMIN_BACKEND_URL}/fetchTransactionDetails`, config)
-                console.log(res.data)
-                if (res.data.success) {
-                    setTranInfo(res.data.transactions)
+            try {
+                const config = {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                };
+
+                const res = await handleApiCall(() =>
+                    axios.get(`${ADMIN_BACKEND_URL}/fetchTransactionDetails`, config)
+                );
+
+                if (res?.data?.success) {
+                    setTranInfo(res.data.transactions);
                 }
             } catch (error) {
-                toast.error(error.response.data.message)
-                console.log("Error fetching transaction details:", error);
+                console.error("Error fetching transaction details:", error);
+                toast.error(
+                    error?.response?.data?.message || "Failed to load transactions",
+                    ErrorToastStyle
+                );
             }
-        }
+        };
 
         fetchTransactionsDetails();
-    }, [])
+    }, []);
+
 
     return (
         <div className="flex h-screen bg-[#0c0c0c] text-white">
