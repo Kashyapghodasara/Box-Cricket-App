@@ -26,7 +26,7 @@ router.post("/adminLogin", adminLogin);
 router.get("/adminLogout", adminLogout);
 
 // 👉 New Refresh Token endpoint
-router.post("/rrefresh-token", refreshAdminToken);
+router.post("/refresh-token", refreshAdminToken);
 
 // ================= Protected Routes =================
 router.get("/totalBalance", isAdminAuthenticated, totalBalance);
