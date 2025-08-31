@@ -86,19 +86,20 @@ export const adminLogin = async (req, res) => {
 
         const token = jwt.sign(tokenData, process.env.ADMIN_JWT_SECRET, { expiresIn: "1d" })
         const findAdminWithToken = await Admin.findOne({ email, username }).select('-password -secret_string')
-
-        return res.cookie("adminToken", token, {
+        
+        return res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 24 * 60 * 60 * 1000 // 1 day
+            secure: true,           // must be HTTPS
+            sameSite: "none",       // allow cross-site
+            domain: "backend-box-cricket.onrender.com", // 👈 only hostname
+            path: "/",
+            maxAge: 24 * 60 * 60 * 1000
         }).status(200).json({
             message: "Admin logged in successfully",
             username: `Welcome ${findAdminWithToken.username}`,
             admin: findAdminWithToken,
             success: true
         });
-
 
     } catch (error) {
         return res.status(400).json({
