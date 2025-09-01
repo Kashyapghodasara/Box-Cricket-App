@@ -46,21 +46,22 @@ function decryptText(encrypted) {
 }
 
 // ================= Helper Functions =================
-const generateAccessToken = (admin) => {
+const generateAccessToken = (id) => {
     return jwt.sign(
-        { id: admin._id },
+        { id },  // always store "id"
         process.env.ADMIN_JWT_SECRET,
-        { expiresIn: "15m" } // short-lived
+        { expiresIn: "15m" }
     );
 };
 
-const generateRefreshToken = (admin) => {
+const generateRefreshToken = (id) => {
     return jwt.sign(
-        { id: admin._id },
-        process.env.ADMIN_REFRESH_SECRET, // ⚡ new secret just for refresh
-        { expiresIn: "7d" } // longer-lived
+        { id },
+        process.env.ADMIN_REFRESH_SECRET,
+        { expiresIn: "7d" }
     );
 };
+
 
 
 // Old Login
@@ -152,8 +153,8 @@ export const adminLogin = async (req, res) => {
         }
 
         // ✅ Generate both tokens
-        const accessToken = generateAccessToken({ id: findAdmin._id });
-        const refreshToken = generateRefreshToken({ id: findAdmin._id });
+        const accessToken = generateAccessToken(findAdmin._id);
+        const refreshToken = generateRefreshToken(findAdmin._id);
 
         const findAdminWithToken = await Admin.findOne({ email, username })
             .select("-password -secret_string");
@@ -199,8 +200,9 @@ export const refreshAdminToken = async (req, res) => {
             }
 
             // decoded = { id: "...", iat: ..., exp: ... }
-            const newAccessToken = generateAccessToken({ _id: decoded.id });
+            const newAccessToken = generateAccessToken(decoded.id);
 
+            // ❌ Localhost = cookies won’t work (browser blocks them).
             res.cookie("adminAccessToken", newAccessToken, {
                 httpOnly: true,
                 secure: true,
@@ -210,7 +212,7 @@ export const refreshAdminToken = async (req, res) => {
 
             return res.status(200).json({ message: "Access token refreshed", success: true });
         });
-        
+
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
