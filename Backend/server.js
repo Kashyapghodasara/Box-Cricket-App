@@ -49,13 +49,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ================= Helmet =================
-app.use(helmet({
+/* app.use(helmet({
   crossOriginResourcePolicy: false,
   crossOriginOpenerPolicy: false,
   crossOriginEmbedderPolicy: false,
-}));
+})); */
 
-app.use(helmet.contentSecurityPolicy({
+/* app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'"],
     scriptSrc: ["'self'", "https://admin-box-cricket-app.vercel.app"],
@@ -75,7 +75,7 @@ app.use(helmet.contentSecurityPolicy({
     ],
     frameAncestors: ["'self'"],
   },
-}));
+})); */
 
 // ================= CORS =================
 const allowedOrigins = [
