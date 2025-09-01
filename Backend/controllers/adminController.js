@@ -167,6 +167,7 @@ export const adminLogin = async (req, res) => {
             secure: true,
             sameSite: "none",
             maxAge: 15 * 60 * 1000, // 15 min
+            domain: "backend-box-cricket.onrender.com" // ✅ ADD THIS LINE
         };
 
         const refreshTokenOptions = {
@@ -174,6 +175,7 @@ export const adminLogin = async (req, res) => {
             secure: true,
             sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            domain: "backend-box-cricket.onrender.com" // ✅ ADD THIS LINE
         };
 
         // Chain everything into a single response
@@ -187,7 +189,6 @@ export const adminLogin = async (req, res) => {
                 admin: findAdminWithToken,
                 success: true,
             });
-
     } catch (error) {
         return res.status(400).json({ message: error.message, success: false });
     }
@@ -228,13 +229,21 @@ export const refreshAdminToken = async (req, res) => {
 
 export const adminLogout = async (req, res) => {
     try {
-        res.clearCookie("adminAccessToken", { httpOnly: true, sameSite: "none", secure: true });
-        res.clearCookie("adminRefreshToken", { httpOnly: true, sameSite: "none", secure: true });
+        const cookieOptions = {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+            domain: "backend-box-cricket.onrender.com"
+        };
 
-        return res.status(200).json({
-            message: "Admin Logged out successfully",
-            success: true,
-        });
+        return res
+            .status(200)
+            .clearCookie("adminAccessToken", cookieOptions)
+            .clearCookie("adminRefreshToken", cookieOptions)
+            .json({
+                message: "Admin Logged out successfully",
+                success: true,
+            });
 
     } catch (error) {
         res.status(400).json({
