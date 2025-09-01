@@ -159,27 +159,34 @@ export const adminLogin = async (req, res) => {
         const findAdminWithToken = await Admin.findOne({ email, username })
             .select("-password -secret_string");
 
-        // ✅ Send both as cookies
-        res.cookie("adminAccessToken", accessToken, {
+        // ===================
+        //   THE FIXED CODE
+        // ===================
+        const accessTokenOptions = {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             maxAge: 15 * 60 * 1000, // 15 min
-        });
+        };
 
-        res.cookie("adminRefreshToken", refreshToken, {
+        const refreshTokenOptions = {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        });
+        };
 
-        return res.status(200).json({
-            message: "Admin logged in successfully",
-            username: `Welcome ${findAdminWithToken.username}`,
-            admin: findAdminWithToken,
-            success: true,
-        });
+        // Chain everything into a single response
+        return res
+            .status(200)
+            .cookie("adminAccessToken", accessToken, accessTokenOptions)
+            .cookie("adminRefreshToken", refreshToken, refreshTokenOptions)
+            .json({
+                message: "Admin logged in successfully",
+                username: `Welcome ${findAdminWithToken.username}`,
+                admin: findAdminWithToken,
+                success: true,
+            });
 
     } catch (error) {
         return res.status(400).json({ message: error.message, success: false });
