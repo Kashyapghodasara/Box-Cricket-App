@@ -2,37 +2,33 @@
 
 import React from "react";
 import Home from "./Home";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom"; // Removed Navigate
 import Dashboard from "./Dashboard";
 import RevenuePage from "./Revenue/RevenuePage";
 import TransDetails from "./Transaction/TransDetails";
 
-// 1. Receive the signal as a prop
 const Body = ({ isAuthReady }) => {
   const appRouter = createBrowserRouter([
+    // ✅ THE REDIRECT RULE HAS BEEN REMOVED
     {
-      path: "/",
-      element: <Navigate to="/Overview" replace />,
-    },
-    {
-      path: "/Overview",
-      // 2. Pass the signal into the Home component
+      path: "/", // The root path now directly loads the main layout
       element: <Home isAuthReady={isAuthReady} />,
       children: [
         {
-          index: true,
-          // 3. And also pass it into the Dashboard component
+          index: true, // The index route will render the Dashboard
           element: <Dashboard isAuthReady={isAuthReady} />,
         },
       ],
     },
+    // The path "/Overview" is now handled by the root path's index route
+    // You can remove the separate "/Overview" route if you want, or keep it as an alias
     {
       path: "/Revenue",
-      element: <RevenuePage isAuthReady={isAuthReady} />, // Pass it to other pages too
+      element: <RevenuePage isAuthReady={isAuthReady} />,
     },
     {
       path: "/Transaction",
-      element: <TransDetails isAuthReady={isAuthReady} />, // Pass it to other pages too
+      element: <TransDetails isAuthReady={isAuthReady} />,
     },
   ]);
 
