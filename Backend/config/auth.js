@@ -53,12 +53,10 @@ export const isAdminAuthenticated = async (req, res, next) => {
     try {
         let adminToken;
 
-        // 1. Look for the token ONLY in the Authorization header
         if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
             adminToken = req.headers.authorization.split(" ")[1];
         }
 
-        // If no token is found at all
         if (!adminToken) {
             return res.status(401).json({
                 message: "Authentication failed: No token provided.",
@@ -66,10 +64,9 @@ export const isAdminAuthenticated = async (req, res, next) => {
             });
         }
 
-        // 2. Verify the token
         const decoded = jwt.verify(adminToken, process.env.ADMIN_JWT_SECRET);
-
         const adminData = await Admin.findById(decoded.id);
+
         if (!adminData) {
             return res.status(404).json({
                 message: "Admin not found with this token.",
@@ -81,11 +78,9 @@ export const isAdminAuthenticated = async (req, res, next) => {
         next();
 
     } catch (error) {
-        // 3. IMPORTANT: Send a 401 for ALL errors, including token expiry
-        // This ensures the frontend's catch block will always trigger the refresh logic.
         console.log("Error in Admin Authentication:", error.message);
         return res.status(401).json({
-            message: "Admin authentication failed. Please refresh token or login again.",
+            message: "Admin authentication failed. Your session may be expired.",
             success: false,
         });
     }
