@@ -53,46 +53,39 @@ export const isAdminAuthenticated = async (req, res, next) => {
     try {
         let adminToken;
 
-        if (req.cookies && req.cookies.adminAccessToken) {
-            adminToken = req.cookies.adminAccessToken;
-        } else if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        // 1. Look for the token ONLY in the Authorization header
+        if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
             adminToken = req.headers.authorization.split(" ")[1];
         }
 
+        // If no token is found at all
         if (!adminToken) {
             return res.status(401).json({
-                message: "Please login as admin to access this resource",
+                message: "Authentication failed: No token provided.",
                 success: false,
             });
         }
 
-        // ✅ Verify only the Access Token here
+        // 2. Verify the token
         const decoded = jwt.verify(adminToken, process.env.ADMIN_JWT_SECRET);
 
         const adminData = await Admin.findById(decoded.id);
         if (!adminData) {
             return res.status(404).json({
-                message: "Admin not found",
+                message: "Admin not found with this token.",
                 success: false,
             });
         }
 
         req.admin = adminData;
         next();
+
     } catch (error) {
+        // 3. IMPORTANT: Send a 401 for ALL errors, including token expiry
+        // This ensures the frontend's catch block will always trigger the refresh logic.
         console.log("Error in Admin Authentication:", error.message);
-
-        // 👉 If access token is expired, tell frontend to call refresh API
-        if (error.name === "TokenExpiredError") {
-            return res.status(403).json({
-                message: "Access token expired, please refresh",
-                expired: true,
-                success: false,
-            });
-        }
-
         return res.status(401).json({
-            message: "Admin authentication failed",
+            message: "Admin authentication failed. Please refresh token or login again.",
             success: false,
         });
     }

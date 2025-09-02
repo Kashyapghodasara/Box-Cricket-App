@@ -21,12 +21,10 @@ import {
 } from "@/Components/ui/chart"
 import { hex } from "motion"
 
-const chartData = [
+// ✅ Renamed to use as the initial state
+const initialChartData = [
   { Method: "UPI", count: 0, fill: "var(--color-UPI)" },
   { Method: "Bank Transfer", count: 0, fill: "var(--color-BankTransfer)" },
-  /*  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-   { browser: "other", visitors: 190, fill: "var(--color-other)" }, */
 ]
 
 const chartConfig = {
@@ -43,8 +41,9 @@ const chartConfig = {
   }
 }
 
-const CenterLabel = ({ viewBox }) => {
-  const total = chartData.reduce((acc, curr) => acc + curr.count, 0)
+// ✅ The CenterLabel now reads from the 'data' prop
+const CenterLabel = ({ viewBox, data }) => {
+  const total = data.reduce((acc, curr) => acc + curr.count, 0)
 
   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
     return (
@@ -75,41 +74,36 @@ const CenterLabel = ({ viewBox }) => {
 }
 
 const PaymentStatGraph = () => {
+  // ✅ Initialize the chart data as a state variable
+  const [chartData, setChartData] = React.useState(initialChartData);
 
   React.useEffect(() => {
-    // Get the token from local storage once
     const token = localStorage.getItem('adminAccessToken');
 
-    // If there's no token, don't make the API call
     if (!token) {
       toast.error("No session found. Please login.");
       return;
     }
 
-    // Create a reusable config object with the Authorization header
     const config = {
       headers: {
         'Authorization': `Bearer ${token}`
       },
-      withCredentials: true // Still required for the refresh token cookie
+      withCredentials: true
     };
 
-    // Helper function to handle 401 errors and token refresh
     const handleApiCall = async (apiFunc) => {
       try {
-        return await apiFunc(config); // Pass the initial config
+        return await apiFunc(config);
       } catch (error) {
         if (error.response && error.response.status === 401) {
           try {
-            // Refresh the access token
             const res = await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
 
             if (res.data.success) {
-              // Get the new token and update localStorage
               const { accessToken } = res.data;
               localStorage.setItem('adminAccessToken', accessToken);
 
-              // Create a new config object with the NEW token for the retry
               const newConfig = {
                 ...config,
                 headers: {
@@ -117,43 +111,41 @@ const PaymentStatGraph = () => {
                   'Authorization': `Bearer ${accessToken}`
                 }
               };
-              // Retry the original API call with the new token
               return await apiFunc(newConfig);
             }
           } catch (refreshError) {
             console.error("Token refresh failed:", refreshError);
             toast.error("Session expired. Please login again.");
-            localStorage.removeItem('adminAccessToken'); // Clean up bad token
+            localStorage.removeItem('adminAccessToken');
           }
         } else {
-          // Rethrow errors that are not 401
           throw error;
         }
       }
     };
 
-    // Function to fetch the payment data
     const fetchPaymentMethodStat = async () => {
       await handleApiCall(async (currentConfig) => {
-        // The 'apiFunc' now receives the config to use
         const res = await axios.get(`${ADMIN_BACKEND_URL}/getPaymentMethodStat`, currentConfig);
 
         if (res.data.success) {
-          const updatedChart = [...chartData];
-          updatedChart[0].count = res.data.paymentMethodCount.UPI || 0;
-          updatedChart[1].count = res.data.paymentMethodCount.BankTransfer || 0;
-          setChartData(updatedChart);
+          // ✅ Correctly update the state
+          const newChartData = [...initialChartData];
+          newChartData[0].count = res.data.paymentMethodCount.UPI || 0;
+          newChartData[1].count = res.data.paymentMethodCount.BankTransfer || 0;
+          setChartData(newChartData); // Use the state setter
         }
       }).catch((error) => {
         console.error("Error in PaymentStatGraph:", error);
-        // Error toast is already handled inside handleApiCall for session expiry
       });
     };
 
     fetchPaymentMethodStat();
-  }, []); // Dependency array can be adjusted if chartData should be included
+  }, []);
 
-
+  // ... YOUR RETURN JSX GOES HERE ...
+  // Remember to pass the chartData state to the CenterLabel like this:
+  // <Label content={<CenterLabel data={chartData} />} />
   return (
     <Card className="flex flex-col bg-transparent">
       <CardHeader className="items-center pb-0 text-md">

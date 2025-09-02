@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react"; // ✅ 1. Import useState
 import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 import axios from "axios";
@@ -22,9 +22,7 @@ import {
   ChartTooltipContent,
 } from "@/Components/ui/chart";
 
-/* export const description = "A bar chart with monthly labels"; */
-
-const chartData = [
+const initialChartData = [ // Renamed to avoid confusion
   { month: "January", count: 0 },
   { month: "February", count: 0 },
   { month: "March", count: 0 },
@@ -47,42 +45,34 @@ const chartConfig = {
 };
 
 const MonthChart = () => {
+  // ✅ 2. Initialize your data as a React state variable
+  const [chartData, setChartData] = useState(initialChartData);
 
-  React.useEffect(() => {
-    // Get the token from local storage once at the beginning
+  useEffect(() => {
     const token = localStorage.getItem('adminAccessToken');
 
-    // If there's no token, stop here to avoid errors
     if (!token) {
       toast.error("No session found. Please login.");
       return;
     }
 
-    // Create a reusable config object with the Authorization header
     const config = {
       headers: {
         'Authorization': `Bearer ${token}`
       },
-      withCredentials: true // Still needed for the refresh token cookie
+      withCredentials: true
     };
 
-    // Helper function to handle 401 errors and token refresh
     const handleApiCall = async (apiFunc) => {
       try {
-        // Pass the initial config to the function
         return await apiFunc(config);
       } catch (error) {
         if (error.response && error.response.status === 401) {
           try {
-            // Refresh the access token
             const res = await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
-
             if (res.data.success) {
-              // Get the new token and update localStorage
               const { accessToken } = res.data;
               localStorage.setItem('adminAccessToken', accessToken);
-
-              // Create a new config object with the NEW token for the retry
               const newConfig = {
                 ...config,
                 headers: {
@@ -90,47 +80,41 @@ const MonthChart = () => {
                   'Authorization': `Bearer ${accessToken}`
                 }
               };
-              // Retry the original API call with the new token
               return await apiFunc(newConfig);
             }
           } catch (refreshError) {
             console.error("Token refresh failed:", refreshError);
             toast.error("Session expired. Please login again.");
-            localStorage.removeItem('adminAccessToken'); // Clean up the invalid token
+            localStorage.removeItem('adminAccessToken');
           }
         } else {
-          // For other errors, just throw them
           throw error;
         }
       }
     };
 
-    // Function to fetch the monthly booking data
     const monthlyBookingStat = async () => {
       await handleApiCall(async (currentConfig) => {
-        // This function now receives the config (either the original or the new one after a refresh)
         const res = await axios.get(`${ADMIN_BACKEND_URL}/monthlyBookingStat`, currentConfig);
-
         if (res.data.success) {
-          const updatedChart = [...chartData];
+          // Create a copy to avoid directly changing the original data
+          const updatedChart = [...initialChartData];
           res.data.monthlyBookings.forEach(item => {
             const idx = updatedChart.findIndex(m => m.month === item.month);
             if (idx !== -1) {
               updatedChart[idx].count = item.count;
             }
           });
-          chartData(updatedChart);
+          // ✅ 3. Use the state setter function to update the chart
+          setChartData(updatedChart);
         }
       }).catch((error) => {
-        // Errors are already handled in handleApiCall, but you can log them here if you want
         console.error("Could not fetch monthly booking stats:", error);
       });
     };
 
-    // Call the function to fetch data
     monthlyBookingStat();
-  }, []); // Adjust dependencies if chartData or other state is needed
-
+  }, []); // The empty array means this effect runs once when the component mounts
 
   return (
     <Card className="w-full sm:w-full   bg-[#0c0c0c] text-white">
