@@ -10,6 +10,7 @@ function App() {
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
+     alert("The NEW App.jsx code IS RUNNING!");
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
 
