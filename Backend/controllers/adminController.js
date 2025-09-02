@@ -152,43 +152,33 @@ export const adminLogin = async (req, res) => {
             return res.status(401).json({ message: "Password doesn't match", success: false });
         }
 
-        // ✅ Generate both tokens
+        // ✅ Generate both tokens as before
         const accessToken = generateAccessToken(findAdmin._id);
         const refreshToken = generateRefreshToken(findAdmin._id);
 
         const findAdminWithToken = await Admin.findOne({ email, username })
             .select("-password -secret_string");
 
-        // ===================
-        //   THE FIXED CODE
-        // ===================
-        const accessTokenOptions = {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 15 * 60 * 1000, // 15 min
-            domain: "backend-box-cricket.onrender.com" // ✅ ADD THIS LINE
-        };
-
+        // ✅ Options ONLY for the refresh token cookie
         const refreshTokenOptions = {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-            domain: "backend-box-cricket.onrender.com" // ✅ ADD THIS LINE
+            domain: "backend-box-cricket.onrender.com"
         };
 
-        // Chain everything into a single response
+        // ✅ Final response with the new strategy
         return res
             .status(200)
-            .cookie("adminAccessToken", accessToken, accessTokenOptions)
-            .cookie("adminRefreshToken", refreshToken, refreshTokenOptions)
+            .cookie("adminRefreshToken", refreshToken, refreshTokenOptions) // Only the refresh token is a cookie
             .json({
-                message: "Admin logged in successfully",
-                username: `Welcome ${findAdminWithToken.username}`,
-                admin: findAdminWithToken,
                 success: true,
+                message: "Admin logged in successfully",
+                admin: findAdminWithToken,
+                accessToken: accessToken // The access token is sent in the response body
             });
+
     } catch (error) {
         return res.status(400).json({ message: error.message, success: false });
     }
@@ -207,25 +197,21 @@ export const refreshAdminToken = async (req, res) => {
                 return res.status(403).json({ message: "Invalid or expired refresh token", success: false });
             }
 
-            // decoded = { id: "...", iat: ..., exp: ... }
+            // Generate the new access token
             const newAccessToken = generateAccessToken(decoded.id);
 
-            // ❌ Localhost = cookies won’t work (browser blocks them).
-            res.cookie("adminAccessToken", newAccessToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "none",
-                maxAge: 15 * 60 * 1000, // 15 min
+            // ✅ Send the new token back in the JSON response
+            return res.status(200).json({
+                success: true,
+                message: "Access token refreshed",
+                accessToken: newAccessToken
             });
-
-            return res.status(200).json({ message: "Access token refreshed", success: true });
         });
 
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
 };
-
 
 export const adminLogout = async (req, res) => {
     try {
@@ -236,9 +222,10 @@ export const adminLogout = async (req, res) => {
             domain: "backend-box-cricket.onrender.com"
         };
 
+        // The frontend is responsible for clearing the access token from localStorage.
+        // The backend only needs to clear the refresh token cookie.
         return res
             .status(200)
-            .clearCookie("adminAccessToken", cookieOptions)
             .clearCookie("adminRefreshToken", cookieOptions)
             .json({
                 message: "Admin Logged out successfully",

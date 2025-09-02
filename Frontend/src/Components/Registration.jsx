@@ -191,10 +191,11 @@ const Registration = () => {
             if (res.data.success === true) {
                 toast.success(res.data.message, SuccessToastStyle);
 
-                // ✅ Reset input fields
-                setAdminData({ name: "", username: "", email: "", password: "", secret_string: "" });
+                // ✅ GRAB THE TOKEN AND SAVE IT
+                const { accessToken } = res.data;
+                localStorage.setItem('adminAccessToken', accessToken);
 
-                // ✅ Redirect after login
+                // ... (reset form and redirect)
                 setTimeout(() => {
                     window.location.href = "https://admin-box-cricket-app.vercel.app/";
                 }, 900);
@@ -204,7 +205,6 @@ const Registration = () => {
             console.error(error);
         }
     };
-
 
     return (
         <>

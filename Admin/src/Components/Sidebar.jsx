@@ -56,44 +56,35 @@ const Sidebar = () => {
     }
 
     const logoutHandler = async () => {
-        const handleApiCall = async (apiFunc) => {
-            try {
-                return await apiFunc();
-            } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    try {
-                        // Refresh token
-                        await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
-                        // Retry logout
-                        return await apiFunc();
-                    } catch (refreshError) {
-                        console.error("Token refresh failed during logout:", refreshError);
-                        toast.error("Session expired. Please login again.", ErrorToastStyle);
-                        window.location.href = "https://box-cricket-app.vercel.app/registration";
-                    }
-                } else {
-                    throw error;
-                }
-            }
-        };
-
         try {
+            // 1. Get the token to authorize the logout request
+            const token = localStorage.getItem('adminAccessToken');
+
             const config = {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                withCredentials: true // Needed to clear the refresh token cookie
             };
 
-            const res = await handleApiCall(() =>
-                axios.get(`${ADMIN_BACKEND_URL}/adminLogout`, config)
-            );
-
-            if (res?.data?.success) {
-                toast.success(res.data.message, SuccessToastStyle);
-                window.location.href = "https://box-cricket-app.vercel.app/registration";
+            // 2. Tell the backend to log out and clear the refresh token cookie
+            // We use a try/catch here but proceed with logout even if it fails
+            try {
+                await axios.get(`${ADMIN_BACKEND_URL}/adminLogout`, config);
+            } catch (error) {
+                console.warn("Backend logout call failed, but proceeding with client-side logout.", error);
             }
-        } catch (error) {
-            toast.error("Error during logout", ErrorToastStyle);
-            console.error("Error during logout:", error);
+
+        } finally {
+            // 3. ALWAYS clear the token from the browser and redirect
+            // This 'finally' block runs whether the 'try' succeeded or failed,
+            // ensuring the user is always logged out on the frontend.
+            toast.success("You have been logged out.", SuccessToastStyle);
+
+            localStorage.removeItem('adminAccessToken');
+
+            // Redirect to the login/registration page
+            window.location.href = "https://box- cricket-app.vercel.app/registration";
         }
     };
 

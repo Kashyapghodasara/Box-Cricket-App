@@ -43,35 +43,65 @@ const TransDetails = () => {
 
     useEffect(() => {
         const fetchTransactionsDetails = async () => {
+            // Get the token from local storage at the start
+            const token = localStorage.getItem('adminAccessToken');
+
+            // If no token exists, show an error and stop
+            if (!token) {
+                toast.error("No session found. Please login.", ErrorToastStyle);
+                return;
+            }
+
+            // Create the initial config object with the Authorization header
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                withCredentials: true, // For the refresh token cookie
+            };
+
             const handleApiCall = async (apiFunc) => {
                 try {
-                    return await apiFunc();
+                    // First attempt uses the initial config
+                    return await apiFunc(config);
                 } catch (error) {
                     if (error.response && error.response.status === 401) {
                         try {
-                            // Refresh token
-                            await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
-                            // Retry API call
-                            return await apiFunc();
+                            // Refresh the token
+                            const refreshRes = await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+
+                            if (refreshRes.data.success) {
+                                const newAccessToken = refreshRes.data.accessToken;
+                                localStorage.setItem('adminAccessToken', newAccessToken);
+
+                                // Create a new config for the retry with the new token
+                                const newConfig = {
+                                    ...config,
+                                    headers: {
+                                        ...config.headers,
+                                        'Authorization': `Bearer ${newAccessToken}`
+                                    }
+                                };
+                                // Retry the original API call with the new config
+                                return await apiFunc(newConfig);
+                            }
                         } catch (refreshError) {
                             console.error("Token refresh failed while fetching transactions:", refreshError);
                             toast.error("Session expired. Please login again.", ErrorToastStyle);
-                            window.location.href = "https://box-cricket-app.vercel.app/registration";
+                            localStorage.removeItem('adminAccessToken'); // Clean up
+                            /* window.location.href = "https://box-cricket-app.vercel.app/registration"; */
                         }
                     } else {
+                        // For non-401 errors, just throw them
                         throw error;
                     }
                 }
             };
 
             try {
-                const config = {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                };
-
-                const res = await handleApiCall(() =>
-                    axios.get(`${ADMIN_BACKEND_URL}/fetchTransactionDetails`, config)
+                // The function passed to handleApiCall now receives the config to use
+                const res = await handleApiCall((currentConfig) =>
+                    axios.get(`${ADMIN_BACKEND_URL}/fetchTransactionDetails`, currentConfig)
                 );
 
                 if (res?.data?.success) {
@@ -79,10 +109,13 @@ const TransDetails = () => {
                 }
             } catch (error) {
                 console.error("Error fetching transaction details:", error);
-                toast.error(
-                    error?.response?.data?.message || "Failed to load transactions",
-                    ErrorToastStyle
-                );
+                // The session expiry error is already handled in handleApiCall
+                if (error?.response?.status !== 401) {
+                    toast.error(
+                        error?.response?.data?.message || "Failed to load transactions",
+                        ErrorToastStyle
+                    );
+                }
             }
         };
 

@@ -49,34 +49,67 @@ const chartConfig = {
 const MonthChart = () => {
 
   React.useEffect(() => {
-    // ✅ Helper: Try refreshing token if 401 Unauthorized
+    // Get the token from local storage once at the beginning
+    const token = localStorage.getItem('adminAccessToken');
+
+    // If there's no token, stop here to avoid errors
+    if (!token) {
+      toast.error("No session found. Please login.");
+      return;
+    }
+
+    // Create a reusable config object with the Authorization header
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      withCredentials: true // Still needed for the refresh token cookie
+    };
+
+    // Helper function to handle 401 errors and token refresh
     const handleApiCall = async (apiFunc) => {
       try {
-        return await apiFunc();
+        // Pass the initial config to the function
+        return await apiFunc(config);
       } catch (error) {
         if (error.response && error.response.status === 401) {
           try {
-            // Refresh access token
-            await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
-            // Retry original API call
-            return await apiFunc();
+            // Refresh the access token
+            const res = await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+
+            if (res.data.success) {
+              // Get the new token and update localStorage
+              const { accessToken } = res.data;
+              localStorage.setItem('adminAccessToken', accessToken);
+
+              // Create a new config object with the NEW token for the retry
+              const newConfig = {
+                ...config,
+                headers: {
+                  ...config.headers,
+                  'Authorization': `Bearer ${accessToken}`
+                }
+              };
+              // Retry the original API call with the new token
+              return await apiFunc(newConfig);
+            }
           } catch (refreshError) {
             console.error("Token refresh failed:", refreshError);
             toast.error("Session expired. Please login again.");
+            localStorage.removeItem('adminAccessToken'); // Clean up the invalid token
           }
         } else {
-          throw error; // rethrow if not 401
+          // For other errors, just throw them
+          throw error;
         }
       }
     };
 
-    // ✅ Monthly Booking Stat
+    // Function to fetch the monthly booking data
     const monthlyBookingStat = async () => {
-      await handleApiCall(async () => {
-        const config = { headers: { "Content-Type": "application/json" }, withCredentials: true };
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/monthlyBookingStat`, config);
-
-        console.log("Monthly Booking Stats:", res.data);
+      await handleApiCall(async (currentConfig) => {
+        // This function now receives the config (either the original or the new one after a refresh)
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/monthlyBookingStat`, currentConfig);
 
         if (res.data.success) {
           const updatedChart = [...chartData];
@@ -86,17 +119,17 @@ const MonthChart = () => {
               updatedChart[idx].count = item.count;
             }
           });
-          setChartData(updatedChart); // ✅ don’t mutate state directly
+          chartData(updatedChart);
         }
       }).catch((error) => {
-        console.error("Error fetching monthly booking stats:", error);
-        toast.error("Failed to fetch monthly booking stats");
+        // Errors are already handled in handleApiCall, but you can log them here if you want
+        console.error("Could not fetch monthly booking stats:", error);
       });
     };
 
-    // ✅ Call it
+    // Call the function to fetch data
     monthlyBookingStat();
-  }, []);
+  }, []); // Adjust dependencies if chartData or other state is needed
 
 
   return (

@@ -77,51 +77,81 @@ const CenterLabel = ({ viewBox }) => {
 const PaymentStatGraph = () => {
 
   React.useEffect(() => {
+    // Get the token from local storage once
+    const token = localStorage.getItem('adminAccessToken');
+
+    // If there's no token, don't make the API call
+    if (!token) {
+      toast.error("No session found. Please login.");
+      return;
+    }
+
+    // Create a reusable config object with the Authorization header
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      withCredentials: true // Still required for the refresh token cookie
+    };
+
+    // Helper function to handle 401 errors and token refresh
     const handleApiCall = async (apiFunc) => {
       try {
-        return await apiFunc();
+        return await apiFunc(config); // Pass the initial config
       } catch (error) {
         if (error.response && error.response.status === 401) {
           try {
-            // Refresh token
-            await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
-            // Retry the original call
-            return await apiFunc();
+            // Refresh the access token
+            const res = await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+
+            if (res.data.success) {
+              // Get the new token and update localStorage
+              const { accessToken } = res.data;
+              localStorage.setItem('adminAccessToken', accessToken);
+
+              // Create a new config object with the NEW token for the retry
+              const newConfig = {
+                ...config,
+                headers: {
+                  ...config.headers,
+                  'Authorization': `Bearer ${accessToken}`
+                }
+              };
+              // Retry the original API call with the new token
+              return await apiFunc(newConfig);
+            }
           } catch (refreshError) {
             console.error("Token refresh failed:", refreshError);
             toast.error("Session expired. Please login again.");
+            localStorage.removeItem('adminAccessToken'); // Clean up bad token
           }
         } else {
+          // Rethrow errors that are not 401
           throw error;
         }
       }
     };
 
+    // Function to fetch the payment data
     const fetchPaymentMethodStat = async () => {
-      await handleApiCall(async () => {
-        const config = {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        };
-
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/getPaymentMethodStat`, config);
+      await handleApiCall(async (currentConfig) => {
+        // The 'apiFunc' now receives the config to use
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/getPaymentMethodStat`, currentConfig);
 
         if (res.data.success) {
-          // ✅ create a copy instead of mutating
           const updatedChart = [...chartData];
           updatedChart[0].count = res.data.paymentMethodCount.UPI || 0;
           updatedChart[1].count = res.data.paymentMethodCount.BankTransfer || 0;
-
           setChartData(updatedChart);
         }
       }).catch((error) => {
         console.error("Error in PaymentStatGraph:", error);
-        toast.error("Failed to load payment statistics");
+        // Error toast is already handled inside handleApiCall for session expiry
       });
     };
 
     fetchPaymentMethodStat();
-  }, []);
+  }, []); // Dependency array can be adjusted if chartData should be included
 
 
   return (

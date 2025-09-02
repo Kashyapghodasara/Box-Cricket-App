@@ -44,6 +44,24 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+    // Get the token from local storage once
+    const token = localStorage.getItem('adminAccessToken');
+
+    // If there's no token, don't bother making API calls
+    if (!token) {
+      toast.error("No session found. Please login.");
+      // Optional: redirect to login page
+      // window.location.href = "/login"; 
+      return;
+    }
+
+    // Create a reusable config object for all API calls
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      withCredentials: true // Still required for the refresh token cookie
+    };
 
     // ✅ Helper: Try refreshing token if 401 Unauthorized
     const handleApiCall = async (apiFunc) => {
@@ -53,12 +71,27 @@ const Dashboard = () => {
         if (error.response && error.response.status === 401) {
           try {
             // Refresh access token
-            await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
-            // Retry original API call
-            return await apiFunc();
+            const res = await axios.post(`${ADMIN_BACKEND_URL}/refresh-token`, {}, { withCredentials: true });
+
+            if (res.data.success) {
+              // ✅ Get the new token and update localStorage
+              const { accessToken } = res.data;
+              localStorage.setItem('adminAccessToken', accessToken);
+
+              // ✅ Retry the original API call with the NEW token
+              const newConfig = {
+                ...config,
+                headers: {
+                  ...config.headers,
+                  'Authorization': `Bearer ${accessToken}`
+                }
+              };
+              return await apiFunc(newConfig); // Pass new config to the retry
+            }
           } catch (refreshError) {
             console.error("Token refresh failed:", refreshError);
             toast.error("Session expired. Please login again.");
+            localStorage.removeItem('adminAccessToken'); // Clean up bad token
           }
         } else {
           throw error; // rethrow if not 401
@@ -68,48 +101,48 @@ const Dashboard = () => {
 
     // ✅ Get Total Balance
     const totalBalance = async () => {
-      await handleApiCall(async () => {
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/totalBalance`, { withCredentials: true });
+      // The apiFunc now accepts an optional 'retryConfig'
+      await handleApiCall(async (retryConfig) => {
+        const currentConfig = retryConfig || config; // Use retryConfig if it exists
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/totalBalance`, currentConfig);
         if (res.data.success === true) {
           setTotalBalance(res.data.totalBalance);
         }
       }).catch((error) => {
         console.error("Error fetching total balance:", error);
-        toast.error("Failed to fetch total balance");
+        // The toast error is already handled in handleApiCall
       });
     };
 
-    // ✅ Get Today's Booked Slots
+    // Apply the same pattern for other functions...
     const todayBookedSlots = async () => {
-      await handleApiCall(async () => {
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/bookedSlotNumber`, { withCredentials: true });
+      await handleApiCall(async (retryConfig) => {
+        const currentConfig = retryConfig || config;
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/bookedSlotNumber`, currentConfig);
         if (res.data.success === true) {
           setBookedSlots(res.data.bookedSlotes);
         }
       }).catch((error) => {
         console.error("Error fetching today's booked slots:", error);
-        toast.error("Failed to fetch today's booked slots");
       });
     };
 
-    // ✅ Get Today's Revenue
     const todayRevenue = async () => {
-      await handleApiCall(async () => {
-        const res = await axios.get(`${ADMIN_BACKEND_URL}/todayRevenue`, { withCredentials: true });
+      await handleApiCall(async (retryConfig) => {
+        const currentConfig = retryConfig || config;
+        const res = await axios.get(`${ADMIN_BACKEND_URL}/todayRevenue`, currentConfig);
         if (res.data.success === true) {
           setTodayRevenue(res.data.todayRevenue);
         }
       }).catch((error) => {
         console.error("Error fetching today's revenue:", error);
-        toast.error("Failed to fetch today's revenue");
       });
     };
-
 
     totalBalance();
     todayBookedSlots();
     todayRevenue();
-  }, [])
+  }, []);
 
   const today = new Date();
   const day = today.getDate();
