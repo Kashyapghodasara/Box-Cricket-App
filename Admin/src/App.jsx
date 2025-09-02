@@ -1,6 +1,7 @@
 import './App.css'
 import Body from './Components/Body.jsx'
 import { Toaster } from 'react-hot-toast'
+import React from 'react'
 
 function App() {
     // ✅ ADD THIS USEEFFECT HOOK
