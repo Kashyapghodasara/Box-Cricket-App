@@ -63,71 +63,6 @@ const generateRefreshToken = (id) => {
 };
 
 
-
-// Old Login
-// export const adminLogin = async (req, res) => {
-//     try {
-//         const { name, username, email, password, secret_string } = req.body
-
-
-//         if (!username || !name || !email || !password || !secret_string) {
-//             return res.status(401).json("Please fill all the fields")
-//         }
-
-//         const findAdmin = await Admin.findOne({ email, username })
-//         if (!findAdmin) {
-//             return res.status(400).json({ message: "Admin not found", success: false })
-//         }
-
-//         const decryptString = await decryptText(findAdmin.secret_string)
-
-//         if (decryptString !== secret_string) {
-//             return res.status(400).json({
-//                 message: "Admin Credentials doesn't match",
-//                 success: false
-//             })
-//         }
-
-//         const hashPW = findAdmin.password
-//         const comparePW = await bcrypt.compare(password, hashPW)
-//         /* console.log(comparePW)   */// return TRUE
-
-//         if (!comparePW) {
-//             return res.status(401).json({
-//                 message: "Password doesn't match in Admin Login Process",
-//                 success: false
-//             })
-//         }
-
-//         const tokenData = {
-//             id: findAdmin._id
-//         }
-
-//         const token = jwt.sign(tokenData, process.env.ADMIN_JWT_SECRET, { expiresIn: "1d" })
-//         const findAdminWithToken = await Admin.findOne({ email, username }).select('-password -secret_string')
-
-//         return res.cookie("adminToken", token, {
-//             httpOnly: true,
-//             secure: true,           // must be HTTPS
-//             sameSite: "none",       // allow cross-site
-//             domain: "backend-box-cricket.onrender.com", // 👈 only hostname
-//             path: "/",
-//             maxAge: 24 * 60 * 60 * 1000
-//         }).status(200).json({
-//             message: "Admin logged in successfully",
-//             username: `Welcome ${findAdminWithToken.username}`,
-//             admin: findAdminWithToken,
-//             success: true
-//         });
-
-//     } catch (error) {
-//         return res.status(400).json({
-//             message: error.message,
-//             success: false
-//         })
-//     }
-// }
-
 // Login
 export const adminLogin = async (req, res) => {
     try {
@@ -194,7 +129,7 @@ export const refreshAdminToken = async (req, res) => {
 
         jwt.verify(refreshToken, process.env.ADMIN_REFRESH_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(403).json({ message: "Invalid or expired refresh token", success: false });
+                return res.status(401).json({ message: "Invalid or expired refresh token", success: false });
             }
 
             // Generate the new access token
@@ -239,6 +174,72 @@ export const adminLogout = async (req, res) => {
         });
     }
 };
+
+
+// Old Login
+// export const adminLogin = async (req, res) => {
+//     try {
+//         const { name, username, email, password, secret_string } = req.body
+
+
+//         if (!username || !name || !email || !password || !secret_string) {
+//             return res.status(401).json("Please fill all the fields")
+//         }
+
+//         const findAdmin = await Admin.findOne({ email, username })
+//         if (!findAdmin) {
+//             return res.status(400).json({ message: "Admin not found", success: false })
+//         }
+
+//         const decryptString = await decryptText(findAdmin.secret_string)
+
+//         if (decryptString !== secret_string) {
+//             return res.status(400).json({
+//                 message: "Admin Credentials doesn't match",
+//                 success: false
+//             })
+//         }
+
+//         const hashPW = findAdmin.password
+//         const comparePW = await bcrypt.compare(password, hashPW)
+//         /* console.log(comparePW)   */// return TRUE
+
+//         if (!comparePW) {
+//             return res.status(401).json({
+//                 message: "Password doesn't match in Admin Login Process",
+//                 success: false
+//             })
+//         }
+
+//         const tokenData = {
+//             id: findAdmin._id
+//         }
+
+//         const token = jwt.sign(tokenData, process.env.ADMIN_JWT_SECRET, { expiresIn: "1d" })
+//         const findAdminWithToken = await Admin.findOne({ email, username }).select('-password -secret_string')
+
+//         return res.cookie("adminToken", token, {
+//             httpOnly: true,
+//             secure: true,           // must be HTTPS
+//             sameSite: "none",       // allow cross-site
+//             domain: "backend-box-cricket.onrender.com", // 👈 only hostname
+//             path: "/",
+//             maxAge: 24 * 60 * 60 * 1000
+//         }).status(200).json({
+//             message: "Admin logged in successfully",
+//             username: `Welcome ${findAdminWithToken.username}`,
+//             admin: findAdminWithToken,
+//             success: true
+//         });
+
+//     } catch (error) {
+//         return res.status(400).json({
+//             message: error.message,
+//             success: false
+//         })
+//     }
+// }
+
 // Old Logout
 // export const adminLogout = async (req, res) => {
 //     try {
