@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import axios from "axios"
 import { ADMIN_BACKEND_URL } from "@/Constant.jsx"
+import { useOutletContext } from "react-router-dom";
 
 import {
   Card,
@@ -50,6 +51,7 @@ const CenterLabel = ({ viewBox, data }) => {
 
 const BoxStatGraph = () => {
   const [chartData, setChartData] = useState(initialChartData);
+  const { isAuthReady } = useOutletContext();
 
   useEffect(() => {
     const updateChartState = (boxCount) => {
@@ -63,6 +65,12 @@ const BoxStatGraph = () => {
 
     const boxStategraphData = async () => {
       try {
+
+        // If the 'traffic light' isn't green, do nothing yet.
+        if (!isAuthReady) {
+          return;
+        }
+
         let accessToken = localStorage.getItem("adminAccessToken");
         if (!accessToken) {
           toast.error("No session found. Please login.");

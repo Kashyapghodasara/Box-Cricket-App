@@ -7,6 +7,8 @@ import axios from "axios"
 import { ADMIN_BACKEND_URL } from "@/Constant.jsx"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/Components/ui/chart"
+import { useOutletContext } from "react-router-dom";
+
 
 const initialChartData = [
   { Method: "UPI", count: 0, fill: "var(--color-UPI)" },
@@ -36,8 +38,16 @@ const CenterLabel = ({ viewBox, data }) => {
 
 const PaymentStatGraph = () => {
   const [chartData, setChartData] = React.useState(initialChartData);
+  const { isAuthReady } = useOutletContext();
+
 
   React.useEffect(() => {
+
+    // If the 'traffic light' isn't green, do nothing yet.
+    if (!isAuthReady) {
+      return;
+    }
+
     const token = localStorage.getItem('adminAccessToken');
     if (!token) {
       toast.error("No session found. Please login.");

@@ -1,36 +1,35 @@
-import './App.css'
-import Body from './Components/Body.jsx'
-import { Toaster } from 'react-hot-toast'
-import React from 'react'
+// File: Admin/src/App.jsx
+
+import './App.css';
+import Body from './Components/Body.jsx';
+import { Toaster } from 'react-hot-toast';
+import React, { useState, useEffect } from 'react';
 
 function App() {
-    // ✅ ADD THIS USEEFFECT HOOK
-    React.useEffect(() => {
-        // This effect runs only once when the app first loads
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+  // 1. Create the 'traffic light' state
+  const [isAuthReady, setIsAuthReady] = useState(false);
 
-        if (token) {
-            // If a token is found in the URL:
-            // 1. Save it to this app's localStorage
-            localStorage.setItem('adminAccessToken', token);
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
 
-            // 2. Clean the URL by removing the token parameter
-            // This prevents the token from being bookmarked or shared
-            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            window.history.replaceState({ path: newUrl }, '', newUrl);
+    if (token) {
+      localStorage.setItem('adminAccessToken', token);
+      const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+      window.history.replaceState({ path: newUrl }, '', newUrl);
+    }
+    
+    // 2. Turn the traffic light green, signaling that auth setup is complete
+    setIsAuthReady(true);
+  }, []);
 
-            // Optional: You could show a "Welcome!" toast here
-            // toast.success("Admin session started!");
-        }
-    }, []); // The empty dependency array ensures this runs only once on mount
-    return (
-        <>
-            <Body />
-            <Toaster />
-        </>
-    )
-
+  return (
+    <>
+      {/* 3. Pass the signal to the Body component */}
+      <Body isAuthReady={isAuthReady} />
+      <Toaster />
+    </>
+  );
 }
 
-export default App
+export default App;

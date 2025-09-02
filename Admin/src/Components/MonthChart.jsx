@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { ADMIN_BACKEND_URL } from "@/Constant.jsx";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/Components/ui/chart";
+import { useOutletContext } from "react-router-dom";
 
 const initialChartData = [
   { month: "January", count: 0 }, { month: "February", count: 0 },
@@ -23,8 +24,15 @@ const chartConfig = {
 
 const MonthChart = () => {
   const [chartData, setChartData] = useState(initialChartData);
+  const { isAuthReady } = useOutletContext();
 
   useEffect(() => {
+
+    // If the 'traffic light' isn't green, do nothing yet.
+    if (!isAuthReady) {
+      return;
+    }
+
     const token = localStorage.getItem('adminAccessToken');
     if (!token) {
       toast.error("No session found. Please login.");
