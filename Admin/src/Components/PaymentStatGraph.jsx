@@ -146,6 +146,19 @@ const PaymentStatGraph = () => {
   // ... YOUR RETURN JSX GOES HERE ...
   // Remember to pass the chartData state to the CenterLabel like this:
   // <Label content={<CenterLabel data={chartData} />} />
+
+  if (!chartData || chartData.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Box-wise Bookings</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div>Loading stats...</div>
+        </CardContent>
+      </Card>
+    )
+  }
   return (
     <Card className="flex flex-col bg-transparent">
       <CardHeader className="items-center pb-0 text-md">

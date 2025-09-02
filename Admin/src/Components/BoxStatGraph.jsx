@@ -141,6 +141,18 @@ const BoxStatGraph = () => {
   }, []); // Empty dependency array is correct here
 
 
+  if (!chartData || chartData.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Box-wise Bookings</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div>Loading stats...</div>
+        </CardContent>
+      </Card>
+    )
+  }
   return (
     <Card className="flex flex-col bg-transparent">
       <CardHeader className="items-center pb-0">
@@ -200,4 +212,4 @@ const BoxStatGraph = () => {
     </Card>
   )
 };
-  export default BoxStatGraph;
+export default BoxStatGraph;

@@ -116,6 +116,18 @@ const MonthChart = () => {
     monthlyBookingStat();
   }, []); // The empty array means this effect runs once when the component mounts
 
+  if (!chartData || chartData.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Box-wise Bookings</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div>Loading stats...</div>
+        </CardContent>
+      </Card> 
+    )
+  }
   return (
     <Card className="w-full sm:w-full   bg-[#0c0c0c] text-white">
       <div className="">
