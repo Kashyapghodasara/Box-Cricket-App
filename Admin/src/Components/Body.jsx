@@ -19,11 +19,11 @@ const Body = ({ isAuthReady }) => {
                     element: <Dashboard isAuthReady={isAuthReady} />,
                 },
                 {
-                    path: "Revenue", // Note: no leading "/"
+                    path: "revenue", // Note: no leading "/"
                     element: <RevenuePage isAuthReady={isAuthReady} />,
                 },
                 {
-                    path: "Transaction", // Note: no leading "/"
+                    path: "transaction", // Note: no leading "/"
                     element: <TransDetails isAuthReady={isAuthReady} />,
                 },
                 // Add any other dashboard pages here

@@ -18,8 +18,8 @@ const Sidebar = () => {
     // Added a 'path' property for correct routing.
     const menuItems = [
         { icon: LayoutDashboard, label: 'Overview', path: '/' },
-        { icon: BadgeDollarSign, label: 'Revenue', path: '/Revenue' },
-        { icon: ScanText, label: 'Transaction', path: '/Transaction' },
+        { icon: BadgeDollarSign, label: 'Revenue', path: '/revenue' },
+        { icon: ScanText, label: 'Transaction', path: '/transaction' },
     ];
 
 
