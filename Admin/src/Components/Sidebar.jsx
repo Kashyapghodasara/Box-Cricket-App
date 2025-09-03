@@ -17,11 +17,11 @@ const Sidebar = () => {
     // --- UPDATED THIS ARRAY ---
     // Added a 'path' property for correct routing.
     const menuItems = [
-        { icon: LayoutDashboard, label: 'Overview', path: '/overview' },
-        { icon: BadgeDollarSign, label: 'Revenue', path: '/revenue' },
-        { icon: ScanText, label: 'Transaction', path: '/transaction' },
-        /* { icon: BarChart3, label: 'Statistics', path: '/statistics' }, */
+        { icon: LayoutDashboard, label: 'Overview', path: '/' },
+        { icon: BadgeDollarSign, label: 'Revenue', path: '/Revenue' },
+        { icon: ScanText, label: 'Transaction', path: '/Transaction' },
     ];
+
 
     const SuccessToastStyle = {
         style: {

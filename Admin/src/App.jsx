@@ -8,22 +8,22 @@ function App() {
 
   useEffect(() => {
     // This effect will now log its every move to the console.
-    console.log("--- App.jsx useEffect has started ---");
+    // console.log("--- App.jsx useEffect has started ---");
 
     const fullUrlQuery = window.location.search;
-    console.log("Current URL Query:", fullUrlQuery);
+    // console.log("Current URL Query:", fullUrlQuery);
 
     const urlParams = new URLSearchParams(fullUrlQuery);
     const token = urlParams.get('token');
 
-    console.log("Token found in URL:", token); // This will show us the token or 'null'
+    // console.log("Token found in URL:", token); // This will show us the token or 'null'
 
     if (token) {
-      console.log("✅ Token exists. Attempting to save to localStorage...");
+      // console.log("✅ Token exists. Attempting to save to localStorage...");
       localStorage.setItem('adminAccessToken', token);
       
       const savedToken = localStorage.getItem('adminAccessToken');
-      console.log("Verification: Token saved in localStorage is:", savedToken);
+      // console.log("Verification: Token saved in localStorage is:", savedToken);
 
       const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
       window.history.replaceState({ path: newUrl }, '', newUrl);
