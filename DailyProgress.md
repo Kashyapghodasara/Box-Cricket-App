@@ -306,5 +306,12 @@
 
 #### Day 66 -- Sunday -- 27-08-2025
     - After realizing that cookies can’t be shared across domains:
-    - Integrating access–refresh token authentication is the only way to solve the admin login problem.
+    - Integrating access–refresh token authentication is the only way to solve the admin login problem
     - Therefore, I updated the Auth. integration with the help of ChatGPT to streamline the flow
+
+#### Day 67 -- Tuesday -- 02-09-2025
+    - After so many unsuccessful attempts, I solved the cross-platform cookie-sharing problem.
+    - I did 70+ unsuccessful deployments.
+    - My mind was completely crushed, but I still didn’t give up on the problem.
+    - I solved this bug with the help of ChatGPT and Gemini; without them, I couldn’t have done it because this problem was beyond my ability.
+    - End of the story: I learned from this experience to never execute a single project on different domains with strong authentication and authorization
