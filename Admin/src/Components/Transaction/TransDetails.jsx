@@ -124,7 +124,7 @@ const TransDetails = () => {
 
 
     return (
-        <div className="flex h-screen bg-[#0c0c0c] text-white">
+        <div className="h-full w-full bg-[#0c0c0c] text-white">
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col overflow-hidden">

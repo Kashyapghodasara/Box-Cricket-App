@@ -248,7 +248,7 @@ const RevenuePage = () => {
 
 
     return (
-        <div className="flex h-screen">
+        <div className="h-full w-full">
            
             {/* Main Content */}
             <div className="w-full h-full p-4 md:p-6 overflow-y-auto bg-[#0c0c0c]">
