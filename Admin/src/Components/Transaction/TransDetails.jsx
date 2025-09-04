@@ -126,11 +126,6 @@ const TransDetails = () => {
     return (
         <div className="flex h-screen bg-[#0c0c0c] text-white">
 
-            {/* Sidebar */}
-            <aside className="w-60 h-full border-r border-zinc-800 bg-[#111]">
-                <Sidebar />
-            </aside>
-
             {/* Main Content */}
             <main className="flex-1 flex flex-col overflow-hidden">
 
