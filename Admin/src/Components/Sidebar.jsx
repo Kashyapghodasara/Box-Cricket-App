@@ -75,7 +75,7 @@ const Sidebar = () => {
         } finally {
             toast.success("You have been logged out.", SuccessToastStyle);
             localStorage.removeItem('adminAccessToken');
-            window.location.href = "https://box-cricket-app.vercel.app/registration";
+            window.location.href = "https://box-cricket-app.vercel.app/";
         }
     };
 
