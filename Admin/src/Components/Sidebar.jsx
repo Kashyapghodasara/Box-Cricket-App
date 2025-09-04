@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { ADMIN_BACKEND_URL } from '@/Constant';
 import toast from 'react-hot-toast';
-import Link from 'next/link'; // <--- IMPORT THIS
+import { Link } from 'react-router-dom';
 import {
     LayoutDashboard,
     BarChart3,
@@ -94,7 +94,7 @@ const Sidebar = () => {
                             <li key={index}>
                                 {/* --- REPLACED <a> WITH <Link> AND USED item.path --- */}
                                 <Link
-                                    href={item.path}
+                                    to={item.path}   // ✅ use "to" not "href"
                                     className='flex items-center gap-4 text-gray-300 hover:text-white hover:bg-white/5 p-3 rounded-lg cursor-pointer transition-all duration-300 group'
                                 >
                                     <item.icon size={22} className="group-hover:scale-110 transition-transform" />
