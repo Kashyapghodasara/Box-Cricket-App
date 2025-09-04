@@ -127,7 +127,7 @@ const TransDetails = () => {
         <div className="h-screen w-full bg-[#0c0c0c] text-white">
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col overflow-hidden">
+            <main className="flex-1 flex flex-col">
 
                 {/* Header */}
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-6 border-b border-zinc-800">
