@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')));
   crossOriginEmbedderPolicy: false,
 })); */
 
-/* app.use(helmet.contentSecurityPolicy({
+app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'"],
     scriptSrc: ["'self'", "https://admin-box-cricket-app.vercel.app"],
@@ -75,7 +75,7 @@ app.use(express.static(path.join(__dirname, 'public')));
     ],
     frameAncestors: ["'self'"],
   },
-})); */
+}));
 
 // ================= CORS =================
 const allowedOrigins = [
