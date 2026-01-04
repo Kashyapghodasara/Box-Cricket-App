@@ -1,170 +1,99 @@
-import React from 'react'
+import React from "react";
 
 const Ticket = () => {
-    return (
-        <>
-            <div className="flex flex-col items-center">
-                <h1 className="text-4xl font-bold text-[#0C3B2E] mb-6">Your Ticket</h1>
+  return (
+    <div className="min-h-screen bg-[#F4F1E1] flex flex-col items-center py-10 px-4">
+      <h1 className="text-3xl md:text-4xl font-bold text-[#0C3B2E] mb-8">
+        Your Ticket
+      </h1>
 
+      {/* Ticket Card */}
+      <div className="w-full max-w-5xl bg-white shadow-2xl border border-gray-200 rounded-xl overflow-hidden">
 
-                {/* Ticket 1*/}
-                <div
-                    className="w-[60%] h-[300px]  m-5 shadow-lg relative"
-                    style={{
-                        clipPath: 'polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px)',
-                        backgroundImage: 'url("/Images/Blue2.jpeg")',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat',
-                        zIndex: 1
-                    }}
-
-                >
-                    <div>
-                        <div className="line"></div>
-
-                        <div className='flex flex-col gap-2 text-center top-[39%] right-0 absolute rotate-270'>
-                            <h2 className='text-md font-semibold'
-                                style={{ fontFamily: 'Roboto Mono, monospace' }}
-                            >Ticket ID</h2>
-                            <h1 className='text-2xl font-semibold font-mono tracking-widest text-[#ffffff]'
-                                style={{ fontFamily: 'Roboto Mono, monospace' }}
-                            >
-                                536348974239
-                            </h1>
-                        </div>
-
-
-                        <div className="relative w-full h-full">
-                            <img src="/Images/Logo-R.png" alt="Logo" className="image" />
-                            <div>
-
-                            </div>
-                        </div>
-                        <div className='absolute flex justify-center text-center top-1/5 left-4/12 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div>
-                                <h1 className='text-3xl font-bold text-[#ffffff]'>Time</h1>
-                                <h2 className='text-lg'>2:00 pm - 4:00 pm</h2>
-                            </div>
-                        </div>
-                        <div className='absolute flex justify-center text-center top-1/5 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div>
-                                <h1 className='text-3xl font-bold text-[#ffffff]'>Date</h1>
-                                <h2 className='text-lg'>17 - 06 - 2025  &nbsp; &nbsp; -  &nbsp; &nbsp; Monday</h2>
-                            </div>
-                        </div>
-                        <div className='absolute flex justify-center text-center top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div>
-                                <h1 className='text-3xl font-bold text-[#ffffff]'>Box</h1>
-                                <h2 className='text-lg'>#BX002 &nbsp; &nbsp; -  &nbsp; &nbsp; Small</h2>
-                            </div>
-                        </div>
-                        <div className='absolute flex justify-center text-center top-1/2 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div className="bg-white/10 backdrop-blur-sm px-12 py-2 rounded-xl shadow-md border border-white/20">
-                                <h1 className='text-2xl font-bold text-[#ffffff]'>Price</h1>
-                                <h2 className='text-xl font-semibold text-[#FFD700] tracking-widest glow'>
-                                    ₹ 500
-                                </h2>
-                            </div>
-                        </div>
-
-
-                        {/* Address */}
-                        <div className='absolute flex justify-center text-start top-[88%]  left-4/11 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div>
-                                <p className='font-mono text-[13px] text-[#ffffff]'
-                                    style={{ fontFamily: 'Roboto Mono, monospace' }}
-                                >
-                                    14th Street, Criksy Box Cricket, Near Pilson Intersection,
-                                    South Prickle Pine, Las Venturas, San Andreas - 1524207
-                                </p>
-                                <h3 className='m-1 ml-0 text-sm text-[#ffffff]'>Ph - 123 456 7890</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Ticket 2 */}
-                <div
-                    className="w-[60%] h-[300px]  m-5 shadow-lg relative rotate-15"
-                    style={{
-                        clipPath: 'polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px)',
-                        backgroundImage: 'url("/Images/Green4.jpeg")',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat',
-                        position: 'relative',
-                        transform: 'translateX(-5%) translateY(-25%)',
-                        zIndex: -5,
-                    }}
-
-                >
-                    <div>
-                        <div class="line"></div>
-
-                        <div className='flex flex-col gap-2 text-center top-[39%] right-0 absolute rotate-270'>
-                            <h2 className='text-md font-semibold'
-                                style={{ fontFamily: 'Roboto Mono, monospace' }}
-                            >Ticket ID</h2>
-                            <h1 className='text-2xl font-semibold font-mono tracking-widest text-[#ffffff]'
-                                style={{ fontFamily: 'Roboto Mono, monospace' }}
-                            >
-                                684612645587
-                            </h1>
-                        </div>
-
-
-                        <div className="relative w-full h-full">
-                            <img src="/Images/Logo-R.png" alt="Logo" className="image" />
-                            <div>
-
-                            </div>
-                        </div>
-                        <div className='absolute flex justify-center text-center top-1/5 left-4/12 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div>
-                                <h1 className='text-3xl font-bold text-[#ffffff]'>Time</h1>
-                                <h2 className='text-lg'>9:00 pm - 11:00 pm</h2>
-                            </div>
-                        </div>
-                        <div className='absolute flex justify-center text-center top-1/5 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div>
-                                <h1 className='text-3xl font-bold text-[#ffffff]'>Date</h1>
-                                <h2 className='text-lg'>10 - 06 - 2025  &nbsp; &nbsp; -  &nbsp; &nbsp; Tuesday</h2>
-                            </div>
-                        </div>
-                        <div className='absolute flex justify-center text-center top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div>
-                                <h1 className='text-3xl font-bold text-[#ffffff]'>Box</h1>
-                                <h2 className='text-lg'>#BX002 &nbsp; &nbsp; -  &nbsp; &nbsp; Small</h2>
-                            </div>
-                        </div>
-                        <div className='absolute flex justify-center text-center top-1/2 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div className="bg-white/10 backdrop-blur-sm px-12 py-2 rounded-xl shadow-md border border-white/20">
-                                <h1 className='text-2xl font-bold text-[#ffffff]'>Price</h1>
-                                <h2 className='text-xl font-semibold text-[#FFD700] tracking-widest glow'>
-                                    ₹ 1000
-                                </h2>
-                            </div>
-                        </div>
-
-
-                        {/* Address */}
-                        <div className='absolute flex justify-center text-start top-[88%]  left-4/11 transform -translate-x-1/2 -translate-y-1/2'>
-                            <div>
-                                <p className='font-mono text-[13px] text-[#ffffff]'
-                                    style={{ fontFamily: 'Roboto Mono, monospace' }}
-                                >
-                                    14th Street, Criksy Box Cricket, Near Pilson Intersection,
-                                    South Prickle Pine, Las Venturas, San Andreas - 1524207
-                                </p>
-                                <h3 className='m-1 ml-0 text-sm text-[#ffffff]'>Ph - 123 456 7890</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        {/* Header */}
+        <div className="flex flex-col md:flex-row items-center justify-between bg-[#0C3B2E] px-6 md:px-10 py-6">
+          <div className="flex items-center gap-6">
+            <img
+              src="/Images/Logo-R.png"
+              alt="Criksy Logo"
+              className="w-28 md:w-36 object-contain"
+            />
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white">
+                Criksy Box Cricket
+              </h2>
+              <p className="text-white/80 text-md md:text-base">
+                Rajkot, Gujarat, India
+              </p>
             </div>
-        </>
-    )
-}
+          </div>
 
-export default Ticket
+          <div className="mt-4 md:mt-0 text-center md:text-right">
+            <p className="text-xs uppercase tracking-widest text-white/70">
+              Ticket ID
+            </p>
+            <p className="font-mono text-lg md:text-xl tracking-widest text-white">
+              536348974239
+            </p>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 px-6 md:px-10 py-8 text-center">
+
+          <div>
+            <p className="text-sm uppercase tracking-wider text-gray-500">
+              Time
+            </p>
+            <p className="text-xl font-semibold text-[#0C3B2E]">
+              2:00 PM – 4:00 PM
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm uppercase tracking-wider text-gray-500">
+              Date
+            </p>
+            <p className="text-xl font-semibold text-[#0C3B2E]">
+              17 June 2025
+            </p>
+            <p className="text-sm text-gray-600">
+              Monday
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm uppercase tracking-wider text-gray-500">
+              Box
+            </p>
+            <p className="text-xl font-semibold text-[#0C3B2E]">
+              #BX002 – Small
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm uppercase tracking-wider text-gray-500">
+              Price
+            </p>
+            <p className="text-3xl font-bold text-[#0C3B2E]">
+              ₹ 500
+            </p>
+          </div>
+
+        </div>
+
+        {/* Footer */}
+        <div className="flex flex-col md:flex-row justify-between items-center border-t border-gray-200 px-6 md:px-10 py-4 text-md text-gray-600">
+          <p>
+            📍 Rajkot, Gujarat, India – 360005
+          </p>
+          <p>
+            📞 123 456 7890
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Ticket;  

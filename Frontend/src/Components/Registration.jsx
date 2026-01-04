@@ -212,81 +212,87 @@ const Registration = () => {
         <>
             <section id='Home'>
                 <div className='flex justify-center m-2'>
-                    <div className='relative w-[90%] rounded-full p-2'>
-                        <nav className='flex items-center justify-center w-full'>
-                            {/* Website Name */}
+                    <div className='relative w-[95%] rounded-full p-2'>
+                        <nav className='flex flex-col md:flex-row items-center justify-between w-full gap-4'>
 
-                            <div className='absolute left-2'>
-                                <h1 className='text-4xl font-bold text-[#0C3B2E] cursor-pointer'
-                                    style={{ fontFamily: 'Gabarito' }}>
+                            {/* Website Name */}
+                            <div className='md:absolute md:left-2'>
+                                <h1
+                                    className='text-3xl md:text-4xl font-bold text-[#0C3B2E] cursor-pointer text-center md:text-left'
+                                    style={{ fontFamily: 'Gabarito' }}
+                                >
                                     Criksy
                                 </h1>
                             </div>
 
-                            {/* Nav Links Centered */}
-                            <div className='flex flex-row gap-[80px] text-[#0C3B2E] text-lg'>
+                            {/* Nav Links */}
+                            <div className='mx-auto w-fit flex flex-wrap justify-center gap-6 md:gap-[80px] text-[#0C3B2E] text-lg'>
                                 <Link to="/">
                                     <button className="pointer">Home</button>
                                 </Link>
+
                                 <button
                                     onClick={() => scrollToSection('Slote')}
-                                    className="pointer">
+                                    className="pointer"
+                                >
                                     Slote
                                 </button>
+
                                 <Link to="/showBookings">
                                     <button className="pointer">Bookings</button>
                                 </Link>
+
                                 <button
                                     onClick={() => scrollToSection('Contact')}
-                                    className="pointer">
+                                    className="pointer"
+                                >
                                     Contact
                                 </button>
                             </div>
 
-                            {isLoggedIn === true && (
-                                <>
-                                    <div className='absolute right-2'>
-                                        <button
-                                            onClick={logoutHandler}
-                                            className='bg-[#f92500] hover:bg-[#ce290c] px-5 py-2 rounded-full cursor-pointer'
-                                        >
-                                            Logout
+
+                            {/* Auth Buttons */}
+                            <div className='md:absolute md:right-2 flex flex-wrap justify-center gap-3'>
+
+                                {isLoggedIn === true && (
+                                    <button
+                                        onClick={logoutHandler}
+                                        className='bg-[#f92500] hover:bg-[#ce290c] px-5 py-2 rounded-full cursor-pointer'
+                                    >
+                                        Logout
+                                    </button>
+                                )}
+
+                                {isLoggedIn === false && isSignedUp === true && (
+                                    <Link to="/registration">
+                                        <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                            Login
                                         </button>
-                                    </div>
-                                </>
-                            )}
+                                    </Link>
+                                )}
 
-                            {isLoggedIn === false && isSignedUp === true && (
-                                <>
-                                    <div className="absolute right-2 flex items-center gap-4">
-                                        <Link to="/registration">
-                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
-                                                Login
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </>
-                            )}
-
-                            {isLoggedIn === false && isSignedUp === false && (
-                                <>
-                                    <div className="absolute right-2 flex items-center gap-4">
+                                {isLoggedIn === false && isSignedUp === false && (
+                                    <>
                                         <Link to="/registration">
                                             <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
                                                 Signup
                                             </button>
-                                            <button className="bg-[#ffc53c] ml-4 hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
+                                        </Link>
+                                        <Link to="/registration">
+                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
                                                 Login
                                             </button>
                                         </Link>
-                                    </div>
-                                </>
-                            )}
+                                    </>
+                                )}
+
+                            </div>
 
                         </nav>
                     </div>
                 </div>
-            </section >
+            </section>
+
 
             <div className='w-full min-h-screen'>
                 <div className='bg-[#] flex flex-col items-center justify-center '>

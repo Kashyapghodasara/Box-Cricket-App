@@ -39,7 +39,7 @@
 }
 
 
-
+/* 
 .line {
   position: absolute;
   top: 50%;
@@ -48,7 +48,7 @@
   transform: translateX(270%) rotate(90deg);
 }
 
-/* Circle before the line */
+
 .line::before,
 .line::after {
   content: '';
@@ -60,14 +60,14 @@
   border-radius: 50%;
 }
 
-/* Position left circle */
+
 .line::before {
   left: -80px;
   top: -30px;
   border-width: 0;
 }
 
-/* Position right circle */
+
 .line::after {
   right: -75px;
   top: -32px;
@@ -92,3 +92,25 @@
 .animate-spin-slow {
   animation: spin 2s linear infinite;
 }
+
+
+@media (max-width: 640px) {
+  .image {
+    width: 35%;
+    left: -5%;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .line {
+    width: 160px;
+    transform: translateX(200%) rotate(90deg);
+  }
+
+  .line::before,
+  .line::after {
+    width: 45px;
+    height: 45px;
+  }
+} */

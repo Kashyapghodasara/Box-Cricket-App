@@ -5,7 +5,7 @@ import useRegistration from '../Store/useRegistration';
 import axios from "axios"
 import toast from 'react-hot-toast';
 import { USER_BACKEND_URL } from '../Constant';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Hero = () => {
 
@@ -14,9 +14,9 @@ const Hero = () => {
 
     const SuccessToastStyle = {
         style: {
-            background: "#212121", // dark mode black background
+            background: "#212121",
             color: "#fff",
-            fontSize: "17px",     // white text
+            fontSize: "17px",
             padding: "12px 20px",
             borderRadius: "10px",
             width: "100%",
@@ -24,16 +24,17 @@ const Hero = () => {
             textAlign: "center",
         },
         iconTheme: {
-            primary: "#39bf04", // red-400 (error icon color)
-            secondary: "#1f2937", // gray-800
+            primary: "#39bf04",
+            secondary: "#1f2937",
         },
-        duration: 4000, // Optional: auto-close duration
+        duration: 4000,
     }
+
     const ErrorToastStyle = {
         style: {
-            background: "#212121", // dark mode black background
+            background: "#212121",
             color: "#fff",
-            fontSize: "17px",     // white text
+            fontSize: "17px",
             padding: "12px 20px",
             borderRadius: "10px",
             width: "100%",
@@ -41,10 +42,10 @@ const Hero = () => {
             textAlign: "center",
         },
         iconTheme: {
-            primary: "#eb1410", // red-400 (error icon color)
-            secondary: "#1f2937", // gray-800
+            primary: "#eb1410",
+            secondary: "#1f2937",
         },
-        duration: 4000, // Optional: auto-close duration
+        duration: 4000,
     }
 
     const logoutHandler = async (e) => {
@@ -53,7 +54,7 @@ const Hero = () => {
             const response = await axios.post(
                 `${USER_BACKEND_URL}/logout`,
                 {},
-                { withCredentials: true }  // For cookies
+                { withCredentials: true }
             );
 
             if (response.data.success) {
@@ -74,78 +75,61 @@ const Hero = () => {
 
     return (
         <>
-            {/* Navbar Section*/}
+            {/* Navbar Section */}
             <section id='Home'>
                 <div className='flex justify-center m-2'>
-                    <div className='relative w-[90%] rounded-full p-2'>
-                        <nav className='flex items-center justify-center w-full'>
-                            {/* Website Name */}
+                    <div className='relative w-[95%] md:w-[90%] rounded-full p-2'>
+                        <nav className='flex items-center justify-between w-full'>
 
-                            <div className='absolute left-2'>
-                                <h1 className='text-4xl font-bold text-[#0C3B2E] cursor-pointer'
-                                    style={{ fontFamily: 'Gabarito' }}>
+                            {/* Logo */}
+                            <div>
+                                <h1
+                                    className='text-3xl md:text-4xl font-bold text-[#0C3B2E] cursor-pointer'
+                                    style={{ fontFamily: 'Gabarito' }}
+                                >
                                     Criksy
                                 </h1>
                             </div>
 
-                            {/* Nav Links Centered */}
-                            <div className='flex flex-row gap-[80px] text-[#0C3B2E] text-lg'>
-                                <Link to="/">
-                                    <button className="pointer">Home</button>
-                                </Link>
-                                <button
-                                    onClick={() => scrollToSection('Slote')}
-                                    className="pointer">
-                                    Slote
-                                </button>
-                                <Link to="/showBookings">
-                                    <button className="pointer">Bookings</button>
-                                </Link>
-                                <button
-                                    onClick={() => scrollToSection('Contact')}
-                                    className="pointer">
-                                    Contact
-                                </button>
+                            {/* Nav Links (Hidden on small screens) */}
+                            <div className='hidden md:flex gap-[80px] text-[#0C3B2E] text-lg'>
+                                <Link to="/"><button>Home</button></Link>
+                                <button onClick={() => scrollToSection('Slote')}>Slote</button>
+                                <Link to="/showBookings"><button>Bookings</button></Link>
+                                <button onClick={() => scrollToSection('Contact')}>Contact</button>
                             </div>
 
-                            {isLoggedIn === true && (
-                                <>
-                                    <div className='absolute right-2'>
-                                        <button
-                                            onClick={logoutHandler}
-                                            className='bg-[#f92500] hover:bg-[#ce290c] px-5 py-2 rounded-full cursor-pointer'
-                                        >
-                                            Logout
+                            {/* Auth Buttons */}
+                            {isLoggedIn && (
+                                <button
+                                    onClick={logoutHandler}
+                                    className='bg-[#f92500] hover:bg-[#ce290c] px-4 md:px-5 py-2 rounded-full'
+                                >
+                                    Logout
+                                </button>
+                            )}
+
+                            {!isLoggedIn && isSignedUp && (
+                                <Link to="/registration">
+                                    <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-4 md:px-5 py-2 rounded-full">
+                                        Login
+                                    </button>
+                                </Link>
+                            )}
+
+                            {!isLoggedIn && !isSignedUp && (
+                                <div className="flex gap-2 md:gap-4">
+                                    <Link to="/registration">
+                                        <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-4 md:px-5 py-2 rounded-full">
+                                            Signup
                                         </button>
-                                    </div>
-                                </>
-                            )}
-
-                            {isLoggedIn === false && isSignedUp === true && (
-                                <>
-                                    <div className="absolute right-2 flex items-center gap-4">
-                                        <Link to="/registration">
-                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
-                                                Login
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </>
-                            )}
-
-                            {isLoggedIn === false && isSignedUp === false && (
-                                <>
-                                    <div className="absolute right-2 flex items-center gap-4">
-                                        <Link to="/registration">
-                                            <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
-                                                Signup
-                                            </button>
-                                            <button className="bg-[#ffc53c] ml-4 hover:bg-[#FFB70F] px-5 py-2 rounded-full cursor-pointer transition">
-                                                Login
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </>
+                                    </Link>
+                                    <Link to="/registration">
+                                        <button className="bg-[#ffc53c] hover:bg-[#FFB70F] px-4 md:px-5 py-2 rounded-full">
+                                            Login
+                                        </button>
+                                    </Link>
+                                </div>
                             )}
                         </nav>
                     </div>
@@ -155,17 +139,19 @@ const Hero = () => {
                 <div className="flex justify-center relative m-2 mt-4">
                     <img
                         src="/Images/Fog.jpeg"
-                        alt="Cricket Ground Image"
-                        className="w-[95%] h-[630px] rounded-xl"
+                        alt="Cricket Ground"
+                        className="w-[95%] h-[350px] sm:h-[450px] md:h-[630px] rounded-xl object-cover"
                     />
-                    <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
-                            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#0C3B2E]">
+
+                    <div className="absolute top-1/2 md:top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-[90%] md:w-[70%]">
+                        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
+                            <h1 className="text-xl sm:text-2xl md:text-5xl font-bold text-[#0C3B2E]">
                                 No Jersey, But
                             </h1>
+
                             <RotatingText
                                 texts={['Your Game', 'Your Rule', 'Your Ground']}
-                                mainClassName="px-3 bg-cyan-300 text-black overflow-hidden py-1 rounded-lg text-xl sm:text-3xl md:text-5xl font-semibold inline-flex"
+                                mainClassName="px-3 bg-cyan-300 text-black py-1 rounded-lg text-lg sm:text-2xl md:text-5xl font-semibold"
                                 staggerFrom="last"
                                 initial={{ y: "100%" }}
                                 animate={{ y: 0 }}
@@ -176,9 +162,13 @@ const Hero = () => {
                                 rotationInterval={3000}
                             />
                         </div>
-                        <p className='mt-8 text-[#151111] font-semibold text-lg'>Our app helps you easily book box cricket grounds for your matches. Check available slots, reserve your ground in seconds, and manage your bookings all in one place. Perfect for players and organizers who want hassle-free cricket game planning.</p>
-                    </div>
 
+                        <p className='mt-4 sm:mt-6 md:mt-8 text-[#151111] font-semibold text-sm sm:text-base md:text-lg'>
+                            Our app helps you easily book box cricket grounds for your matches.
+                            Check available slots, reserve your ground in seconds, and manage
+                            your bookings all in one place.
+                        </p>
+                    </div>
                 </div>
             </section>
         </>

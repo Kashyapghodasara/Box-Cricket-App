@@ -40,6 +40,20 @@ const adminLimiter = rateLimit({
   message: { success: false, message: "Too many requests for admin routes" }
 });
 
+// ================= CORS =================
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://box-cricket-app.vercel.app",
+  "https://admin-box-cricket-app.vercel.app"
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
+
+
 // ================= Proxy & Parsers =================
 app.set("trust proxy", 1); // Required for secure cookies on Render
 
@@ -48,12 +62,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ================= Helmet =================
-/* app.use(helmet({
-  crossOriginResourcePolicy: false,
-  crossOriginOpenerPolicy: false,
-  crossOriginEmbedderPolicy: false,
-})); */
 
 app.use(helmet.contentSecurityPolicy({
   directives: {
@@ -77,16 +85,7 @@ app.use(helmet.contentSecurityPolicy({
   },
 }));
 
-// ================= CORS =================
-const allowedOrigins = [
-  "https://box-cricket-app.vercel.app",
-  "https://admin-box-cricket-app.vercel.app"
-];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
 
 // ================= Routes =================
 app.use("/api/v1/user", userRouter);

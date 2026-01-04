@@ -196,96 +196,100 @@ const StepTicketDetails = () => {
       </div>
 
       {display === true && (
-        <>
-          {/* Ticket Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className=" mt-[-0px] w-full max-w-3xl"
-          >
-          </motion.div>
+        <div className="min-h-screen bg-[#F4F1E1] flex flex-col items-center py-10 px-4">
 
-          <div id="ticket" className="flex flex-col items-center justify-center min-h-screen">
-            {/* Ticket 2 */}
-            <div
-              className="w-[60%] h-[300px]  m-5 shadow-lg relative"
-              style={
-                boxData.size === "Small"
-                  ? smallBoxBGImage
-                  : boxData.size === "Medium"
-                  ? mediumBoxBGImage
-                  : largeBoxBGImage
-              }
+          <h1 className="text-3xl md:text-4xl font-bold text-[#0C3B2E] mb-8">
+            Your Ticket
+          </h1>
 
-            >
-              <div>
-                <div class="line"></div>
+          {/* Ticket Card */}
+          <div className="w-full max-w-5xl bg-white shadow-2xl border border-gray-200 rounded-xl overflow-hidden">
 
-                <div className='flex flex-col gap-2 text-center top-[39%] right-0 absolute rotate-270'>
-                  <h2 className='text-md font-semibold'
-                    style={{ fontFamily: 'Roboto Mono, monospace' }}
-                  >Ticket ID</h2>
-                  <h1 className='text-2xl font-semibold font-mono tracking-widest text-[#ffffff]'
-                    style={{ fontFamily: 'Roboto Mono, monospace' }}
-                  >
-                    {ticketNo}
-                  </h1>
+            {/* Header */}
+            <div className="flex flex-col md:flex-row items-center justify-between bg-[#0C3B2E] px-6 md:px-10 py-6">
+              <div className="flex items-center gap-6">
+                <img
+                  src="/Images/Logo-R.png"
+                  alt="Criksy Logo"
+                  className="w-32 md:w-40 object-contain"
+                />
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white">
+                    Criksy Box Cricket
+                  </h2>
+                  <p className="text-white/80 text-md md:text-base">
+                    Rajkot, Gujarat, India
+                  </p>
                 </div>
+              </div>
 
-
-                <div className="relative w-full h-full">
-                  <img src="/Images/Logo-R.png" alt="Logo" className="image" />
-                  <div>
-                  </div>
-                </div>
-
-                <div className='absolute flex justify-center text-center top-1/5 left-4/12 transform -translate-x-1/2 -translate-y-1/2'>
-                  <div>
-                    <h1 className='text-3xl font-bold text-[#ffffff]'>Time</h1>
-                    <h2 className='text-lg'>{to12HourFormat(boxData.start_time)} - {to12HourFormat(boxData.end_time)}</h2>
-                  </div>
-                </div>
-                <div className='absolute flex justify-center text-center top-1/5 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
-                  <div>
-                    <h1 className='text-3xl font-bold text-[#ffffff]'>Date</h1>
-                    <h2 className='text-lg'>{new Date(boxData.date).toLocaleDateString()}</h2>
-                  </div>
-                </div>
-                <div className='absolute flex justify-center text-center top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2'>
-                  <div>
-                    <h1 className='text-3xl font-bold text-[#ffffff]'>Box</h1>
-                    <h2 className='text-lg'>#{boxData.box_id} &nbsp; &nbsp; -  &nbsp; &nbsp; {boxData.size}</h2>
-                  </div>
-                </div>
-                <div className='absolute flex justify-center text-center top-1/2 left-5/8 transform -translate-x-1/2 -translate-y-1/2'>
-                  <div className="bg-white/10 backdrop-blur-sm px-12 py-2 rounded-xl shadow-md border border-white/20">
-                    <h1 className='text-2xl font-bold text-[#ffffff]'>Price</h1>
-                    <h2 className='text-xl font-semibold text-[#FFD700] tracking-widest glow'>
-                      ₹ {boxData.price}
-                    </h2>
-                  </div>
-                </div>
-
-
-                {/* Address */}
-                <div className='absolute flex justify-center text-start top-[88%]  left-4/11 transform -translate-x-1/2 -translate-y-1/2'>
-                  <div>
-                    <p className='font-mono text-[13px] text-[#ffffff]'
-                      style={{ fontFamily: 'Roboto Mono, monospace' }}
-                    >
-                      14th Street, Criksy Box Cricket, Near Pilson Intersection,
-                      South Prickle Pine, Las Venturas, San Andreas - 1524207
-                    </p>
-                    <h3 className='m-1 ml-0 text-sm text-[#ffffff]'>Ph - 123 456 7890</h3>
-                  </div>
-                </div>
+              <div className="mt-4 md:mt-0 text-center md:text-right">
+                <p className="text-xs uppercase tracking-widest text-white/70">
+                  Ticket ID
+                </p>
+                <p className="font-mono text-lg md:text-xl tracking-widest text-white">
+                  {ticketNo}
+                </p>
               </div>
             </div>
 
+            {/* Body */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 px-6 md:px-10 py-8 text-center">
+
+              <div>
+                <p className="text-sm uppercase tracking-wider text-gray-500">
+                  Time
+                </p>
+                <p className="text-xl font-semibold text-[#0C3B2E]">
+                  {to12HourFormat(boxData.start_time)} – {to12HourFormat(boxData.end_time)}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm uppercase tracking-wider text-gray-500">
+                  Date
+                </p>
+                <p className="text-xl font-semibold text-[#0C3B2E]">
+                  {new Date(boxData.date).toLocaleDateString()}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {new Date(boxData.date).toLocaleDateString("en-US", { weekday: "long" })}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm uppercase tracking-wider text-gray-500">
+                  Box
+                </p>
+                <p className="text-xl font-semibold text-[#0C3B2E]">
+                  #{boxData.box_id} – {boxData.size}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm uppercase tracking-wider text-gray-500">
+                  Price
+                </p>
+                <p className="text-3xl font-bold text-[#0C3B2E]">
+                  ₹ {boxData.price}
+                </p>
+              </div>
+
+            </div>
+
+            {/* Footer */}
+            <div className="flex flex-col md:flex-row justify-between items-center border-t border-gray-200 px-6 md:px-10 py-4 text-md text-gray-600">
+              <p>
+                📍 14th Street, Criksy Box Cricket, Rajkot – 360005
+              </p>
+              <p>
+                📞 123 456 7890
+              </p>
+            </div>
           </div>
-        </>
+        </div>
       )}
+
 
     </>
 
