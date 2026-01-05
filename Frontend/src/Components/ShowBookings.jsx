@@ -156,7 +156,8 @@ const ShowBookings = () => {
                     </div>
                   </div>
                   <p className="text-white font-mono tracking-widest">
-                    Ticket: <br></br>{item.ticket_no}
+                    Ticket: <br></br>
+                    <span className="font-mono text-lg md:text-xl tracking-widest text-white">{item.ticket_no}</span>
                   </p>
                 </div>
 
