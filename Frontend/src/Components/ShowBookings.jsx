@@ -83,7 +83,7 @@ const ShowBookings = () => {
 
       {/* ================= NAVBAR ================= */}
       <nav className="flex flex-col md:flex-row items-center justify-between px-4 md:px-10 py-4">
-        
+
         {/* LOGO */}
         <h1
           className="text-4xl md:text-5xl font-bold text-emerald-50"
@@ -155,8 +155,11 @@ const ShowBookings = () => {
                       <p className="text-white/70">Rajkot, Gujarat</p>
                     </div>
                   </div>
-                  <p className="text-white font-mono tracking-widest">
-                    Ticket: {item.ticket_no}
+                  <p className="text-xs uppercase tracking-widest text-white/70">
+                    Ticket ID
+                  </p>
+                  <p className="font-mono text-lg md:text-xl tracking-widest text-white">
+                    {item.ticket_no}
                   </p>
                 </div>
 
@@ -164,19 +167,19 @@ const ShowBookings = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-6 text-center">
                   <div>
                     <p className="text-gray-500 uppercase text-sm">Time</p>
-                    <p className="font-semibold">
+                    <p className="font-semibold text-[#0C3B2E]">
                       {to12HourFormat(item.start_time)} - {to12HourFormat(item.end_time)}
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-500 uppercase text-sm">Date</p>
-                    <p className="font-semibold">
+                    <p className="font-semibold text-[#0C3B2E]">
                       {new Date(item.date).toLocaleDateString()}
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-500 uppercase text-sm">Box</p>
-                    <p className="font-semibold">
+                    <p className="font-semibold text-[#0C3B2E]">
                       {item.box_no} ({item.size})
                     </p>
                   </div>
