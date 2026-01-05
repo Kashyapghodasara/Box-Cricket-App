@@ -280,7 +280,7 @@ const StepTicketDetails = () => {
             {/* Footer */}
             <div className="flex flex-col md:flex-row justify-between items-center border-t border-gray-200 px-6 md:px-10 py-4 text-md text-gray-600">
               <p>
-                📍 14th Street, Criksy Box Cricket, Rajkot – 360005
+                📍 Criksy Box Cricket, Rajkot – 123456
               </p>
               <p>
                 📞 123 456 7890
@@ -289,10 +289,7 @@ const StepTicketDetails = () => {
           </div>
         </div>
       )}
-
-
     </>
-
   );
 };
 

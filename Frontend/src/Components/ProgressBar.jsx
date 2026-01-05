@@ -10,44 +10,49 @@ const ProgressBar = ({ currentStep }) => {
   ]
 
   return (
-    <div className='w-[100%]'>
-      <div className="w-[88%] flex justify-center relative ml-44 mt-10 px-4">
-        <div className="flex items-center w-full max-w-4xl justify-center px-4">
+    <div className='w-full overflow-x-auto'>
+      <div className="w-full flex justify-center mt-10 px-4">
+        <div className="flex items-center w-full max-w-5xl justify-between min-w-[600px] sm:min-w-0">
+
           {steps.map((step, index) => {
-            const isCompleted = index < currentStep;
-            const isActive = index === currentStep;
+            const isCompleted = index < currentStep
+            const isActive = index === currentStep
 
             return (
               <div key={step.id} className="flex-1 flex items-center relative">
+
                 {/* Circle */}
                 <div
-                  className={`w-12 h-12 flex items-center justify-center rounded-full text-lg font-bold z-10 shadow-md
-              ${isCompleted ? 'bg-green-600 text-white' :
-                      isActive ? 'bg-blue-500 text-white' :
-                        'bg-gray-300 text-gray-700'}`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full
+                  text-sm sm:text-lg font-bold z-10 shadow-md
+                  ${isCompleted ? 'bg-green-600 text-white' :
+                    isActive ? 'bg-blue-500 text-white' :
+                      'bg-gray-300 text-gray-700'}`}
                 >
                   {step.id}
                 </div>
 
                 {/* Label */}
-                <div className="absolute top-14 text-sm font-medium text-center w-28 -ml-10 text-gray-800">
+                <div className="absolute top-12 sm:top-14 text-xs sm:text-sm font-medium
+                                text-center w-24 sm:w-28 -ml-8 sm:-ml-10 text-gray-800">
                   {step.title}
                 </div>
 
                 {/* Line */}
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-2 mx-2 rounded transition-all duration-300
-                ${isCompleted ? 'bg-green-600' : 'bg-gray-300'}`}
+                    className={`flex-1 h-1 sm:h-2 mx-2 rounded transition-all duration-300
+                    ${isCompleted ? 'bg-green-600' : 'bg-gray-300'}`}
                   />
                 )}
               </div>
-            );
+            )
           })}
+
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default ProgressBar

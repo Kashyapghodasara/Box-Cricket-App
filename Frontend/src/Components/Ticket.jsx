@@ -85,10 +85,10 @@ const Ticket = () => {
         {/* Footer */}
         <div className="flex flex-col md:flex-row justify-between items-center border-t border-gray-200 px-6 md:px-10 py-4 text-md text-gray-600">
           <p>
-            📍 Rajkot, Gujarat, India – 360005
+            📍 Rajkot, Gujarat, India – 123456
           </p>
           <p>
-            📞 123 456 7890
+            📞 98765 43210
           </p>
         </div>
       </div>
