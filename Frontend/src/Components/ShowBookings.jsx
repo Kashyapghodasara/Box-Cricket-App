@@ -83,7 +83,7 @@ const ShowBookings = () => {
 
       {/* ================= NAVBAR ================= */}
       <nav className="flex flex-col md:flex-row items-center justify-between px-4 md:px-10 py-4">
-
+        
         {/* LOGO */}
         <h1
           className="text-4xl md:text-5xl font-bold text-emerald-50"
@@ -155,11 +155,8 @@ const ShowBookings = () => {
                       <p className="text-white/70">Rajkot, Gujarat</p>
                     </div>
                   </div>
-                  <p className="text-xs uppercase tracking-widest text-white/70">
-                    Ticket ID
-                  </p><br></br>
-                  <p className="font-mono text-lg md:text-xl tracking-widest text-white">
-                    {item.ticket_no}
+                  <p className="text-white font-mono tracking-widest">
+                    Ticket: <br></br>{item.ticket_no}
                   </p>
                 </div>
 
