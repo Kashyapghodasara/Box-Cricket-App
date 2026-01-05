@@ -157,7 +157,7 @@ const ShowBookings = () => {
                   </div>
                   <p className="text-xs uppercase tracking-widest text-white/70">
                     Ticket ID
-                  </p>
+                  </p><br></br>
                   <p className="font-mono text-lg md:text-xl tracking-widest text-white">
                     {item.ticket_no}
                   </p>
